@@ -1,0 +1,53 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Site Settings{% endblock %}
+{% block page_subtitle %}Configure platform settings{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Site Settings</h3>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="site_name" class="block text-sm font-medium text-gray-700">Site Name</label>
+                <input type="text" name="site_name" id="site_name" value="{{ settings.site_name }}" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="logo" class="block text-sm font-medium text-gray-700">Logo</label>
+                <input type="file" name="logo" id="logo" accept="image/*"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg">
+                {% if settings.logo %}
+                <p class="mt-2"><img src="{{ settings.logo.url }}" alt="Site Logo" class="h-16 rounded"></p>
+                {% endif %}
+            </div>
+            <div>
+                <label for="contact_email" class="block text-sm font-medium text-gray-700">Contact Email</label>
+                <input type="email" name="contact_email" id="contact_email" value="{{ settings.contact_email }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="contact_phone" class="block text-sm font-medium text-gray-700">Contact Phone</label>
+                <input type="text" name="contact_phone" id="contact_phone" value="{{ settings.contact_phone }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="live_chat_enabled" class="block text-sm font-medium text-gray-700">Enable Live Chat</label>
+                <input type="checkbox" name="live_chat_enabled" id="live_chat_enabled" {% if settings.live_chat_enabled %}checked{% endif %}
+                       class="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-200 rounded">
+            </div>
+            <div>
+                <label for="live_chat_script_url" class="block text-sm font-medium text-gray-700">Live Chat Script URL</label>
+                <input type="url" name="live_chat_script_url" id="live_chat_script_url" value="{{ settings.live_chat_script_url }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div class="flex space-x-3">
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90" aria-label="Save settings">Save</button>
+                <a href="{% url 'custom_admin:dashboard' %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Cancel settings edit">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

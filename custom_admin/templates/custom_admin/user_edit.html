@@ -1,0 +1,74 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Edit User: {{ user.username }}{% endblock %}
+{% block page_subtitle %}Update user details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Edit User: {{ user.username }}</h3>
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" name="username" id="username" value="{{ user.username }}" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" name="email" id="email" value="{{ user.email }}" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" name="full_name" id="full_name" value="{{ user.profile.full_name|default:"" }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                <input type="text" name="phone" id="phone" value="{{ user.profile.phone|default:"" }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+                <input type="text" name="country" id="country" value="{{ user.profile.country|default:"" }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="currency" class="block text-sm font-medium text-gray-700">Currency</label>
+                <select name="currency" id="currency" class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="USD" {% if user.profile.currency == 'USD' %}selected{% endif %}>USD</option>
+                    <option value="EUR" {% if user.profile.currency == 'EUR' %}selected{% endif %}>EUR</option>
+                    <option value="GBP" {% if user.profile.currency == 'GBP' %}selected{% endif %}>GBP</option>
+                </select>
+            </div>
+            <div>
+                <label for="balance" class="block text-sm font-medium text-gray-700">Balance</label>
+                <input type="number" name="balance" id="balance" value="{{ user.profile.balance|floatformat:2 }}" step="0.01"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="profit" class="block text-sm font-medium text-gray-700">Profit</label>
+                <input type="number" name="profit" id="profit" value="{{ user.profile.profit|floatformat:2 }}" step="0.01"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="bonus" class="block text-sm font-medium text-gray-700">Bonus</label>
+                <input type="number" name="bonus" id="bonus" value="{{ user.profile.bonus|floatformat:2 }}" step="0.01"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="investment" class="block text-sm font-medium text-gray-700">Investment</label>
+                <input type="number" name="investment" id="investment" value="{{ user.profile.investment|floatformat:2 }}" step="0.01"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div class="flex space-x-3">
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90" aria-label="Save user changes">Save</button>
+                <a href="{% url 'custom_admin:user_detail' user.id %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Cancel edit">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Transaction: {{ transaction.id }}{% endblock %}
+{% block page_subtitle %}View transaction details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Transaction: {{ transaction.id }}</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <p class="text-sm text-gray-600">User</p>
+                <p class="text-gray-800">{{ transaction.user.username }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Type</p>
+                <p class="text-gray-800">{{ transaction.transaction_type|capfirst }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Amount</p>
+                <p class="text-gray-800">{{ transaction.user.profile.currency }} {{ transaction.amount|floatformat:2 }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Status</p>
+                <p class="text-gray-800">{{ transaction.status|capfirst }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Created</p>
+                <p class="text-gray-800">{{ transaction.created_at|date:"Y-m-d H:i" }}</p>
+            </div>
+            {% if transaction.completed_at %}
+            <div>
+                <p class="text-sm text-gray-600">Completed</p>
+                <p class="text-gray-800">{{ transaction.completed_at|date:"Y-m-d H:i" }}</p>
+            </div>
+            {% endif %}
+            {% if transaction.payment_method %}
+            <div>
+                <p class="text-sm text-gray-600">Payment Method</p>
+                <p class="text-gray-800">{{ transaction.get_payment_method_display }}</p>
+            </div>
+            {% endif %}
+            {% if transaction.cryptocurrency %}
+            <div>
+                <p class="text-sm text-gray-600">Cryptocurrency</p>
+                <p class="text-gray-800">{{ transaction.cryptocurrency.name }} ({{ transaction.cryptocurrency.symbol }})</p>
+            </div>
+            {% endif %}
+            {% if transaction.wallet_address %}
+            <div>
+                <p class="text-sm text-gray-600">Wallet Address</p>
+                <p class="text-gray-800">{{ transaction.wallet_address }}</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="mt-4">
+            <p class="text-sm text-gray-600">Payment Proof:
+                {% if transaction.payment_proof %}
+                <a href="{{ transaction.payment_proof.url }}" target="_blank" class="text-primary hover:underline" aria-label="View payment proof">View Proof</a>
+                <br>
+                <img src="{{ transaction.payment_proof.url }}" alt="Payment Proof" class="mt-2 max-w-xs rounded-lg border border-gray-200">
+                {% else %}
+                No proof uploaded
+                {% endif %}
+            </p>
+        </div>
+        {% if transaction.status == 'pending' %}
+            <div class="mt-4 flex space-x-3">
+                <a href="{% url 'custom_admin:transaction_approve' transaction.id %}" class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90" aria-label="Approve transaction {{ transaction.id }}">Approve</a>
+                <a href="{% url 'custom_admin:transaction_reject' transaction.id %}" class="bg-red-600 text-white px-2 py-4 rounded-lg hover:bg-red-700" aria-label="Reject transaction {{ transaction.id }}">Reject</a>
+                <a href="{% url 'custom_admin:transaction_list' %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Back to transaction list">Back to List</a>
+            </div>
+            {% else %}
+            <div class="mt-4">
+                <a href="{% url 'custom_admin:transaction_list' %}" class="block bg-gray-600 text-white px-4 py-2 rounded-lg" aria-label="Back to transaction list">Back to List</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

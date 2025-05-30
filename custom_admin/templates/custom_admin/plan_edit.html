@@ -1,0 +1,54 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Edit Plan: {{ plan.name }}{% endblock %}
+{% block page_subtitle %}Update investment plan details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Edit Plan: {{ plan.name }}</h3>
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" name="name" id="name" value="{{ plan.name }}" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="min_deposit" class="block text-sm font-medium text-gray-700">Minimum Deposit</label>
+                <input type="number" name="min_deposit" id="min_deposit" value="{{ plan.min_deposit|floatformat:2 }}" required step="0.01"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="max_deposit" class="block text-sm font-medium text-gray-700">Maximum Deposit</label>
+                <input type="number" name="max_deposit" id="max_deposit" value="{{ plan.max_deposit|floatformat:2 }}" required step="0.01"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="duration_days" class="block text-sm font-medium text-gray-700">Duration (Days)</label>
+                <input type="number" name="duration_days" id="duration_days" value="{{ plan.duration_days }}" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="roi_percentage" class="block text-sm font-medium text-gray-700">ROI Percentage</label>
+                <input type="number" name="roi_percentage" id="roi_percentage" value="{{ plan.roi_percentage|floatformat:2" }}" required step="0.01"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="is_active" class="block text-sm font-medium text-gray-700">Active</label>
+                <input type="checkbox" name="is_active" id="is_active" {% if plan.is_active %}checked{% endif %}
+                       class="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-200 rounded">
+            </div>
+            <div class="flex space-x-3">
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90" aria-label="Save plan changes">Save</button>
+                <a href="{% url 'custom_admin:plan_list' %}" class="bg-gray-600 text-white px-4 py-2 hover:bg-gray-700" aria-label="Cancel edit">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_name }} - Professional Trading Platform{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: 'var(--primary)',
+                        secondary: 'var(--secondary)',
+                        accent: 'var(--accent)',
+                        gold: 'var(--gold)',
+                        textPrimary: 'var(--text-primary)',
+                        textSecondary: 'var(--text-secondary)',
+                        textMuted: 'var(--text-muted)',
+                        borderColor: 'var(--border-color)',
+                        glassBg: 'var(--glass-bg)',
+                        glassBorder: 'var(--glass-border)',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.5s ease-out',
+                        'scale-up': 'scaleUp 0.3s ease-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'ticker': 'ticker 30s linear infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleUp: {
+                            '0%': { transform: 'scale(1)' },
+                            '100%': { transform: 'scale(1.05)' },
+                        },
+                        ticker: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                },
+            },
+        };
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Theme Variables */
+        :root {
+            /* Dark Theme (Default) */
+            --primary: #0a0a0a;
+            --secondary: #1a1a1a;
+            --accent: #047857;
+            --gold: #d4af37;
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --primary: #ffffff;
+            --secondary: #f3f4f6;
+            --accent: #0d9488;
+            --gold: #f59e0b;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --glass-bg: rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effects */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-navbar {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Gradients */
+        .gradient-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, #10b981 100%);
+        }
+
+        .gradient-accent {
+            background: linear-gradient(135deg, var(--accent) 0%, #059669 50%, var(--gold) 100%);
+        }
+
+        .gradient-dark {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, #111827 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent), #059669, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+        }
+
+        .text-elegant {
+            font-weight: 300;
+            letter-spacing: 0.025em;
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .btn-elegant {
+            background: linear-gradient(135deg, var(--accent), #059669);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-elegant:hover::before {
+            left: 100%;
+        }
+
+        .btn-elegant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(4, 120, 87, 0.3);
+        }
+
+        .btn-outline-elegant {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--glass-border);
+            padding: 12px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-outline-elegant:hover {
+            background: var(--glass-bg);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Cards */
+        .card-elegant {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card-elegant:hover::before {
+            opacity: 1;
+        }
+
+        .card-elegant:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+
+        /* Forms */
+        .form-elegant {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .input-elegant {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            width: 100%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 16px;
+        }
+
+        .input-elegant:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
+        }
+
+        .input-elegant::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Navigation */
+        .nav-elegant {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-elegant.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-link-elegant {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-link-elegant::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+        }
+
+        .nav-link-elegant:hover {
+            color: var(--text-primary);
+            background: var(--glass-bg);
+        }
+
+        .nav-link-elegant:hover::before {
+            width: 80%;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: var(--secondary);
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+
+        .theme-toggle i {
+            font-size: 16px;
+            color: var(--text-muted);
+            transition: opacity 0.3s;
+        }
+
+        .theme-toggle .fa-sun {
+            color: var(--gold);
+            opacity: 0;
+        }
+
+        .theme-toggle .fa-moon {
+            color: var(--text-primary);
+            opacity: 1;
+        }
+
+        [data-theme="light"] .theme-toggle .fa-sun {
+            opacity: 1;
+        }
+
+        [data-theme="light"] .theme-toggle .fa-moon {
+            opacity: 0;
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        [data-theme="light"] .theme-toggle::before {
+            transform: translateX(24px);
+        }
+
+        .theme-toggle:hover {
+            background: var(--glass-bg);
+        }
+
+        /* Sections */
+        .section-elegant {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(4, 120, 87, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Hero Section */
+        .hero-elegant {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, #111827 100%);
+            overflow: hidden;
+        }
+
+        .hero-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(4, 120, 87, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(4, 120, 87, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(4, 120, 87, 0.6); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .animate-glow {
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .animate-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animate-shimmer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        /* Ticker */
+        .ticker-elegant {
+            background: var(--secondary);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ticker-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, var(--secondary) 0%, transparent 10%, transparent 90%, var(--secondary) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .ticker-content-elegant {
+            display: flex;
+            animation: scroll-left 60s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Pricing Cards */
+        .pricing-card-elegant {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .pricing-card-elegant.featured {
+            background: linear-gradient(135deg, rgba(4, 120, 87, 0.1), rgba(16, 185, 129, 0.1));
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .pricing-card-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), #059669, var(--gold));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .pricing-card-elegant:hover::before {
+            opacity: 1;
+        }
+
+        .pricing-card-elegant:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Testimonials */
+        .testimonial-elegant {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .testimonial-elegant::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 4rem;
+            color: var(--accent);
+            opacity: 0.3;
+            font-family: serif;
+        }
+
+        /* Footer */
+        .footer-elegant {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-top: 1px solid var(--glass-border);
+            position: relative;
+        }
+
+        .footer-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section-elegant {
+                padding: 4rem 0;
+            }
+                
+            .card-elegant {
+                padding: 1.5rem;
+            }
+            
+            .pricing-card-elegant.featured {
+                transform: none;
+                margin: 1rem 0;
+            }
+            
+            .hero-elegant {
+                min-height: 80vh;
+                padding: 2rem 0;
+            }
+            
+            .btn-elegant, .btn-outline-elegant {
+                padding: 10px 24px;
+                font-size: 14px;
+            }
+            
+            .testimonial-slide {
+                padding: 0 1rem;
+            }
+            
+            .ticker-content-elegant {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-elegant {
+                padding: 3rem 0;
+            }
+            
+            .card-elegant {
+                padding: 1rem;
+                border-radius: 16px;
+            }
+            
+            .form-elegant {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--accent), #059669);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #047857, #10b981);
+        }
+
+        /* Loading States */
+        .loading-elegant {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-elegant::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: loading-shimmer 1.5s infinite;
+        }
+
+        @keyframes loading-shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Hover Effects */
+        .hover-elegant {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-elegant:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Focus States */
+        .focus-elegant:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.2);
+        }
+
+        /* Text Selection */
+        ::selection {
+            background: rgba(4, 120, 87, 0.3);
+            color: var(--text-primary);
+        }
+
+        ::-moz-selection {
+            background: rgba(4, 120, 87, 0.3);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="nav-elegant" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'main:home' %}" class="flex-shrink-0 flex items-center group">
+                        <div class="gradient-primary p-2 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-chart-line text-xl text-white"></i>
+                        </div>
+                        <span class="text-2xl font-bold gradient-text">{{ site_name }}</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link-elegant smooth-scroll">Home</a>
+                    <a href="{% url 'main:about' %}" class="nav-link-elegant smooth-scroll">About</a>
+                    <a href="#services" class="nav-link-elegant smooth-scroll">Services</a>
+                    <a href="#education" class="nav-link-elegant smooth-scroll">Education</a>
+                    <a href="{% url 'main:demo' %}" class="nav-link-elegant ">Demo</a>
+                    <a href="#contact" class="nav-link-elegant smooth-scroll">Contact</a>
+                    
+                    {% if user.is_authenticated %}
+                        <div class="relative group">
+                            <button class="flex items-center nav-link-elegant">
+                                <i class="fas fa-user-circle mr-2"></i>{{ user.username }}
+                                <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 glass-card rounded-lg shadow-xl py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                <a href="{% url 'main:dashboard' %}" class="block px-4 py-2 text-sm text-textSecondary hover:bg-glass-bg">
+                                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                                </a>
+                                <a href="{% url 'main:logout' %}" class="block px-4 py-2 text-sm text-textSecondary hover:bg-glass-bg">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'main:login' %}" class="nav-link-elegant">Login</a>
+                        <a href="{% url 'main:register' %}" class="btn-elegant animate-glow">
+                            Open Your Account
+                        </a>
+                    {% endif %}
+                    <!-- Theme Toggle -->
+                    <div class="theme-toggle" id="themeToggle"></div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-textSecondary focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-glass-border">
+            <div class="px-4 py-2 space-y-2">
+                <a href="/" class="block nav-link-elegant">Home</a>
+                <a href="{% url 'main:about' %}" class="block nav-link-elegant ">About</a>
+                <a href="{% url 'main:home' %}#services" class="block nav-link-elegant ">Services</a>
+                <a href="{% url 'main:home' %}#education" class="block nav-link-elegant ">Education</a>
+                <a href="{% url 'main:demo' %}" class="nav-link-elegant ">Demo</a>
+
+                <a href="{% url 'main:home' %}#contact" class="block nav-link-elegant ">Contact</a>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'main:login' %}" class="block nav-link-elegant">Login</a>
+                    <a href="{% url 'main:register' %}" class="block btn-elegant mt-2">Open Your Account</a>
+                {% endif %}
+                <!-- Theme Toggle in Mobile Menu -->
+                <div class="theme-toggle mt-4" id="mobileThemeToggle"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} mb-4 p-4 rounded-lg glass-card {% if message.tags == 'error' %}border-red-500{% elif message.tags == 'success' %}border-green-500{% elif message.tags == 'warning' %}border-yellow-500{% else %}border-accent{% endif %} animate-fade-in">
+                    <div class="flex items-center">
+                        <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'success' %}fa-check-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} mr-2"></i>
+                        {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        <!-- Hero Section with Background Video -->
+        <section id="home" class="hero-elegant" data-aos="fade-in">
+            <!-- Background Video -->
+            <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z-0">
+                <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
+                <div class="absolute inset-0 gradient-dark"></div>
+            </video>
+            
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-black/50 z-10"></div>
+            
+            <!-- Content -->
+            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div data-aos="fade-up">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                        Unlock Your 
+                        <span class="gradient-text">Trading Potential</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-8 text-textSecondary max-w-3xl mx-auto">
+                        Join a community of successful forex traders and start your journey to financial freedom with our cutting-edge platform.
+                    </p>
+                    
+                    {% if not user.is_authenticated %}
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                            <a href="{% url 'main:register' %}" class="btn-elegant animate-glow">
+                                <i class="fas fa-rocket mr-2"></i>Get Started
+                            </a>
+                            <a href="#services" class="btn-outline-elegant smooth-scroll">
+                                <i class="fas fa-play mr-2"></i>Learn More
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'main:dashboard' %}" class="btn-elegant animate-glow">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Floating Elements -->
+                <div class="absolute top-20 left-10 animate-float hidden lg:block">
+                    <div class="glass-card p-4 text-sm">
+                        <i class="fas fa-chart-line text-green-400 mr-2"></i>
+                        <span>EUR/USD +0.85%</span>
+                    </div>
+                </div>
+                <div class="absolute top-40 right-10 animate-float hidden lg:block" style="animation-delay: 1s;">
+                    <div class="glass-card p-4 text-sm">
+                        <i class="fas fa-trending-up text-accent mr-2"></i>
+                        <span>GBP/JPY +1.24%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+                <a href="#ticker" class="text-textPrimary hover:text-accent transition-colors duration-300 smooth-scroll">
+                    <i class="fas fa-chevron-down text-2xl"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Live Forex Rates Ticker -->
+        <section id="ticker" class="ticker-elegant py-4">
+            <div class="ticker-container">
+                <div class="ticker-content-elegant flex items-center space-x-8">
+                    <div class="flex items-center space-x-2">
+                        <span class="font-semibold">EUR/USD</span>
+                        <span class="text-green-400">1.0856</span>
+                        <span class="text-green-400 text-sm">+0.0012</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-semibold">GBP/USD</span>
+                        <span class="text-red-400">1.2734</span>
+                        <span class="text-red-400 text-sm">-0.0023</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-semibold">USD/JPY</span>
+                        <span class="text-green-400">148.92</span>
+                        <span class="text-green-400 text-sm">+0.45</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-semibold">AUD/USD</span>
+                        <span class="text-green-400">0.6789</span>
+                        <span class="text-green-400 text-sm">+0.0034</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-semibold">USD/CAD</span>
+                        <span class="text-red-400">1.3456</span>
+                        <span class="text-red-400 text-sm">-0.0012</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-semibold">USD/CHF</span>
+                        <span class="text-green-400">0.8923</span>
+                        <span class="text-green-400 text-sm">+0.0008</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Overview Section -->
+        <section id="services" class="section-elegant">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-4xl font-bold mb-4">Our Core Services</h2>
+                    <p class="text-xl text-textSecondary max-w-3xl mx-auto">Discover comprehensive trading solutions designed to maximize your success in the forex market.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Automated Trading -->
+                    <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="100">
+                        <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-robot text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-center">Automated Trading</h3>
+                        <p class="text-textSecondary text-center mb-6">Advanced algorithms execute trades 24/7, maximizing opportunities while you sleep.</p>
+                        <ul class="space-y-2 text-sm text-textSecondary">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>AI-powered strategies</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Risk management</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>24/7 monitoring</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Market Analysis -->
+                    <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="200">
+                        <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-chart-bar text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-center">Market Analysis</h3>
+                        <p class="text-textSecondary text-center mb-6">Real-time market insights and technical analysis to guide your trading decisions.</p>
+                        <ul class="space-y-2 text-sm text-textSecondary">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Technical indicators</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Market sentiment</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Economic calendar</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Risk Management -->
+                    <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="300">
+                        <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-shield-alt text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-center">Risk Management</h3>
+                        <p class="text-textSecondary text-center mb-6">Sophisticated tools to protect your capital and optimize your risk-reward ratio.</p>
+                        <ul class="space-y-2 text-sm text-textSecondary">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Stop-loss automation</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Position sizing</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Portfolio diversification</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Visualization Section -->
+        <section class="section-elegant">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-4xl font-bold mb-4">Market Insights & Analytics</h2>
+                    <p class="text-xl text-textSecondary max-w-3xl mx-auto">Interactive charts and real-time data to keep you ahead of market trends.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Trading Chart -->
+                    <div class="card-elegant" data-aos="fade-right">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold">EUR/USD Live Chart</h3>
+                            <div class="flex space-x-2">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Live</span>
+                                <span class="text-green-600 font-semibold">+0.85%</span>
+                            </div>
+                        </div>
+                        <div class="h-64 gradient-dark rounded-lg flex items-center justify-center relative overflow-hidden">
+                            <canvas id="tradingChart" class="w-full h-full"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <i class="fas fa-chart-line text-4xl text-accent mb-2"></i>
+                                    <p class="text-textSecondary">Interactive Trading Chart</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Market Statistics -->
+                    <div class="space-y-6" data-aos="fade-left">
+                        <div class="card-elegant">
+                            <h3 class="text-xl font-semibold mb-4">Market Overview</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 glass-card">
+                                    <div class="text-2xl font-bold text-accent" data-count="1.0856">0</div>
+                                    <p class="text-sm text-textSecondary">EUR/USD</p>
+                                </div>
+                                <div class="text-center p-4 glass-card">
+                                    <div class="text-2xl font-bold text-accent" data-count="148.92">0</div>
+                                    <p class="text-sm text-textSecondary">USD/JPY</p>
+                                </div>
+                                <div class="text-center p-4 glass-card">
+                                    <div class="text-2xl font-bold text-accent" data-count="1.2734">0</div>
+                                    <p class="text-sm text-textSecondary">GBP/USD</p>
+                                </div>
+                                <div class="text-center p-4 glass-card">
+                                    <div class="text-2xl font-bold text-accent" data-count="0.6789">0</div>
+                                    <p class="text-sm text-textSecondary">AUD/USD</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-elegant">
+                            <h3 class="text-xl font-semibold mb-4">Trading Volume</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-textSecondary">Daily Volume</span>
+                                    <span class="font-semibold">$6.2T</span>
+                                </div>
+                                <div class="w-full bg-secondary rounded-full h-2">
+                                    <div class="gradient-primary h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-textSecondary">Active Traders</span>
+                                    <span class="font-semibold">2.4M</span>
+                                </div>
+                                <div class="w-full bg-secondary rounded-full h-2">
+                                    <div class="gradient-accent h-2 rounded-full" style="width: 72%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section-elegant">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div data-aos="fade-right">
+                        <h2 class="text-4xl font-bold mb-6">Why Choose {{ site_name }}?</h2>
+                        <p class="text-lg text-textSecondary mb-8">With over a decade of experience in forex trading, we've built a platform that combines cutting-edge technology with proven trading strategies.</p>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="gradient-primary p-3 rounded-lg">
+                                    <i class="fas fa-award text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg mb-2">Award-Winning Platform</h3>
+                                    <p class="text-textSecondary">Recognized globally for innovation and excellence in forex trading technology.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="gradient-primary p-3 rounded-lg">
+                                    <i class="fas fa-users text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg mb-2">Expert Community</h3>
+                                    <p class="text-textSecondary">Join thousands of successful traders sharing strategies and insights.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="gradient-primary p-3 rounded-lg">
+                                    <i class="fas fa-lock text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg mb-2">Bank-Level Security</h3>
+                                    <p class="text-textSecondary">Your funds and data are protected with military-grade encryption.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative" data-aos="fade-left">
+                        <div class="gradient-dark rounded-2xl p-8">
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold mb-2 text-textPrimary" data-count="50000">0</div>
+                                    <p class="text-textSecondary">Active Traders</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold mb-2 text-textPrimary" data-count="2.5">0</div>
+                                    <p class="text-textSecondary">Trading Volume ($B)</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold mb-2 text-textPrimary" data-count="99.9">0</div>
+                                    <p class="text-textSecondary">Uptime %</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold mb-2 text-textPrimary" data-count="24">0</div>
+                                    <p class="text-textSecondary">Support Hours</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating elements -->
+                        <div class="absolute -top-4 -right-4 glass-card p-4 animate-float">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-trophy text-gold text-xl"></i>
+                                <span class="font-semibold text-sm">Best Platform 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Carousel -->
+        <section class="section-elegant">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-4xl font-bold mb-4">What Our Traders Say</h2>
+                    <p class="text-xl text-textSecondary max-w-3xl mx-auto">Real stories from real traders who've transformed their financial future with {{ site_name }}.</p>
+                </div>
+                
+                <div class="relative">
+                    <div class="testimonial-slider overflow-hidden">
+                        <div class="testimonial-track flex transition-transform duration-500 ease-in-out" id="testimonialTrack">
+                            <!-- Testimonial 1 -->
+                            <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                                <div class="testimonial-elegant max-w-4xl mx-auto">
+                                    <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                                        <div class="flex-shrink-0">
+                                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="John Smith" class="w-24 h-24 rounded-full object-cover">
+                                        </div>
+                                        <div class="flex-1 text-center md:text-left">
+                                            <div class="flex justify-center md:justify-start mb-4">
+                                                <div class="flex space-x-1">
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                </div>
+                                            </div>
+                                            <p class="text-lg text-textSecondary mb-4 italic">"{{ site_name }} completely changed my trading game. The automated strategies helped me achieve consistent profits while managing risk effectively. I've grown my portfolio by 300% in just 8 months!"</p>
+                                            <div>
+                                                <h4 class="font-semibold text-lg">John Smith</h4>
+                                                <p class="text-textMuted">Professional Trader, New York</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Testimonial 2 -->
+                            <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                                <div class="testimonial-elegant max-w-4xl mx-auto">
+                                    <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                                        <div class="flex-shrink-0">
+                                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" alt="Sarah Johnson" class="w-24 h-24 rounded-full object-cover">
+                                        </div>
+                                        <div class="flex-1 text-center md:text-left">
+                                            <div class="flex justify-center md:justify-start mb-4">
+                                                <div class="flex space-x-1">
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                </div>
+                                            </div>
+                                            <p class="text-lg text-textSecondary mb-4 italic">"As a beginner, I was intimidated by forex trading. {{ site_name }}'s educational resources and user-friendly platform made it easy to start. The support team is incredibly helpful and responsive."</p>
+                                            <div>
+                                                <h4 class="font-semibold text-lg">Sarah Johnson</h4>
+                                                <p class="text-textMuted">Entrepreneur, California</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Testimonial 3 -->
+                            <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                                <div class="testimonial-elegant max-w-4xl mx-auto">
+                                    <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                                        <div class="flex-shrink-0">
+                                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" alt="Michael Chen" class="w-24 h-24 rounded-full object-cover">
+                                        </div>
+                                        <div class="flex-1 text-center md:text-left">
+                                            <div class="flex justify-center md:justify-start mb-4">
+                                                <div class="flex space-x-1">
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                    <i class="fas fa-star text-gold"></i>
+                                                </div>
+                                            </div>
+                                            <p class="text-lg text-textSecondary mb-4 italic">"The analytical tools and market insights provided by {{ site_name }} are exceptional. I've been able to make more informed decisions and significantly improve my trading performance. Highly recommended!"</p>
+                                            <div>
+                                                <h4 class="font-semibold text-lg">Michael Chen</h4>
+                                                <p class="text-textMuted">Financial Analyst, Singapore</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation buttons -->
+                    <button class="absolute left-4 top-1/2 transform -translate-y-1/2 glass-card p-3 hover:scale-110 transition-all duration-300" id="prevTestimonial">
+                        <i class="fas fa-chevron-left text-textSecondary"></i>
+                    </button>
+                    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 glass-card p-3 hover:scale-110 transition-all duration-300" id="nextTestimonial">
+                        <i class="fas fa-chevron-right text-textSecondary"></i>
+                    </button>
+                    
+                    <!-- Dots indicator -->
+                    <div class="flex justify-center mt-8 space-x-2">
+                        <button class="w-3 h-3 rounded-full bg-accent testimonial-dot active" data-slide="0"></button>
+                        <button class="w-3 h-3 rounded-full bg-textMuted testimonial-dot" data-slide="1"></button>
+                        <button class="w-3 h-3 rounded-full bg-textMuted testimonial-dot" data-slide="2"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="section-elegant">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-4xl font-bold mb-4">Choose Your Trading Plan</h2>
+                    <p class="text-xl text-textSecondary max-w-3xl mx-auto">Flexible pricing options designed to fit every trader's needs and budget.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Basic Plan -->
+                    <div class="pricing-card-elegant" data-aos="fade-up" data-aos-delay="100">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold mb-4">Basic</h3>
+                            <div class="mb-6">
+                                <span class="text-4xl font-bold">$29</span>
+                                <span class="text-textSecondary">/month</span>
+                            </div>
+                            <p class="text-textSecondary mb-8">Perfect for beginners starting their forex journey</p>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Basic trading signals</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Market analysis</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Email support</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Educational resources</span>
+                            </li>
+                            <li class="flex items-center text-textMuted">
+                                <i class="fas fa-times mr-3"></i>
+                                <span>Automated trading</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="{% url 'main:register' %}" class="btn-elegant w-full text-center">
+                            Get Started
+                        </a>
+                    </div>
+                    
+                    <!-- Pro Plan (Featured) -->
+                    <div class="pricing-card-elegant featured relative" data-aos="fade-up" data-aos-delay="200">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                            <span class="gradient-primary text-white px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
+                        </div>
+                        
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold mb-4">Pro</h3>
+                            <div class="mb-6">
+                                <span class="text-4xl font-bold">$99</span>
+                                <span class="text-textSecondary">/month</span>
+                            </div>
+                            <p class="text-textSecondary mb-8">Advanced features for serious traders</p>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Advanced trading signals</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Automated trading bots</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Priority support</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Risk management tools</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>1-on-1 coaching sessions</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="{% url 'main:register' %}" class="btn-elegant w-full text-center">
+                            Start Pro Trial
+                        </a>
+                    </div>
+                    
+                    <!-- Enterprise Plan -->
+                    <div class="pricing-card-elegant" data-aos="fade-up" data-aos-delay="300">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
+                            <div class="mb-6">
+                                <span class="text-4xl font-bold">$299</span>
+                                <span class="text-textSecondary">/month</span>
+                            </div>
+                            <p class="text-textSecondary mb-8">Complete solution for professional traders</p>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Premium signals & analysis</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Custom trading strategies</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>24/7 phone support</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Portfolio management</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span>Dedicated account manager</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="" class="btn-elegant w-full text-center">
+                            Contact Sales
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12" data-aos="fade-up">
+                    <p class="text-textSecondary mb-4">All plans include a 30-day money-back guarantee</p>
+                    <div class="flex justify-center space-x-8 text-sm text-textMuted">
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt mr-2"></i>
+                            <span>Secure payments</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-sync-alt mr-2"></i>
+                            <span>Cancel anytime</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-headset mr-2"></i>
+                            <span>24/7 support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section-elegant">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-4xl font-bold mb-4">Get In Touch</h2>
+                    <p class="text-xl text-textSecondary max-w-3xl mx-auto">Ready to start your forex trading journey? Our team is here to help you succeed.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div data-aos="fade-right">
+                        <form class="form-elegant space-y-6" method="post" action="">
+                            {% csrf_token %}
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-textSecondary">First Name</label>
+                                    <input type="text" name="first_name" required class="input-elegant focus-elegant">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-textSecondary">Last Name</label>
+                                    <input type="text" name="last_name" required class="input-elegant focus-elegant">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-textSecondary">Email Address</label>
+                                <input type="email" name="email" required class="input-elegant focus-elegant">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-textSecondary">Subject</label>
+                                <select name="subject" required class="input-elegant focus-elegant">
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="sales">Sales Question</option>
+                                    <option value="partnership">Partnership</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-textSecondary">Message</label>
+                                <textarea name="message" rows="5" required class="input-elegant focus-elegant resize-none"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-elegant w-full">
+                                <i class="fas fa-paper-plane mr-2"></i>Send Message
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="space-y-8" data-aos="fade-left">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="gradient-primary p-3 rounded-lg">
+                                        <i class="fas fa-map-marker-alt text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold">Address</h4>
+                                        <p class="text-textSecondary">123 Trading Street, Financial District, NY 10004</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4">
+                                    <div class="gradient-primary p-3 rounded-lg">
+                                        <i class="fas fa-phone text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold">Phone</h4>
+                                        {% if contact_phone %}
+                                        <p class="text-textSecondary">{{ contact_phone }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4">
+                                    <div class="gradient-primary p-3 rounded-lg">
+                                        <i class="fas fa-envelope text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold">Email</h4>
+                                        {% if contact_email %}
+                                        <p class="text-textSecondary">{{ contact_email }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4">
+                                    <div class="gradient-primary p-3 rounded-lg">
+                                        <i class="fas fa-clock text-white text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold">Business Hours</h4>
+                                        <p class="text-textSecondary">Mon - Fri: 9:00 AM - 6:00 PM EST</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-2xl font-bold mb-6">Follow Us</h3>
+                            <div class="flex space-x-4">
+                                <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                                    <i class="fab fa-facebook-f text-xl"></i>
+                                </a>
+                                <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                                    <i class="fab fa-twitter text-xl"></i>
+                                </a>
+                                <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                                    <i class="fab fa-linkedin-in text-xl"></i>
+                                </a>
+                                <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                                    <i class="fab fa-instagram text-xl"></i>
+                                </a>
+                                <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                                    <i class="fab fa-youtube text-xl"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="card-elegant">
+                            <h3 class="text-xl font-bold mb-4">Ready to Start Trading?</h3>
+                            <p class="text-textSecondary mb-4">Join thousands of successful traders and start your journey today.</p>
+                            <a href="{% url 'main:register' %}" class="btn-elegant">
+                                <i class="fas fa-rocket mr-2"></i>Get Started Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-elegant">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <div class="gradient-primary p-2 rounded-lg mr-3">
+                            <i class="fas fa-chart-line text-xl text-white"></i>
+                        </div>
+                        <span class="text-2xl font-bold gradient-text">{{ site_name }}</span>
+                    </div>
+                    <p class="text-textSecondary mb-4 max-w-md">Your trusted partner in forex trading. Join thousands of successful traders who trust our platform for their trading journey.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-accent">Quick Links</h3>
+                    <ul class="space-y-2 text-textSecondary">
+                        <li><a href="{% url 'main:home' %}#home" class="hover:text-accent transition-colors duration-200 smooth-scroll">Home</a></li>
+                        <li><a href="{% url 'main:about' %}" class="hover:text-accent transition-colors duration-200">About Us</a></li>
+                        <li><a href="{% url 'main:home' %}#services" class="hover:text-accent transition-colors duration-200 smooth-scroll">Services</a></li>
+                        <li><a href="{% url 'main:terms' %}" class="hover:text-accent transition-colors duration-200">Terms of Service</a></li>
+                        <li><a href="{% url 'main:privacy' %}" class="hover:text-accent transition-colors duration-200">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-accent">Contact Info</h3>
+                    <div class="space-y-2 text-textSecondary">
+                    {% if contact_email %}
+                        <p><i class="fas fa-envelope mr-2 text-accent"></i>{{ contact_email }}</p>
+                    {% endif %}
+                    {% if contact_phone %}
+                        <p><i class="fas fa-phone mr-2 text-accent"></i>{{ contact_phone }}</p>
+                    {% endif %}
+                        <p><i class="fas fa-map-marker-alt mr-2 text-accent"></i>New York, NY 10001</p>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="text-sm font-semibold mb-2 text-accent">Newsletter</h4>
+                        <div class="flex">
+                            <input type="email" placeholder="Your email" class="flex-1 px-3 py-2 input-elegant focus-elegant">
+                            <button class="btn-elegant">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-glass-border mt-8 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-textSecondary text-sm">© 2025 {{ site_name }}. All rights reserved.</p>
+                    <div class="flex space-x-4 mt-4 md:mt-0">
+                        <img src="https://via.placeholder.com/60x30/4B5563/FFFFFF?text=SSL" alt="SSL Certified" class="opacity-70">
+                        <img src="https://via.placeholder.com/60x30/4B5563/FFFFFF?text=CFTC" alt="CFTC Regulated" class="opacity-70">
+                        <img src="https://via.placeholder.com/60x30/4B5563/FFFFFF?text=NFA" alt="NFA Member" class="opacity-70">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    {% if live_chat_enabled and live_chat_script_url %}
+        <script src="{{ live_chat_script_url }}"></script>
+    {% endif %}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100,
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const html = document.documentElement;
+
+        function setTheme(theme) {
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        setTheme(savedTheme);
+
+        // Toggle theme on click
+        [themeToggle, mobileThemeToggle].forEach(toggle => {
+            if (toggle) {
+                toggle.innerHTML = '<i class="fas fa-sun"></i><i class="fas fa-moon"></i>';
+                toggle.addEventListener('click', () => {
+                    const currentTheme = html.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    setTheme(newTheme);
+                });
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('.smooth-scroll').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Auto-hide messages
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

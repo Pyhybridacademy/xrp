@@ -1,0 +1,25 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block titleshe
+{% block title %}Delete Withdrawal Code{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Delete Withdrawal Code</h1>
+    
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <p class="text-sm text-slate-700 dark:text-slate-300 mb-4">
+            Are you sure you want to delete the withdrawal code for {{ code.user.username }}?
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="flex justify-end space-x-4">
+                <a href="{% url 'custom_admin:withdrawal_code_list' %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">Cancel</a>
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                    Delete Code
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

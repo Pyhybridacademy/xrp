@@ -1,0 +1,48 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Investment Plan Management{% endblock %}
+{% block page_subtitle %}Manage platform investment plans{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Investment Plan Management</h3>
+            <a href="{% url 'custom_admin:plan_create' %}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90" aria-label="Create new plan">Create New Plan</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm" role="grid">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-3 font-semibold text-gray-700">Name</th>
+                        <th class="p-3 font-semibold text-gray-700 hidden sm:table-cell">Min Deposit</th>
+                        <th class="p-3 font-semibold text-gray-700 hidden md:table-cell">Max Deposit</th>
+                        <th class="p-3 font-semibold text-gray-700">ROI (%)</th>
+                        <th class="p-3 font-semibold text-gray-700 hidden lg:table-cell">Active</th>
+                        <th class="p-3 font-semibold text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plan in plans %}
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-3">{{ plan.name }}</td>
+                        <td class="p-3 hidden sm:table-cell">{{ plan.min_deposit|floatformat:2 }}</td>
+                        <td class="p-3 hidden md:table-cell">{{ plan.max_deposit|floatformat:2 }}</td>
+                        <td class="p-3">{{ plan.roi_percentage|floatformat:2 }}%</td>
+                        <td class="p-3 hidden">{{ plan.is_active|yesno:"Yes,No" }}</td>
+                        <td class="p-3 flex space-x-2">
+                            <a href="{% url 'custom_admin:plan_edit' plan.id %}" class="text-accent hover:underline text-xs" aria-label="Edit plan {{ plan.name }}">Edit</a>
+                            <a href="{% url 'custom_admin:plan_delete' plan.id %}" class="text-red-600 hover:underline text-xs" aria-label="Delete plan {{ plan.id }}">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="p-3 text-center text-gray-500">No investment plans found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

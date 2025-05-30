@@ -1,0 +1,46 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}KYC Verifications{% endblock %}
+{% block page_subtitle %}Manage KYC submissions{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">KYC Verifications</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm" role="grid">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-3 font-semibold text-gray-700">User</th>
+                        <th class="p-3 font-semibold text-gray-700">ID Type</th>
+                        <th class="p-3 font-semibold text-gray-700 hidden sm:table-cell">Status</th>
+                        <th class="p-3 font-semibold text-gray-700 hidden md:table-cell">Submitted</th>
+                        <th class="p-3 font-semibold text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for kyc in kycs %}
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-3">{{ kyc.user.username }}</td>
+                        <td class="p-3">{{ kyc.id_type }}</td>
+                        <td class="p-3 hidden sm:table-cell">{{ kyc.status|capfirst }}</td>
+                        <td class="p-3 hidden md:table-cell">{{ kyc.submitted_at|date:"Y-m-d H:i" }}</td>
+                        <td class="p-3 flex space-x-2">
+                            <a href="{% url 'custom_admin:kyc_detail' kyc.id %}" class="text-primary hover:underline text-xs" aria-label="View KYC for {{ kyc.user.username }}">View</a>
+                            {% if kyc.status == 'submitted' %}
+                            <a href="{% url 'custom_admin:kyc_approve' kyc.id %}" class="text-accent hover:underline text-xs" aria-label="Approve KYC for {{ kyc.user.username }}">Approve</a>
+                            <a href="{% url 'custom_admin:kyc_reject' kyc.id %}" class="text-red-600 hover:underline text-xs" aria-label="Reject KYC for {{ kyc.user.username }}">Reject</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="p-3 text-center text-gray-500">No KYC submissions found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

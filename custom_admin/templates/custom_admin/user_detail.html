@@ -1,0 +1,56 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}User: {{ user.username }}{% endblock %}
+{% block page_subtitle %}View user details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">User: {{ user.username }}</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <p class="text-sm text-gray-600">Email</p>
+                <p class="text-gray-800">{{ user.email|default:"N/A" }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Full Name</p>
+                <p class="text-gray-800">{{ user.profile.full_name|default:"N/A" }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Phone</p>
+                <p class="text-gray-800">{{ user.profile.phone|default:"N/A" }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Country</p>
+                <p class="text-gray-800">{{ user.profile.country|default:"N/A" }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Currency</p>
+                <p class="text-gray-800">{{ user.profile.currency|default:"N/A" }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Balance</p>
+                <p class="text-gray-800">{{ user.profile.currency }} {{ user.profile.balance|floatformat:2 }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Profit</p>
+                <p class="text-gray-800">{{ user.profile.currency }} {{ user.profile.profit|floatformat:2 }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Bonus</p>
+                <p class="text-gray-800">{{ user.profile.currency }} {{ user.profile.bonus|floatformat:2 }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Investment</p>
+                <p class="text-gray-800">{{ user.profile.currency }} {{ user.profile.investment|floatformat:2 }}</p>
+            </div>
+        </div>
+        <div class="mt-4 flex space-x-3">
+            <a href="{% url 'custom_admin:user_edit' user.id %}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90" aria-label="Edit user {{ user.username }}">Edit</a>
+            <a href="{% url 'custom_admin:user_delete' user.id %}" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700" aria-label="Delete user {{ user.username }}">Delete</a>
+            <a href="{% url 'custom_admin:user_add_bonus' user.id %}" class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90" aria-label="Add bonus for {{ user.username }}">Add Bonus</a>
+            <a href="{% url 'custom_admin:user_list' %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Back to user list">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

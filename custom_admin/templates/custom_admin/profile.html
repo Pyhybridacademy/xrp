@@ -1,0 +1,49 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Admin Profile{% endblock %}
+{% block page_subtitle %}Manage your admin account{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Admin Profile</h3>
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" name="username" id="username" value="{{ user.username }}" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" name="email" id="email" value="{{ user.email }}" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" name="full_name" id="full_name" value="{{ profile.full_name|default:"" }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                <input type="text" name="phone" id="phone" value="{{ profile.phone|default:"" }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+                <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+                <input type="text" name="country" id="country" value="{{ profile.country|default:"" }}"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div class="flex space-x-3">
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90" aria-label="Save profile changes">Save</button>
+                <a href="{% url 'custom_admin:dashboard' %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Cancel profile edit">Cancel</a>
+            </div>
+        </form>
+        <div class="mt-4">
+            <a href="{% url 'custom_admin:password_change' %}" class="text-primary hover:underline text-sm" aria-label="Change password">Change Password</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

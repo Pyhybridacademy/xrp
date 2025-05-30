@@ -1,0 +1,677 @@
+
+
+# Existing views...
+
+@login_required
+def fund_swap(request):
+    # Check if KYC is approved
+    try:
+        kyc = KYCVerification.objects.get(user=request.user)
+        kyc_approved = kyc.status == 'approved'
+    except KYCVerification.DoesNotExist:
+        kyc_approved = False
+    
+    if not kyc_approved:
+        messages.warning(request, 'You need to complete KYC verification to access fund swap features.')
+        return redirect('kyc_verification')
+    
+    if request.method == 'POST':
+        from_account = request.POST.get('from_account')
+        to_account = request.POST.get('to_account')
+        amount = Decimal(request.POST.get('amount'))
+        
+        if amount <= 0:
+            messages.error(request, 'Amount must be greater than zero.')
+            return redirect('fund_swap')
+        
+        profile = request.user.profile
+        
+        # Validate the transfer
+        if from_account == to_account:
+            messages.error(request, 'Cannot transfer to the same account.')
+            return redirect('fund_swap')
+        
+        # Check if source account has sufficient balance
+        if from_account == 'main' and amount > profile.balance:
+            messages.error(request, 'Insufficient main account balance.')
+            return redirect('fund_swap')
+        elif from_account == 'trading' and amount > profile.trading_balance:
+            messages.error(request, 'Insufficient trading balance.')
+            return redirect('fund_swap')
+        elif from_account == 'copy' and amount > profile.copy_trading_balance:
+            messages.error(request, 'Insufficient copy trading balance.')
+            return redirect('fund_swap')
+        
+        # Determine transaction type
+        transaction_type = None
+        if from_account == 'main' and to_account == 'trading':
+            transaction_type = 'transfer_to_trading'
+        elif from_account == 'trading' and to_account == 'main':
+            transaction_type = 'transfer_to_main'
+        elif from_account == 'main' and to_account == 'copy':
+            transaction_type = 'transfer_to_copy'
+        elif from_account == 'copy' and to_account == 'main':
+            transaction_type = 'transfer_from_copy'
+        
+        if transaction_type:
+            with transaction.atomic():
+                # Update balances
+                if from_account == 'main':
+                    profile.balance -= amount
+                elif from_account == 'trading':
+                    profile.trading_balance -= amount
+                elif from_account == 'copy':
+                    profile.copy_trading_balance -= amount
+                
+                if to_account == 'main':
+                    profile.balance += amount
+                elif to_account == 'trading':
+                    profile.trading_balance += amount
+                elif to_account == 'copy':
+                    profile.copy_trading_balance += amount
+                
+                profile.save()
+                
+                # Create transaction record
+                Transaction.objects.create(
+                    user=request.user,
+                    transaction_type=transaction_type,
+                    amount=amount,
+                    payment_method='internal',
+                    status='completed',
+                    completed_at=timezone.now()
+                )
+                
+                messages.success(request, f'${amount} successfully transferred.')
+                return redirect('dashboard')
+    
+    # Get recent transfers
+    transfers = Transaction.objects.filter(
+        user=request.user,
+        transaction_type__in=['transfer_to_trading', 'transfer_to_main', 'transfer_to_copy', 'transfer_from_copy'],
+        status='completed'
+    ).order_by('-created_at')[:10]
+    
+    context = {
+        'balance': request.user.profile.balance,
+        'trading_balance': request.user.profile.trading_balance,
+        'copy_trading_balance': request.user.profile.copy_trading_balance,
+        'transfers': transfers
+    }
+    
+    return render(request, 'main/fund_swap.html', context)
+
+@login_required
+def dashboard(request):
+    # Get user's profile, transactions, and trades
+    profile = request.user.profile
+    profile.refresh_from_db()
+    transactions = Transaction.objects.filter(user=request.user).order_by('-created_at')[:5]
+    trades = Trade.objects.filter(user=request.user).order_by('-opened_at')[:5]
+    
+    # Calculate account statistics
+    total_deposits = Transaction.objects.filter(
+        user=request.user, 
+        transaction_type='deposit',
+        status='completed'
+    ).count()
+    
+    total_withdrawals = Transaction.objects.filter(
+        user=request.user, 
+        transaction_type='withdrawal',
+        status='completed'
+    ).count()
+    
+    total_trades = Trade.objects.filter(user=request.user).count()
+    
+    active_trades = Trade.objects.filter(
+        user=request.user,
+        status='open'
+    ).count()
+    
+    # Get active investments
+    active_investments = Investment.objects.filter(
+        user=request.user,
+        status='active'
+    ).order_by('-start_date')[:3]
+    
+    # Get active copy trading subscriptions
+    copy_subscriptions = CopyTraderSubscription.objects.filter(
+        user=request.user,
+        is_active=True
+    ).select_related('trader')[:3]
+    
+    # Calculate copy trading profit/loss
+    copy_trading_profit = sum(trade.profit_loss for trade in UserCopyTrade.objects.filter(
+        user=request.user,
+        is_processed=True,
+        profit_loss__gt=0
+    ))
+    
+    # Check KYC status
+    try:
+        kyc = KYCVerification.objects.get(user=request.user)
+        kyc_status = kyc.status
+    except KYCVerification.DoesNotExist:
+        kyc_status = 'not_submitted'
+    
+    # Get preferred cryptocurrency if set
+    preferred_crypto = None
+    if profile.preferred_cryptocurrency:
+        preferred_crypto = profile.preferred_cryptocurrency
+    
+    # Get pending actions for the user
+    pending_actions = UserAction.objects.filter(
+        user=request.user,
+        status='pending'
+    ).order_by('-is_mandatory', '-created_at')
+    
+    context = {
+        'profile': profile,
+        'transactions': transactions,
+        'trades': trades,
+        'total_deposits': total_deposits,
+        'total_withdrawals': total_withdrawals,
+        'total_trades': total_trades,
+        'active_trades': active_trades,
+        'active_investments': active_investments,
+        'copy_subscriptions': copy_subscriptions,
+        'copy_trading_profit': copy_trading_profit,
+        'kyc_status': kyc_status,
+        'preferred_crypto': preferred_crypto,
+        'balance': profile.balance,
+        'trading_balance': profile.trading_balance,
+        'investment_balance': profile.investment_balance,
+        'copy_trading_balance': profile.copy_trading_balance,
+        'profit': profile.profit,
+        'loss': profile.loss,
+        'pending_actions': pending_actions,
+    }
+    
+    return render(request, 'main/dashboard.html', context)
+
+# Copy Trading Views
+@login_required
+def copy_trading_dashboard(request):
+    """Dashboard showing copy trading overview"""
+    # Check if KYC is approved
+    try:
+        kyc = KYCVerification.objects.get(user=request.user)
+        kyc_approved = kyc.status == 'approved'
+    except KYCVerification.DoesNotExist:
+        kyc_approved = False
+    
+    if not kyc_approved:
+        messages.warning(request, 'You need to complete KYC verification to access copy trading features.')
+        return redirect('kyc_verification')
+    
+    # Get user's active subscriptions
+    subscriptions = CopyTraderSubscription.objects.filter(
+        user=request.user,
+        is_active=True
+    ).select_related('trader')
+    
+    # Get user's recent copy trades
+    recent_trades = UserCopyTrade.objects.filter(
+        user=request.user
+    ).select_related('copy_trade', 'copy_trade__trader').order_by('-created_at')[:10]
+    
+    # Calculate total profit/loss
+    total_profit_loss = sum(trade.profit_loss for trade in UserCopyTrade.objects.filter(
+        user=request.user,
+        is_processed=True
+    ))
+    
+    context = {
+        'copy_trading_balance': request.user.profile.copy_trading_balance,
+        'subscriptions': subscriptions,
+        'recent_trades': recent_trades,
+        'total_profit_loss': total_profit_loss
+    }
+    return render(request, 'main/copy_trading/dashboard.html', context)
+
+@login_required
+def trader_list(request):
+    """List all available traders"""
+    # Check if KYC is approved
+    try:
+        kyc = KYCVerification.objects.get(user=request.user)
+        kyc_approved = kyc.status == 'approved'
+    except KYCVerification.DoesNotExist:
+        kyc_approved = False
+    
+    if not kyc_approved:
+        messages.warning(request, 'You need to complete KYC verification to access copy trading features.')
+        return redirect('kyc_verification')
+    
+    traders = Trader.objects.filter(is_active=True)
+    
+    # Get user's subscriptions to mark which traders are already being copied
+    user_subscriptions = CopyTraderSubscription.objects.filter(
+        user=request.user,
+        is_active=True
+    ).values_list('trader_id', flat=True)
+    
+    context = {
+        'traders': traders,
+        'user_subscriptions': user_subscriptions,
+        'copy_trading_balance': request.user.profile.copy_trading_balance
+    }
+    return render(request, 'main/copy_trading/trader_list.html', context)
+
+@login_required
+def trader_detail(request, trader_id):
+    """View trader details and subscribe to copy"""
+    # Check if KYC is approved
+    try:
+        kyc = KYCVerification.objects.get(user=request.user)
+        kyc_approved = kyc.status == 'approved'
+    except KYCVerification.DoesNotExist:
+        kyc_approved = False
+    
+    if not kyc_approved:
+        messages.warning(request, 'You need to complete KYC verification to access copy trading features.')
+        return redirect('kyc_verification')
+    
+    trader = get_object_or_404(Trader, id=trader_id, is_active=True)
+    
+    # Check if user is already subscribed
+    subscription = CopyTraderSubscription.objects.filter(
+        user=request.user,
+        trader=trader,
+        is_active=True
+    ).first()
+    
+    # Get trader's recent trades
+    recent_trades = CopyTrade.objects.filter(trader=trader).order_by('-opened_at')[:10]
+    
+    # Handle subscription form
+    if request.method == 'POST':
+        form = CopyTraderForm(request.POST)
+        if form.is_valid():
+            copy_amount = form.cleaned_data['copy_amount']
+            
+            # Validate minimum copy amount
+            if copy_amount < trader.minimum_copy_amount:
+                messages.error(request, f"Minimum copy amount is ${trader.minimum_copy_amount}")
+                return redirect('trader_detail', trader_id=trader.id)
+            
+            # Validate sufficient balance
+            if request.user.profile.copy_trading_balance < copy_amount:
+                messages.error(request, f"Insufficient copy trading balance. You have ${request.user.profile.copy_trading_balance}")
+                return redirect('trader_detail', trader_id=trader.id)
+            
+            try:
+                with transaction.atomic():
+                    profile = request.user.profile
+                    
+                    # Create or update subscription
+                    if subscription:
+                        # Update existing subscription
+                        old_amount = subscription.copy_amount
+                        
+                        # Adjust balance if amount changed
+                        if copy_amount > old_amount:
+                            # Deduct additional amount
+                            if profile.copy_trading_balance < (copy_amount - old_amount):
+                                messages.error(request, f"Insufficient balance for increased subscription amount.")
+                                return redirect('trader_detail', trader_id=trader.id)
+                            
+                            profile.copy_trading_balance -= (copy_amount - old_amount)
+                        elif copy_amount < old_amount:
+                            # Return excess amount
+                            profile.copy_trading_balance += (old_amount - copy_amount)
+                        
+                        subscription.copy_amount = copy_amount
+                        subscription.save()
+                        profile.save()
+                        
+                        messages.success(request, f"Updated subscription to {trader.name} with ${copy_amount}")
+                    else:
+                        # Create new subscription
+                        CopyTraderSubscription.objects.create(
+                            user=request.user,
+                            trader=trader,
+                            copy_amount=copy_amount,
+                            is_active=True
+                        )
+                        
+                        # Deduct amount from balance
+                        profile.copy_trading_balance -= copy_amount
+                        profile.save()
+                        
+                        messages.success(request, f"Successfully subscribed to {trader.name} with ${copy_amount}")
+                
+                return redirect('copy_trading_dashboard')
+            except Exception as e:
+                messages.error(request, f"Error: {str(e)}")
+    else:
+        initial_amount = subscription.copy_amount if subscription else trader.minimum_copy_amount
+        form = CopyTraderForm(initial={'copy_amount': initial_amount})
+    
+    context = {
+        'trader': trader,
+        'subscription': subscription,
+        'copy_trading_balance': request.user.profile.copy_trading_balance,
+        'recent_trades': recent_trades,
+        'form': form
+    }
+    return render(request, 'main/copy_trading/trader_detail.html', context)
+
+@login_required
+def cancel_subscription(request, subscription_id):
+    """Cancel a copy trader subscription"""
+    subscription = get_object_or_404(
+        CopyTraderSubscription, 
+        id=subscription_id,
+        user=request.user,
+        is_active=True
+    )
+    
+    if request.method == 'POST':
+        try:
+            with transaction.atomic():
+                # Get user's profile
+                profile = request.user.profile
+                
+                # Return the copy amount to the user's balance
+                profile.copy_trading_balance += subscription.copy_amount
+                profile.save()
+                
+                # Deactivate the subscription
+                subscription.is_active = False
+                subscription.save()
+                
+                messages.success(
+                    request, 
+                    f"Subscription to {subscription.trader.name} cancelled. ${subscription.copy_amount} returned to your copy trading balance."
+                )
+        except Exception as e:
+            messages.error(request, f"Error: {str(e)}")
+        
+        return redirect('copy_trading_dashboard')
+    
+    context = {
+        'subscription': subscription
+    }
+    return render(request, 'main/copy_trading/cancel_subscription.html', context)
+
+@login_required
+def copy_trade_history(request):
+    """View history of all copy trades"""
+    # Check if KYC is approved
+    try:
+        kyc = KYCVerification.objects.get(user=request.user)
+        kyc_approved = kyc.status == 'approved'
+    except KYCVerification.DoesNotExist:
+        kyc_approved = False
+    
+    if not kyc_approved:
+        messages.warning(request, 'You need to complete KYC verification to access copy trading features.')
+        return redirect('kyc_verification')
+    
+    user_trades = UserCopyTrade.objects.filter(
+        user=request.user
+    ).select_related('copy_trade', 'copy_trade__trader').order_by('-created_at')
+    
+    # Calculate statistics
+    total_invested = sum(trade.amount for trade in user_trades)
+    total_profit_loss = sum(trade.profit_loss for trade in user_trades if trade.is_processed)
+    
+    # Group by trader
+    trader_stats = {}
+    for trade in user_trades:
+        trader_name = trade.copy_trade.trader.name
+        if trader_name not in trader_stats:
+            trader_stats[trader_name] = {
+                'trades': 0,
+                'invested': 0,
+                'profit_loss': 0
+            }
+        
+        trader_stats[trader_name]['trades'] += 1
+        trader_stats[trader_name]['invested'] += trade.amount
+        if trade.is_processed:
+            trader_stats[trader_name]['profit_loss'] += trade.profit_loss
+    
+    context = {
+        'user_trades': user_trades,
+        'total_invested': total_invested,
+        'total_profit_loss': total_profit_loss,
+        'trader_stats': trader_stats
+    }
+    return render(request, 'main/copy_trading/trade_history.html', context)
+
+# Add this function to your views.py file to create a view for manually creating copy trades
+
+@login_required
+@transaction.atomic
+def create_copy_trade(request, trader_id):
+    """Admin view to create a copy trade for a specific trader"""
+    # Check if user is staff/admin
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('dashboard')
+    
+    trader = get_object_or_404(Trader, id=trader_id)
+    
+    if request.method == 'POST':
+        # Process form submission
+        asset = request.POST.get('asset')
+        trade_type = request.POST.get('trade_type')
+        entry_price = Decimal(request.POST.get('entry_price'))
+        
+        if not all([asset, trade_type, entry_price]):
+            messages.error(request, "All fields are required.")
+            return redirect('create_copy_trade', trader_id=trader_id)
+        
+        try:
+            # Create the copy trade
+            copy_trade = CopyTrade.objects.create(
+                trader=trader,
+                asset=asset,
+                trade_type=trade_type,
+                entry_price=entry_price,
+                status='open'
+            )
+            
+            # Get all active subscriptions for this trader
+            subscriptions = CopyTraderSubscription.objects.filter(
+                trader=trader,
+                is_active=True
+            )
+            
+            # Create user copy trades for all subscribers
+            for subscription in subscriptions:
+                UserCopyTrade.objects.create(
+                    user=subscription.user,
+                    copy_trade=copy_trade,
+                    subscription=subscription,
+                    amount=subscription.copy_amount,
+                    is_processed=False
+                )
+            
+            messages.success(
+                request, 
+                f"Created copy trade for {trader.name} and {subscriptions.count()} subscribers."
+            )
+            return redirect('admin:main_copytrade_changelist')
+        
+        except Exception as e:
+            messages.error(request, f"Error creating copy trade: {str(e)}")
+    
+    # Render form
+    context = {
+        'trader': trader,
+        'subscriber_count': trader.subscribers.filter(is_active=True).count()
+    }
+    return render(request, 'admin/create_copy_trade.html', context)
+
+# Add this function to your views.py file to manually fix copy trading balances
+
+@login_required
+@transaction.atomic
+def fix_copy_trading_balance(request):
+    """Admin view to fix a user's copy trading balance"""
+    # Check if user is staff/admin
+    if not request.user.is_staff:
+        messages.error(request, "You don't have permission to access this page.")
+        return redirect('dashboard')
+    
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        user = get_object_or_404(User, id=user_id)
+        
+        try:
+            profile = user.profile
+            
+            # Get all processed user copy trades
+            processed_trades = UserCopyTrade.objects.filter(
+                user=user,
+                is_processed=True
+            )
+            
+            # Get all active subscriptions
+            active_subscriptions = CopyTraderSubscription.objects.filter(
+                user=user,
+                is_active=True
+            )
+            
+            # Calculate total subscription amount (currently invested)
+            total_subscription_amount = sum(sub.copy_amount for sub in active_subscriptions)
+            
+            # Calculate total profit/loss from processed trades
+            total_profit_loss = sum(trade.profit_loss for trade in processed_trades)
+            
+            # Store old balance for logging
+            old_balance = profile.copy_trading_balance
+            
+            # Set the new balance
+            profile.copy_trading_balance = total_subscription_amount + total_profit_loss
+            profile.save()
+            
+            messages.success(
+                request, 
+                f"Fixed copy trading balance for {user.username}. "
+                f"Old balance: ${old_balance}, New balance: ${profile.copy_trading_balance}"
+            )
+            
+        except Exception as e:
+            messages.error(request, f"Error fixing balance: {str(e)}")
+        
+        return redirect('admin:main_userprofile_change', object_id=profile.id)
+    
+    # Get all users with copy trades
+    users = User.objects.filter(copy_trades__isnull=False).distinct()
+    
+    context = {
+        'users': users
+    }
+    return render(request, 'admin/fix_copy_trading_balance.html', context)
+
+# Add these functions to your views.py file
+
+@login_required
+def complete_action(request, action_id):
+    """View to complete a required action"""
+    action = get_object_or_404(UserAction, id=action_id, user=request.user, status='pending')
+    
+    # Store action details for the deposit page
+    request.session['action_id'] = action.id
+    request.session['action_type'] = action.action_type
+    request.session['action_amount'] = str(action.amount)
+    
+    if action.action_type == 'upgrade':
+        plan_name = action.target_plan.get_name_display() if action.target_plan else "Investment Plan Upgrade"
+        request.session['action_name'] = f"Upgrade to {plan_name}"
+    elif action.action_type == 'signal':
+        signal_name = action.signal_plan.name if action.signal_plan else "Signal Package"
+        request.session['action_name'] = f"Purchase {signal_name}"
+    
+    # Redirect to deposit page
+    messages.info(request, f"Please complete your {action.get_action_type_display()} by making a deposit.")
+    return redirect('deposit')
+
+# Modify your existing deposit view to handle actions
+@login_required
+def deposit(request):
+    # Check if this deposit is for a specific action
+    action_id = request.session.get('action_id')
+    action_type = request.session.get('action_type')
+    action_amount = request.session.get('action_amount')
+    action_name = request.session.get('action_name')
+    
+    # Clear the session variables to avoid issues with future deposits
+    if 'action_id' in request.session:
+        del request.session['action_id']
+    if 'action_type' in request.session:
+        del request.session['action_type']
+    if 'action_amount' in request.session:
+        del request.session['action_amount']
+    if 'action_name' in request.session:
+        del request.session['action_name']
+    
+    # Your existing deposit code here...
+    
+    # If this is a POST request (form submission)
+    if request.method == 'POST':
+        # Your existing deposit processing code...
+        deposit_successful = True # Placeholder, replace with your actual deposit success check
+        
+        # If the deposit is successful and was for an action, mark the action as completed
+        if action_id and deposit_successful:
+            try:
+                action = UserAction.objects.get(id=action_id, user=request.user, status='pending')
+                
+                # Process the action based on its type
+                if action.action_type == 'upgrade' and action.target_plan:
+                    # Create a new investment with the target plan
+                    investment_amount = action.amount
+                    plan = action.target_plan
+                    
+                    # Calculate expected return based on plan's profit percentage
+                    expected_return = investment_amount + (investment_amount * plan.profit_percentage / Decimal('100.00'))
+                    
+                    # Calculate end date based on plan's duration
+                    end_date = timezone.now() + timezone.timedelta(days=plan.duration_days)
+                    
+                    # Create the investment
+                    Investment.objects.create(
+                        user=request.user,
+                        plan=plan,
+                        amount=investment_amount,
+                        expected_return=expected_return,
+                        status='active',
+                        end_date=end_date
+                    )
+                    
+                    # Update user's investment balance
+                    profile = request.user.profile
+                    profile.investment_balance += investment_amount
+                    profile.save()
+                    
+                    messages.success(request, f"Successfully upgraded to {plan.get_name_display()} plan!")
+                
+                elif action.action_type == 'signal' and action.signal_plan:
+                    # Record the signal purchase (you might want to create a SignalPurchase model)
+                    # For now, we'll just mark the action as completed
+                    messages.success(request, f"Successfully purchased {action.signal_plan.name} signals!")
+                
+                # Mark the action as completed
+                action.mark_as_completed()
+                
+            except UserAction.DoesNotExist:
+                messages.error(request, "The action could not be found or has already been completed.")
+            except Exception as e:
+                messages.error(request, f"Error processing action: {str(e)}")
+    
+    # Add action details to the context if this deposit is for an action
+    context = {
+        # Your existing context...
+        'action_id': action_id,
+        'action_type': action_type,
+        'action_amount': action_amount,
+        'action_name': action_name,
+    }
+    
+    return render(request, 'main/deposit.html', context)

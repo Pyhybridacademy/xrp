@@ -1,0 +1,248 @@
+{% extends 'dash.html' %}
+{% block title %}Dashboard - {{ site_name }}{% endblock %}
+{% block header %}Dashboard{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-8">
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-8 text-white">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        
+        <div class="relative z-10">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">
+                Welcome back, <span class="text-blue-300">{{ user.username }}</span>
+            </h1>
+            <p class="text-slate-300 mb-6">Track your portfolio and manage investments</p>
+            <div class="flex flex-wrap gap-3">
+                <button class="px-6 py-2.5 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-all duration-200 border border-white/20">
+                    <i class="fas fa-chart-line mr-2"></i>Start Trading
+                </button>
+                <button class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200">
+                    <i class="fas fa-plus mr-2"></i>New Investment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow duration-200">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Total Balance</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ profile.currency }} {{ balance|floatformat:2 }}</h3>
+                </div>
+                <div class="h-12 w-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-wallet text-blue-600 dark:text-blue-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow duration-200">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Total Profit</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ profile.currency }} {{ profit|floatformat:2 }}</h3>
+                </div>
+                <div class="h-12 w-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-chart-line text-green-600 dark:text-green-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow duration-200">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Active Investments</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ profile.currency }} {{ investment|floatformat:2 }}</h3>
+                </div>
+                <div class="h-12 w-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-coins text-purple-600 dark:text-purple-400"></i>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">{{ active_investments.count }} active plans</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow duration-200">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">Bonus</p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">{{ profile.currency }} {{ bonus|floatformat:2 }}</h3>
+                </div>
+                <div class="h-12 w-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-gift text-amber-600 dark:text-amber-400"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column - Chart and Transactions -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Trading Chart -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Market Chart</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs font-medium">BTC/USD</span>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs font-medium">Live</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div id="tradingview-chart" class="w-full h-80 rounded-lg overflow-hidden"></div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Recent Transactions</h3>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 font-medium">View All</a>
+                    </div>
+                </div>
+
+                {% if transactions %}
+                    <div class="divide-y divide-slate-200 dark:divide-slate-700">
+                        {% for transaction in transactions %}
+                        <div class="p-6 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 rounded-lg flex items-center justify-center mr-4
+                                        {% if transaction.transaction_type == 'deposit' %}bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400
+                                        {% else %}bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400{% endif %}">
+                                        <i class="fas {% if transaction.transaction_type == 'deposit' %}fa-arrow-down{% else %}fa-arrow-up{% endif %}"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-slate-900 dark:text-white">{{ transaction.get_transaction_type_display }}</p>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400">{{ transaction.created_at|date:"M d, Y - H:i" }}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-semibold text-slate-900 dark:text-white">{{ profile.currency }} {{ transaction.amount|floatformat:2 }}</p>
+                                    <span class="inline-flex px-2 py-1 text-xs font-medium rounded-full
+                                        {% if transaction.status == 'completed' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
+                                        {% elif transaction.status == 'pending' %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400
+                                        {% else %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400{% endif %}">
+                                        {{ transaction.status|title }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="p-12 text-center">
+                        <div class="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-exchange-alt text-slate-400 text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-slate-900 dark:text-white mb-2">No transactions yet</h4>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Your transaction history will appear here</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Column - Active Investments -->
+        <div class="lg:col-span-1">
+            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+                <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Active Investments</h3>
+                        <a href="{% url 'main:investments' %}" class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 font-medium">View All</a>
+                    </div>
+                </div>
+
+                {% if active_investments %}
+                    <div class="divide-y divide-slate-200 dark:divide-slate-700">
+                        {% for investment in active_investments %}
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-medium text-slate-900 dark:text-white">{{ investment.plan.get_name_display }}</h4>
+                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs font-medium">Active</span>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-4 mb-4">
+                                <div class="text-center">
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Invested</p>
+                                    <p class="font-semibold text-slate-900 dark:text-white">{{ profile.currency }} {{ investment.amount|floatformat:2 }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Returns</p>
+                                    <p class="font-semibold text-green-600 dark:text-green-400">{{ profile.currency }} {{ investment.expected_return|floatformat:2 }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Ends</p>
+                                    <p class="font-semibold text-slate-900 dark:text-white">{{ investment.end_date|date:"M d" }}</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-300" 
+                                         style="width: {% widthratio investment.days_remaining investment.plan.duration 100 %}%"></div>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 text-right">{{ investment.days_remaining }} days remaining</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="p-12 text-center">
+                        <div class="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-line text-slate-400 text-xl"></i>
+                        </div>
+                        <h4 class="font-medium text-slate-900 dark:text-white mb-2">No active investments</h4>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Start investing to see your active plans here</p>
+                        <a href="{% url 'main:investments' %}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                            <i class="fas fa-plus mr-2"></i>Invest Now
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TradingView Script -->
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+    // Initialize TradingView Chart
+    function initTradingView() {
+        const isDark = document.documentElement.classList.contains('dark');
+        
+        new TradingView.widget({
+            "container_id": "tradingview-chart",
+            "width": "100%",
+            "height": "100%",
+            "symbol": "BITSTAMP:BTCUSD",
+            "interval": "D",
+            "timezone": "Etc/UTC",
+            "theme": isDark ? "dark" : "light",
+            "style": "1",
+            "locale": "en",
+            "toolbar_bg": isDark ? "#1e293b" : "#ffffff",
+            "enable_publishing": false,
+            "hide_top_toolbar": true,
+            "hide_legend": true,
+            "save_image": false,
+            "container_background": isDark ? "#1e293b" : "#ffffff",
+            "studies": [
+                "MASimple@tv-basicstudies"
+            ]
+        });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initTradingView);
+
+    // Reinitialize on theme change
+    document.addEventListener('themeChanged', () => {
+        document.getElementById('tradingview-chart').innerHTML = '';
+        setTimeout(initTradingView, 100);
+    });
+</script>
+{% endblock %}
+

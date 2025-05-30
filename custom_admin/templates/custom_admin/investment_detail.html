@@ -1,0 +1,44 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Investment: {{ investment.id }}{% endblock %}
+{% block page_subtitle %}View investment details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Investment: {{ investment.id }}</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <p class="text-sm text-gray-600">User</p>
+                <p class="text-gray-800">{{ investment.user.username }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Plan</p>
+                <p class="text-gray-800">{{ investment.plan.name }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Amount</p>
+                <p class="text-gray-800">{{ investment.user.profile.currency }} {{ investment.amount|floatformat:2 }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Status</p>
+                <p class="text-gray-800">{{ investment.status|capfirst }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Start Date</p>
+                <p class="text-gray-800">{{ investment.start_date|date:"Y-m-d H:i" }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">End Date</p>
+                <p class="text-gray-800">{{ investment.end_date|date:"Y-m-d H:i"|default:"N/A" }}</p>
+            </div>
+        </div>
+        <div class="mt-4 flex space-x-3">
+            {% if investment.status == 'active' %}
+            <a href="{% url 'custom_admin:investment_complete' investment.id %}" class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90" aria-label="Complete investment {{ investment.id }}">Complete</a>
+            {% endif %}
+            <a href="{% url 'custom_admin:investment_list' %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Back to investment list">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,311 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Platform Overview{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Total Users -->
+        <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow" role="region" aria-label="Total Users">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600">Total Users</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ user_count }}</p>
+                    <p class="text-xs text-gray-500">+12.5% vs last month</p>
+                </div>
+                <div class="bg-primary text-white p-3 rounded-lg">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+            <a href="{% url 'custom_admin:user_list' %}" class="mt-3 inline-block text-primary text-sm hover:underline" aria-label="View all users">View Users <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+
+        <!-- Pending KYC -->
+        <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow" role="region" aria-label="Pending KYC">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600">Pending KYC</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ kyc_pending }}</p>
+                    <p class="text-xs {% if kyc_pending > 0 %}text-amber-600{% else %}text-green-600{% endif %}">
+                        {% if kyc_pending > 0 %}<i class="fas fa-clock mr-1"></i>Needs attention{% else %}<i class="fas fa-check mr-1"></i>All clear{% endif %}
+                    </p>
+                </div>
+                <div class="bg-amber-600 text-white p-3 rounded-lg">
+                    <i class="fas fa-id-card"></i>
+                </div>
+            </div>
+            <a href="{% url 'custom_admin:kyc_list' %}" class="mt-3 inline-block text-primary text-sm hover:underline" aria-label="Review KYC submissions">Review KYC <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+
+        <!-- Pending Transactions -->
+        <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow" role="region" aria-label="Pending Transactions">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600">Pending Transactions</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ transaction_pending }}</p>
+                    <p class="text-xs text-gray-500">$125,430 total value</p>
+                </div>
+                <div class="bg-accent text-white p-3 rounded-lg">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+            </div>
+            <a href="{% url 'custom_admin:transaction_list' %}" class="mt-3 inline-block text-primary text-sm hover:underline" aria-label="Process transactions">Process Transactions <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+
+        <!-- Active Investments -->
+        <div class="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow" role="region" aria-label="Active Investments">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600">Active Investments</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ active_investments }}</p>
+                    <p class="text-xs text-gray-500">+8.2% growth rate</p>
+                </div>
+                <div class="bg-secondary text-white p-3 rounded-lg">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+            </div>
+            <a href="{% url 'custom_admin:investment_list' %}" class="mt-3 inline-block text-primary text-sm hover:underline" aria-label="Manage investments">Manage Investments <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+    </div>
+
+    <!-- Charts and Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Revenue Chart -->
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-4">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Revenue Overview</h3>
+                <div class="flex space-x-2">
+                    <button class="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200" aria-label="View last 7 days">7D</button>
+                    <button class="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200" aria-label="View last 30 days">30D</button>
+                    <button class="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200" aria-label="View last 90 days">90D</button>
+                </div>
+            </div>
+            <div class="h-48 bg-gray-50 rounded-lg flex items-center justify-center">
+                <p class="text-gray-500 text-sm">Chart placeholder (Chart.js integration)</p>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-lg shadow-sm p-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h3>
+            <div class="space-y-3">
+                <div class="flex items-start space-x-2 p-2 rounded hover:bg-gray-50" role="listitem">
+                    <div class="bg-green-100 p-1.5 rounded-full">
+                        <i class="fas fa-user-plus text-green-600 text-xs"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-800">New user registered</p>
+                        <p class="text-xs text-gray-500">john.doe@example.com</p>
+                        <p class="text-xs text-gray-400">2 minutes ago</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-2 p-2 rounded hover:bg-gray-50" role="listitem">
+                    <div class="bg-blue-100 p-1.5 rounded-full">
+                        <i class="fas fa-dollar-sign text-blue-600 text-xs"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-800">Transaction completed</p>
+                        <p class="text-xs text-gray-500">$2,500.00 deposit</p>
+                        <p class="text-xs text-gray-400">5 minutes ago</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-2 p-2 rounded hover:bg-gray-50" role="listitem">
+                    <div class="bg-amber-100 p-1.5 rounded-full">
+                        <i class="fas fa-id-card text-amber-600 text-xs"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-800">KYC submitted</p>
+                        <p class="text-xs text-gray-500">Awaiting verification</p>
+                        <p class="text-xs text-gray-400">10 minutes ago</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-2 p-2 rounded hover:bg-gray-50" role="listitem">
+                    <div class="bg-purple-100 p-1.5 rounded-full">
+                        <i class="fas fa-chart-line text-purple-600 text-xs"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-800">Investment created</p>
+                        <p class="text-xs text-gray-500">Premium Plan - $10,000</p>
+                        <p class="text-xs text-gray-400">15 minutes ago</p>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="mt-4 inline-block text-primary text-sm hover:underline" aria-label="View all activity">View All Activity <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <a href="{% url 'custom_admin:user_list' %}" class="flex flex-col items-center p-3 rounded hover:bg-gray-50" aria-label="Add User">
+                <div class="bg-primary text-white p-2 rounded">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <span class="text-xs text-gray-700 mt-1">Add User</span>
+            </a>
+            <a href="{% url 'custom_admin:plan_list' %}" class="flex flex-col items-center p-3 rounded hover:bg-gray-50" aria-label="Create Plan">
+                <div class="bg-accent text-white p-2 rounded">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <span class="text-xs text-gray-700 mt-1">Create Plan</span>
+            </a>
+            <a href="{% url 'custom_admin:crypto_list' %}" class="flex flex-col items-center p-3 rounded hover:bg-gray-50" aria-label="Add Crypto">
+                <div class="bg-yellow-600 text-white p-2 rounded">
+                    <i class="fab fa-bitcoin"></i>
+                </div>
+                <span class="text-xs text-gray-700 mt-1">Add Crypto</span>
+            </a>
+            <a href="{% url 'custom_admin:transaction_list' %}" class="flex flex-col items-center p-3 rounded hover:bg-gray-50" aria-label="View Reports">
+                <div class="bg-secondary text-white p-2 rounded">
+                    <i class="fas fa-receipt"></i>
+                </div>
+                <span class="text-xs text-gray-700 mt-1">View Reports</span>
+            </a>
+            <a href="{% url 'custom_admin:site_settings' %}" class="flex flex-col items-center p-3 rounded hover:bg-gray-50" aria-label="Settings">
+                <div class="bg-gray-600 text-white p-2 rounded">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <span class="text-xs text-gray-700 mt-1">Settings</span>
+            </a>
+            <a href="#" class="flex flex-col items-center p-3 rounded hover:bg-gray-50" aria-label="Export Data">
+                <div class="bg-red-600 text-white p-2 rounded">
+                    <i class="fas fa-download"></i>
+                </div>
+                <span class="text-xs text-gray-700 mt-1">Export Data</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- System Health -->
+        <div class="bg-white rounded-lg shadow-sm p-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">System Health</h3>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                        <span class="text-sm text-gray-700">Database</span>
+                    </div>
+                    <span class="text-xs text-green-600">Healthy</span>
+                </div>
+                <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                        <span class="text-sm text-gray-700">API Services</span>
+                    </div>
+                    <span class="text-xs text-green-600">Online</span>
+                </div>
+                <div class="flex items-center justify-between p-2 bg-yellow-50 rounded">
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
+                        <span class="text-sm text-gray-700">Payment Gateway</span>
+                    </div>
+                    <span class="text-xs text-yellow-600">Slow</span>
+                </div>
+                <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                        <span class="text-sm text-gray-700">Email Service</span>
+                    </div>
+                    <span class="text-xs text-green-600">Active</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Performers -->
+        <div class="bg-white rounded-lg shadow-sm p-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Top Performing Plans</h3>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-yellow-600 rounded flex items-center justify-center mr-2">
+                            <i class="fas fa-crown text-white text-xs"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-800">Premium Plan</p>
+                            <p class="text-xs text-gray-500">125 active investors</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-green-600 font-semibold">+15.2%</p>
+                        <p class="text-xs text-gray-500">ROI</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-500 rounded flex items-center justify-center mr-2">
+                            <i class="fas fa-medal text-white text-xs"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-800">Standard Plan</p>
+                            <p class="text-xs text-gray-500">89 active investors</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-green-600 font-semibold">+12.8%</p>
+                        <p class="text-xs text-gray-500">ROI</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-orange-600 rounded flex items-center justify-center mr-2">
+                            <i class="fas fa-trophy text-white text-xs"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-800">Basic Plan</p>
+                            <p class="text-xs text-gray-500">234 active investors</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-green-600 font-semibold">+8.5%</p>
+                        <p class="text-xs text-gray-500">ROI</p>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'custom_admin:plan_list' %}" class="mt-4 inline-block text-primary text-sm hover:underline" aria-label="View all plans">View All Plans <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Number animation
+    function animateValue(element, start, end, duration) {
+        let startTime = null;
+        const step = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            element.textContent = Math.floor(progress * (end - start) + start);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    document.querySelectorAll('.text-2xl.font-semibold').forEach(el => {
+        const value = parseInt(el.textContent);
+        if (!isNaN(value)) {
+            el.textContent = '0';
+            animateValue(el, 0, value, 1500);
+        }
+    });
+
+    // Update clock
+    function updateClock() {
+        const now = new Date();
+        const clockElement = document.getElementById('current-time');
+        if (clockElement) {
+            clockElement.textContent = now.toLocaleString();
+        }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+});
+</script>
+{% endblock %}

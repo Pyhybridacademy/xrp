@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <p>Enter the bonus amount to add to the selected users' accounts.</p>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="action" value="{{ action }}" />
+        <input type="hidden" name="_selected_action" value="{% for obj in queryset %}{{ obj.pk }}{% if not forloop.last %},{% endif %}{% endfor %}" />
+        <button type="submit" name="apply" class="button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Bonus</button>
+        <a href="{% url 'admin:main_userprofile_changelist' %}" class="button bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Cancel</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Add Bonus: {{ user.username }}{% endblock %}
+{% block page_subtitle %}Add bonus to user account{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Add Bonus: {{ user.username }}</h3>
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="bonus_amount" class="block text-sm font-medium text-gray-700">Bonus Amount ({{ user.profile.currency }})</label>
+                <input type="number" name="bonus_amount" id="bonus_amount" required step="0.01"
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="add_to_balance" class="block text-sm font-medium text-gray-700">Add to Main Balance</label>
+                <input type="checkbox" name="add_to_balance" id="add_to_balance"
+                       class="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-200 rounded">
+            </div>
+            <div class="flex space-x-3">
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90" aria-label="Add bonus for {{ user.username }}">Add Bonus</button>
+                <a href="{% url 'custom_admin:user_detail' user.id %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Cancel bonus addition">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

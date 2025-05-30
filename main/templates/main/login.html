@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - ForexPro{% endblock %}
+
+{% block content %}
+<section class="section-elegant min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card form-elegant p-8" data-aos="fade-up">
+            <h2 class="text-3xl font-bold mb-6 text-center text-textPrimary">Welcome Back</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert mb-4 p-4 rounded-lg glass-card {% if message.tags == 'error' %}border-red-500{% elif message.tags == 'success' %}border-green-500{% else %}border-accent{% endif %} animate-fade-in">
+                        <div class="flex items-center">
+                            <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %} mr-2 text-textPrimary"></i>
+                            <span class="text-textSecondary">{{ message }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm font-medium text-textSecondary">Username</label>
+                    <div class="relative">
+                        <input type="text" name="username" id="username" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-user absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-textSecondary">Password</label>
+                    <div class="relative">
+                        <input type="password" name="password" id="password" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-lock absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-elegant w-full flex items-center justify-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login
+                </button>
+            </form>
+            <p class="mt-4 text-center text-textSecondary">
+                <a href="{% url 'main:password_reset' %}" class="text-accent hover:underline">Forgot Password?</a>
+            </p>
+            <p class="mt-2 text-center text-textSecondary">
+                Don't have an account? 
+                <a href="{% url 'main:register' %}" class="text-accent hover:underline">Register</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

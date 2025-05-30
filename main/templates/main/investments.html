@@ -1,0 +1,190 @@
+{% extends 'dash.html' %}
+{% load custom_filters %}
+
+{% block title %}Investments - {{ site_name }}{% endblock %}
+{% block header %}Investments{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-8">
+    <!-- Investment Plans -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Investment Plans</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for plan in plans %}
+            <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-200">
+                <div class="bg-blue-600 text-white p-4">
+                    <h3 class="text-lg font-semibold">{{ plan.get_name_display }}</h3>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Duration</p>
+                        <p class="text-xl font-bold text-slate-900 dark:text-white">{{ plan.duration_days }} Days</p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Profit</p>
+                        <p class="text-xl font-bold text-green-600 dark:text-green-400">{{ plan.profit_percentage }}%</p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Min-Max Investment</p>
+                        <p class="text-lg font-bold text-slate-900 dark:text-white">{{ profile.currency }} {{ plan.min_deposit|floatformat:2 }} - {{ profile.currency }} {{ plan.max_deposit|floatformat:2 }}</p>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 invest-btn" data-plan-id="{{ plan.id }}" data-min="{{ plan.min_deposit }}" data-max="{{ plan.max_deposit }}">
+                        Invest Now
+                    </button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-8">
+                <p class="text-slate-500 dark:text-slate-400">No investment plans available at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Active Investments -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Active Investments</h2>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Plan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Expected Return</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Start Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">End Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    {% if active_investments %}
+                        {% for investment in active_investments %}
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ investment.plan.get_name_display }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ profile.currency }} {{ investment.amount|floatformat:2 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 dark:text-green-400">{{ profile.currency }} {{ investment.expected_return|floatformat:2 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{{ investment.start_date|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{{ investment.end_date|date:"M d, Y" }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400" colspan="5">No active investments</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Completed Investments -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Completed Investments</h2>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Plan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Return</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Profit</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">End Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    {% if completed_investments %}
+                        {% for investment in completed_investments %}
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ investment.plan.get_name_display }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ profile.currency }} {{ investment.amount|floatformat:2 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 dark:text-green-400">{{ profile.currency }} {{ investment.expected_return|floatformat:2 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 dark:text-green-400">{{ profile.currency }} {{ investment.expected_return|subtract:investment.amount|floatformat:2 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">{{ investment.end_date|date:"M d, Y" }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400" colspan="5">No completed investments</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Investment Modal -->
+<div id="investment-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-md border border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Make Investment</h3>
+        
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" id="plan_id" name="plan_id" value="">
+            
+            <div class="mb-6">
+                <label for="amount" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Amount ({{ profile.currency }})</label>
+                <input type="number" id="amount" name="amount" step="0.01" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white">
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" id="amount-range">Min: {{ profile.currency }} <span id="min-amount"></span> - Max: {{ profile.currency }} <span id="max-amount"></span></p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Available Balance: {{ profile.currency }} {{ balance|floatformat:2 }}</p>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button type="button" id="cancel-investment" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
+                    Cancel
+                </button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    Invest
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const investmentModal = document.getElementById('investment-modal');
+        const investButtons = document.querySelectorAll('.invest-btn');
+        const cancelInvestmentButton = document.getElementById('cancel-investment');
+        const planIdInput = document.getElementById('plan_id');
+        const amountInput = document.getElementById('amount');
+        const minAmountSpan = document.getElementById('min-amount');
+        const maxAmountSpan = document.getElementById('max-amount');
+        
+        investButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const planId = this.getAttribute('data-plan-id');
+                const minAmount = this.getAttribute('data-min');
+                const maxAmount = this.getAttribute('data-max');
+                
+                planIdInput.value = planId;
+                amountInput.min = minAmount;
+                amountInput.max = maxAmount;
+                amountInput.value = minAmount;
+                minAmountSpan.textContent = minAmount;
+                maxAmountSpan.textContent = maxAmount;
+                
+                investmentModal.classList.remove('hidden');
+            });
+        });
+        
+        cancelInvestmentButton.addEventListener('click', function() {
+            investmentModal.classList.add('hidden');
+        });
+        
+        investmentModal.addEventListener('click', function(event) {
+            if (event.target === investmentModal) {
+                investmentModal.classList.add('hidden');
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

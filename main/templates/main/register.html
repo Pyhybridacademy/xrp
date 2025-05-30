@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - ForexPro{% endblock %}
+
+{% block content %}
+<section class="section-elegant min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card form-elegant p-8" data-aos="fade-up">
+            <h2 class="text-3xl font-bold mb-6 text-center text-textPrimary">Create Account</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert mb-4 p-4 rounded-lg glass-card {% if message.tags == 'error' %}border-red-500{% elif message.tags == 'success' %}border-green-500{% else %}border-accent{% endif %} animate-fade-in">
+                        <div class="flex items-center">
+                            <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% elif message.tags == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %} mr-2 text-textPrimary"></i>
+                            <span class="text-textSecondary">{{ message }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm font-medium text-textSecondary">Username</label>
+                    <div class="relative">
+                        <input type="text" name="username" id="username" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-user absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-textSecondary">Email</label>
+                    <div class="relative">
+                        <input type="email" name="email" id="email" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-envelope absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="full_name" class="block text-sm font-medium text-textSecondary">Full Name</label>
+                    <div class="relative">
+                        <input type="text" name="full_name" id="full_name" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-id-card absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-textSecondary">Phone</label>
+                    <div class="relative">
+                        <input type="tel" name="phone" id="phone" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-phone absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="country" class="block text-sm font-medium text-textSecondary">Country</label>
+                    <div class="relative">
+                        <input type="text" name="country" id="country" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-globe absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="currency" class="block text-sm font-medium text-textSecondary">Preferred Currency</label>
+                    <div class="relative">
+                        <select name="currency" id="currency" required
+                                class="input-elegant focus-elegant w-full mt-1 appearance-none">
+                            <option value="">Select Currency</option>
+                            <option value="USD">US Dollar ($)</option>
+                            <option value="EUR">Euro (€)</option>
+                            <option value="GBP">British Pound (£)</option>
+                            <option value="NGN">Nigerian Naira (₦)</option>
+                            <option value="GHS">Ghanaian Cedi (₵)</option>
+                            <option value="KES">Kenyan Shilling (KSh)</option>
+                            <option value="ZAR">South African Rand (R)</option>
+                            <option value="INR">Indian Rupee (₹)</option>
+                            <option value="AUD">Australian Dollar (A$)</option>
+                            <option value="CAD">Canadian Dollar (C$)</option>
+                        </select>
+                        <i class="fas fa-money-bill-wave absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-textSecondary">Password</label>
+                    <div class="relative">
+                        <input type="password" name="password" id="password" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-lock absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="confirm_password" class="block text-sm font-medium text-textSecondary">Confirm Password</label>
+                    <div class="relative">
+                        <input type="password" name="confirm_password" id="confirm_password" required
+                               class="input-elegant focus-elegant w-full mt-1">
+                        <i class="fas fa-lock absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-elegant w-full flex items-center justify-center mt-6">
+                    <i class="fas fa-user-plus mr-2"></i>Register
+                </button>
+            </form>
+            <p class="mt-4 text-center text-textSecondary">
+                Already have an account? 
+                <a href="{% url 'main:login' %}" class="text-accent hover:underline">Login</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

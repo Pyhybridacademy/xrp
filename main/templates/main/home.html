@@ -1,0 +1,925 @@
+{% extends 'base.html' %}
+{% block title %}{{ site_name }}- Professional Forex Trading Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Background Video -->
+<section id="home" class="hero-elegant" data-aos="fade-in">
+    <!-- Background Video -->
+    <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z-0">
+        <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=139&oauth2_token_id=57447761" type="video/mp4">
+        <!-- Fallback background -->
+        <div class="absolute inset-0 gradient-dark"></div>
+    </video>
+    
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/50 z-10"></div>
+    
+    <!-- Content -->
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-textPrimary">
+        <div data-aos="fade-up">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                Unlock Your 
+                <span class="gradient-text">Trading Potential</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-textSecondary max-w-3xl mx-auto">
+                Join a community of successful forex traders and start your journey to financial freedom with our cutting-edge platform.
+            </p>
+            
+            {% if not user.is_authenticated %}
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="{% url 'main:register' %}" class="btn-elegant animate-glow">
+                        <i class="fas fa-rocket mr-2"></i>Get Started
+                    </a>
+                    <a href="#services" class="btn-outline-elegant smooth-scroll">
+                        <i class="fas fa-play mr-2"></i>Learn More
+                    </a>
+                </div>
+            {% else %}
+                <a href="{% url 'main:dashboard' %}" class="btn-elegant animate-glow">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+                </a>
+            {% endif %}
+        </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 animate-float hidden lg:block">
+            <div class="glass-card p-4 text-sm">
+                <i class="fas fa-chart-line text-green-400 mr-2"></i>
+                <span>EUR/USD +0.85%</span>
+            </div>
+        </div>
+        <div class="absolute top-40 right-10 animate-float hidden lg:block" style="animation-delay: 1s;">
+            <div class="glass-card p-4 text-sm">
+                <i class="fas fa-trending-up text-accent mr-2"></i>
+                <span>GBP/JPY +1.24%</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+        <a href="#ticker" class="text-textPrimary hover:text-accent transition-colors duration-300 smooth-scroll">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+    </div>
+</section>
+
+<!-- Live Forex Rates Ticker -->
+<section id="ticker" class="ticker-elegant py-4">
+    <div class="ticker-container">
+        <div class="ticker-content-elegant flex items-center space-x-8">
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold">EUR/USD</span>
+                <span class="text-green-400">1.0856</span>
+                <span class="text-green-400 text-sm">+0.0012</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold">GBP/USD</span>
+                <span class="text-red-400">1.2734</span>
+                <span class="text-red-400 text-sm">-0.0023</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold">USD/JPY</span>
+                <span class="text-green-400">148.92</span>
+                <span class="text-green-400 text-sm">+0.45</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold">AUD/USD</span>
+                <span class="text-green-400">0.6789</span>
+                <span class="text-green-400 text-sm">+0.0034</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold">USD/CAD</span>
+                <span class="text-red-400">1.3456</span>
+                <span class="text-red-400 text-sm">-0.0012</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold">USD/CHF</span>
+                <span class="text-green-400">0.8923</span>
+                <span class="text-green-400 text-sm">+0.0008</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Overview Section -->
+<section id="services" class="section-elegant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-4">Our Core Services</h2>
+            <p class="text-xl text-textSecondary max-w-3xl mx-auto">Discover comprehensive trading solutions designed to maximize your success in the forex market.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Automated Trading -->
+            <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="100">
+                <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-robot text-2xl text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-center">Automated Trading</h3>
+                <p class="text-textSecondary text-center mb-6">Advanced algorithms execute trades 24/7, maximizing opportunities while you sleep.</p>
+                <ul class="space-y-2 text-sm text-textSecondary">
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>AI-powered strategies</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Risk management</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>24/7 monitoring</li>
+                </ul>
+            </div>
+            
+            <!-- Market Analysis -->
+            <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="200">
+                <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-chart-bar text-2xl text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-center">Market Analysis</h3>
+                <p class="text-textSecondary text-center mb-6">Real-time market insights and technical analysis to guide your trading decisions.</p>
+                <ul class="space-y-2 text-sm text-textSecondary">
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Technical indicators</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Market sentiment</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Economic calendar</li>
+                </ul>
+            </div>
+            
+            <!-- Risk Management -->
+            <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="300">
+                <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-shield-alt text-2xl text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-center">Risk Management</h3>
+                <p class="text-textSecondary text-center mb-6">Sophisticated tools to protect your capital and optimize your risk-reward ratio.</p>
+                <ul class="space-y-2 text-sm text-textSecondary">
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Stop-loss automation</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Position sizing</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Portfolio diversification</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Data Visualization Section -->
+<section class="section-elegant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-4">Market Insights & Analytics</h2>
+            <p class="text-xl text-textSecondary max-w-3xl mx-auto">Interactive charts and real-time data to keep you ahead of market trends.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Trading Chart -->
+            <div class="card-elegant" data-aos="fade-right">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold">EUR/USD Live Chart</h3>
+                    <div class="flex space-x-2">
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Live</span>
+                        <span class="text-green-600 font-semibold">+0.85%</span>
+                    </div>
+                </div>
+                <div class="h-64 gradient-dark rounded-lg flex items-center justify-center relative overflow-hidden">
+                    <canvas id="tradingChart" class="w-full h-full"></canvas>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-chart-line text-4xl text-accent mb-2"></i>
+                            <p class="text-textSecondary">Interactive Trading Chart</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Market Statistics -->
+            <div class="space-y-6" data-aos="fade-left">
+                <div class="card-elegant">
+                    <h3 class="text-xl font-semibold mb-4">Market Overview</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center p-4 glass-card">
+                            <div class="text-2xl font-bold text-accent" data-count="1.0856">0</div>
+                            <p class="text-sm text-textSecondary">EUR/USD</p>
+                        </div>
+                        <div class="text-center p-4 glass-card">
+                            <div class="text-2xl font-bold text-accent" data-count="148.92">0</div>
+                            <p class="text-sm text-textSecondary">USD/JPY</p>
+                        </div>
+                        <div class="text-center p-4 glass-card">
+                            <div class="text-2xl font-bold text-accent" data-count="1.2734">0</div>
+                            <p class="text-sm text-textSecondary">GBP/USD</p>
+                        </div>
+                        <div class="text-center p-4 glass-card">
+                            <div class="text-2xl font-bold text-accent" data-count="0.6789">0</div>
+                            <p class="text-sm text-textSecondary">AUD/USD</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-elegant">
+                    <h3 class="text-xl font-semibold mb-4">Trading Volume</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-textSecondary">Daily Volume</span>
+                            <span class="font-semibold">$6.2T</span>
+                        </div>
+                        <div class="w-full bg-secondary rounded-full h-2">
+                            <div class="gradient-primary h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-textSecondary">Active Traders</span>
+                            <span class="font-semibold">2.4M</span>
+                        </div>
+                        <div class="w-full bg-secondary rounded-full h-2">
+                            <div class="gradient-accent h-2 rounded-full" style="width: 72%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="section-elegant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <h2 class="text-4xl font-bold mb-6">Why Choose {{ site_name }}?</h2>
+                <p class="text-lg text-textSecondary mb-8">With over a decade of experience in forex trading, we've built a platform that combines cutting-edge technology with proven trading strategies.</p>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="gradient-primary p-3 rounded-lg">
+                            <i class="fas fa-award text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2">Award-Winning Platform</h3>
+                            <p class="text-textSecondary">Recognized globally for innovation and excellence in forex trading technology.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="gradient-primary p-3 rounded-lg">
+                            <i class="fas fa-users text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2">Expert Community</h3>
+                            <p class="text-textSecondary">Join thousands of successful traders sharing strategies and insights.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-4">
+                        <div class="gradient-primary p-3 rounded-lg">
+                            <i class="fas fa-lock text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2">Bank-Level Security</h3>
+                            <p class="text-textSecondary">Your funds and data are protected with military-grade encryption.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+           <div class="relative" data-aos="fade-left">
+                <div class="gradient-dark rounded-2xl p-8">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2 text-textPrimary" data-count="50000">45k</div>
+                            <p class="text-textSecondary">Active Traders</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2 text-textPrimary">$<span data-count="2.5">1.2</span>B</div>
+                            <p class="text-textSecondary">Trading Volume</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2 text-textPrimary" data-count="99.9">99.5</div>
+                            <p class="text-textSecondary">Uptime %</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold mb-2 text-textPrimary" data-count="24">12</div>
+                            <p class="text-textSecondary">Support Hours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- Floating elements -->
+                <div class="absolute -top-4 -right-4 glass-card p-4 animate-float">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-trophy text-gold text-xl"></i>
+                        <span class="font-semibold text-sm">Best Platform 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Carousel -->
+<section class="section-elegant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-4">What Our Traders Say</h2>
+            <p class="text-xl text-textSecondary max-w-3xl mx-auto">Real stories from real traders who've transformed their financial future with {{ site_name }}.</p>
+        </div>
+        
+        <div class="relative">
+            <div class="testimonial-slider overflow-hidden">
+                <div class="testimonial-track flex transition-transform duration-500 ease-in-out" id="testimonialTrack">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                        <div class="testimonial-elegant max-w-4xl mx-auto">
+                            <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                                <div class="flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="John Smith" class="w-24 h-24 rounded-full object-cover">
+                                </div>
+                                <div class="flex-1 text-center md:text-left">
+                                    <div class="flex justify-center md:justify-start mb-4">
+                                        <div class="flex space-x-1">
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-lg text-textSecondary mb-4 italic">"{{ site_name }} completely changed my trading game. The automated strategies helped me achieve consistent profits while managing risk effectively. I've grown my portfolio by 300% in just 8 months!"</p>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">John Smith</h4>
+                                        <p class="text-textMuted">Professional Trader, New York</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                        <div class="testimonial-elegant max-w-4xl mx-auto">
+                            <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                                <div class="flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" alt="Sarah Johnson" class="w-24 h-24 rounded-full object-cover">
+                                </div>
+                                <div class="flex-1 text-center md:text-left">
+                                    <div class="flex justify-center md:justify-start mb-4">
+                                        <div class="flex space-x-1">
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-lg text-textSecondary mb-4 italic">"As a beginner, I was intimidated by forex trading. {{ site_name }}'s educational resources and user-friendly platform made it easy to start. The support team is incredibly helpful and responsive."</p>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Sarah Johnson</h4>
+                                        <p class="text-textMuted">Entrepreneur, California</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                        <div class="testimonial-elegant max-w-4xl mx-auto">
+                            <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+                                <div class="flex-shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face" alt="Michael Chen" class="w-24 h-24 rounded-full object-cover">
+                                </div>
+                                <div class="flex-1 text-center md:text-left">
+                                    <div class="flex justify-center md:justify-start mb-4">
+                                        <div class="flex space-x-1">
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                            <i class="fas fa-star text-gold"></i>
+                                        </div>
+                                    </div>
+                                    <p class="text-lg text-textSecondary mb-4 italic">"The analytical tools and market insights provided by {{ site_name }} are exceptional. I've been able to make more informed decisions and significantly improve my trading performance. Highly recommended!"</p>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Michael Chen</h4>
+                                        <p class="text-textMuted">Financial Analyst, Singapore</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation buttons -->
+            <button class="absolute left-4 top-1/2 transform -translate-y-1/2 glass-card p-3 hover:scale-110 transition-all duration-300" id="prevTestimonial">
+                <i class="fas fa-chevron-left text-textSecondary"></i>
+            </button>
+            <button class="absolute right-4 top-1/2 transform -translate-y-1/2 glass-card p-3 hover:scale-110 transition-all duration-300" id="nextTestimonial">
+                <i class="fas fa-chevron-right text-textSecondary"></i>
+            </button>
+            
+            <!-- Dots indicator -->
+            <div class="flex justify-center mt-8 space-x-2">
+                <button class="w-3 h-3 rounded-full bg-accent testimonial-dot active" data-slide="0"></button>
+                <button class="w-3 h-3 rounded-full bg-textMuted testimonial-dot" data-slide="1"></button>
+                <button class="w-3 h-3 rounded-full bg-textMuted testimonial-dot" data-slide="2"></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="section-elegant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-4">Choose Your Trading Plan</h2>
+            <p class="text-xl text-textSecondary max-w-3xl mx-auto">Flexible pricing options designed to fit every trader's needs and budget.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Basic Plan -->
+            <div class="pricing-card-elegant" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">Basic</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">$29</span>
+                        <span class="text-textSecondary">/month</span>
+                    </div>
+                    <p class="text-textSecondary mb-8">Perfect for beginners starting their forex journey</p>
+                </div>
+                
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Basic trading signals</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Market analysis</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Email support</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Educational resources</span>
+                    </li>
+                    <li class="flex items-center text-textMuted">
+                        <i class="fas fa-times mr-3"></i>
+                        <span>Automated trading</span>
+                    </li>
+                </ul>
+                
+                <a href="{% url 'main:register' %}" class="btn-elegant w-full text-center">
+                    Get Started
+                </a>
+            </div>
+            
+            <!-- Pro Plan (Featured) -->
+            <div class="pricing-card-elegant featured relative" data-aos="fade-up" data-aos-delay="200">
+                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span class="gradient-primary text-white px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
+                </div>
+                
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">Pro</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">$99</span>
+                        <span class="text-textSecondary">/month</span>
+                    </div>
+                    <p class="text-textSecondary mb-8">Advanced features for serious traders</p>
+                </div>
+                
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Advanced trading signals</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Automated trading bots</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Priority support</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Risk management tools</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>1-on-1 coaching sessions</span>
+                    </li>
+                </ul>
+                
+                <a href="{% url 'main:register' %}" class="btn-elegant w-full text-center">
+                    Start Pro Trial
+                </a>
+            </div>
+            
+            <!-- Enterprise Plan -->
+            <div class="pricing-card-elegant" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">$299</span>
+                        <span class="text-textSecondary">/month</span>
+                    </div>
+                    <p class="text-textSecondary mb-8">Complete solution for professional traders</p>
+                </div>
+                
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Premium signals & analysis</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Custom trading strategies</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>24/7 phone support</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Portfolio management</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span>Dedicated account manager</span>
+                    </li>
+                </ul>
+                
+                <a href="" class="btn-elegant w-full text-center">
+                    Contact Sales
+                </a>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12" data-aos="fade-up">
+            <p class="text-textSecondary mb-4">All plans include a 30-day money-back guarantee</p>
+            <div class="flex justify-center space-x-8 text-sm text-textMuted">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt mr-2"></i>
+                    <span>Secure payments</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    <span>Cancel anytime</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-headset mr-2"></i>
+                    <span>24/7 support</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="section-elegant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-4">Get In Touch</h2>
+            <p class="text-xl text-textSecondary max-w-3xl mx-auto">Ready to start your forex trading journey? Our team is here to help you succeed.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div data-aos="fade-right">
+                <form class="form-elegant space-y-6" method="post" action="">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">First Name</label>
+                            <input type="text" name="first_name" required class="input-elegant focus-elegant">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Last Name</label>
+                            <input type="text" name="last_name" required class="input-elegant focus-elegant">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email Address</label>
+                        <input type="email" name="email" required class="input-elegant focus-elegant">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Subject</label>
+                        <select name="subject" required class="input-elegant focus-elegant">
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="sales">Sales Question</option>
+                            <option value="partnership">Partnership</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Message</label>
+                        <textarea name="message" rows="5" required class="input-elegant focus-elegant resize-none"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-elegant w-full">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="space-y-8" data-aos="fade-left">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="gradient-primary p-3 rounded-lg">
+                                <i class="fas fa-map-marker-alt text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Address</h4>
+                                <p class="text-textSecondary">123 Trading Street, Financial District, NY 10004</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4">
+                            <div class="gradient-primary p-3 rounded-lg">
+                                <i class="fas fa-phone text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Phone</h4>
+                                {% if contact_phone %}
+                                <p class="text-textSecondary">{{ contact_phone }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4">
+                            <div class="gradient-primary p-3 rounded-lg">
+                                <i class="fas fa-envelope text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Email</h4>
+                                {% if contact_email %}
+                                <p class="text-textSecondary">{{ contact_email }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4">
+                            <div class="gradient-primary p-3 rounded-lg">
+                                <i class="fas fa-clock text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Business Hours</h4>
+                                <p class="text-textSecondary">Mon - Fri: 9:00 AM - 6:00 PM EST</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="gradient-primary p-3 rounded-lg hover:scale-110 transition-all duration-300">
+                            <i class="fab fa-youtube text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card-elegant">
+                    <h3 class="text-xl font-bold mb-4">Ready to Start Trading?</h3>
+                    <p class="text-textSecondary mb-4">Join thousands of successful traders and start your journey today.</p>
+                    <a href="{% url 'main:register' %}" class="btn-elegant">
+                        <i class="fas fa-rocket mr-2"></i>Get Started Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Additional JavaScript for Interactive Features -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Counter Animation
+    function animateCounters() {
+        const counters = document.querySelectorAll('[data-count]');
+        counters.forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-count'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    counter.textContent = target.toFixed(current === target ? (target % 1 === 0 ? 0 : 1) : 1);
+                    clearInterval(timer);
+                } else {
+                    counter.textContent = Math.floor(current * 100) / 100);
+                }
+            }, 16);
+        });
+    }
+    
+    // Trigger counter animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+    
+    const aboutSection = document.querySelector('#about');
+    if (aboutSection) {
+        observer.observe(aboutSection);
+    }
+    
+    // Testimonial Slider
+    let currentTestimonial = 0;
+    const testimonialTrack = document.querySelector('.testimonial-track');
+    const testimonialDots = document.querySelectorAll('.testimonial-dot');
+    const totalTestimonials = testimonialDots.length;
+    
+    function updateTestimonialSlider() {
+        if (testimonialTrack) {
+            testimonialTrack.style.transform = 'translateX(-${currentTestimonial * 100}%)';
+            
+            testimonialDots.forEach((dot, index) => {
+                if (index === testimonialTestimonial) {
+                    dot.classList.add('active');
+                    dot.classList.remove('bg-textMuted');
+                    dot.classList.add('bg-accent');
+                } else {
+                    dot.classList.remove('active');
+                    dot.classList.remove('bg-accent');
+                    dot.classList.add('bg-textMuted');
+                }
+            });
+        }
+    }
+    
+    // Next testimonial
+    document.querySelector('#nextTestimonial')?.addEventListener('click', () => {
+        currentTestimonial = (currentTestimonial + 1) % totalTestimonials;
+        updateTestimonialSlider();
+    });
+    
+    // Previous testimonial
+    document.querySelector('#prevTestimonial')?.addEventListener('click', () => {
+        currentTestimonial = (currentTestimonial - 1 + totalTestimonials) % totalTestimonials;
+        updateTestimonialSlider();
+    });
+    
+    // Dot navigation
+    testimonialDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentTestimonial = index;
+            updateTestimonialSlider();
+        });
+    });
+    
+    // Auto-advance testimonials
+    setInterval(() => {
+        currentTestimonial = (currentTestimonial + 1) % totalTestimonials;
+        updateTestimonialSlider();
+    }, 5000);
+    
+    // Forex rates ticker animation
+    const tickerContent = document.querySelector('.ticker-content-elegant');
+    if (tickerContent) {
+        // Clone content for seamless loop
+        const tickerClone = tickerContent.cloneNode(true);
+        tickerContent.parentNode.appendChild(tickerClone);
+        
+        // Simulate live rate updates
+        setInterval(() => {
+            const rates = document.querySelectorAll('.ticker-content-elegant span:nth-child(2n)');
+            rates.forEach(rate => {
+                for (const currentRate = parseFloat(rate.textContent);
+                let rate = current;
+                const change = (Math.random() - 0.5) * 0.01;
+                const newRate = (currentRate + change).toFixed(4);
+                rate.textContent = newRate;
+                
+                // Update color based on change
+                const changeSpan = rate.nextElementSibling;
+                if (changeSpan) {
+                    if (change > 0) {
+                        rate.classList = 'text-green-100');
+                        changeSpan.classList = 'text-green-100 text-sm';
+                        changeSpan.textContent = '+${Math.abs(change).toFixed(4)}';
+                        } else {
+                            rate.classList = 'text-red-400';
+                            changeSpan.classList = 'text-red-400 text-sm';
+                            changeSpan.textContent = '-${Math.abs(change).toFixed(4)}';
+                        }
+                    }
+                }
+            });
+        }, 6000);
+    }
+    
+    // Simple trading chart simulation
+    const canvas = document.querySelector('#tradingChart');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        
+        let dataPoints = [];
+        for (let i = 0; i < 50; i++) {
+            dataPoints.push(Math.random() * points);
+ + 50);
+        }
+        
+        function drawChart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'var(--accent)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            const stepX = canvas.width / (dataPoints.length - 1);
+            const maxY = Math.max(...dataPoints);
+            const minY = Math.min(...dataPoints);
+            const rangeY = maxY - dataPoints;
+            
+            dataPoints.forEach((point, index) => {
+                for (let x = index * stepX;
+                const y = canvas.height - ((point - minY) / points);
+ * canvas.height;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+        }
+        
+        drawChart();
+        
+        // Animate chart
+        setInterval(() => {
+            dataPoints.shift();
+            dataPoints.push(dataPoints.length - Math.random() - 0.5) * 10);
+            drawChart();
+        }, 1000);
+    }
+    
+    // Parallax effect for hero section
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallax = document.querySelector('#home video');
+        if (parallax) {
+            const speed = scrolled * 0.5;
+            parallax.style.transform = 'translateY(${speed}px)';
+        }
+    });
+    
+    // Form validation and enhancement
+    const contactForm = document.querySelector('#contact form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            const submitBtn = onclick.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+            submitBtn.disabled = true;
+            
+            // Re-enable after 3 seconds (for demo purposes)
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 3000);
+        });
+    }
+});
+</script>
+
+<style>
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .testimonial-slide {
+            padding: 0 1rem;
+        }
+        
+        .ticker-content-elegant {
+            font-size: 14px;
+        }
+    }
+}
+</style>
+{% endblock %}

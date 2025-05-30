@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Withdrawal Request Received - Trading Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #1a56db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            background-color: #f3f4f6;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .button {
+            display: inline-block;
+            background-color: #1a56db;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .transaction-details {
+            background-color: #f3f4f6;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Withdrawal Request Received</h1>
+    </div>
+    
+    <div class="content">
+        <p>Hello {{ full_name }},</p>
+        
+        <p>We have received your withdrawal request. Our team will review and process it as soon as possible.</p>
+        
+        <div class="transaction-details">
+            <h3>Transaction Details:</h3>
+            <p><strong>Amount:</strong> ${{ transaction.amount }}</p>
+            <p><strong>Date:</strong> {{ transaction.created_at|date:"F j, Y, g:i a" }}</p>
+            <p><strong>Status:</strong> Pending</p>
+            <p><strong>Transaction ID:</strong> {{ transaction.id }}</p>
+            <p><strong>Wallet Address:</strong> {{ transaction.wallet_address }}</p>
+        </div>
+        
+        <p>Once your withdrawal is approved, the funds will be sent to your wallet address. This process typically takes 24-48 hours.</p>
+        
+        <p>You can check the status of your withdrawal in your account dashboard.</p>
+        
+        <a href="https://yourplatform.com/dashboard" class="button">View Dashboard</a>
+        
+        <p>If you have any questions or concerns, please contact our support team.</p>
+        
+        <p>Thank you for choosing our platform!</p>
+        
+        <p>Best regards,<br>
+        The Trading Platform Team</p>
+    </div>
+    
+    <div class="footer">
+        <p>This email was sent to {{ user.email }}.</p>
+        <p>&copy; 2023 Trading Platform. All rights reserved.</p>
+    </div>
+</body>
+</html>

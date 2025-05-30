@@ -1,0 +1,576 @@
+{% extends 'base.html' %}
+{% block title %}{{ site_name }} - Demo Trading Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-elegant">
+    <div class="absolute inset-0 bg-gradient-to-b from-primary/90 to-secondary/90 z-10"></div>
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center h-full">
+        <div class="text-center" data-aos="fade-up">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span class="gradient-text">Demo Trading</span> Platform
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-textSecondary max-w-3xl mx-auto">
+                Practice trading with $100,000 in virtual funds. No risk, real market conditions.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button id="startDemoBtn" class="btn-elegant animate-glow">
+                    <i class="fas fa-play mr-2"></i>Start Demo
+                </button>
+                <a href="#features" class="btn-outline-elegant smooth-scroll">
+                    <i class="fas fa-info-circle mr-2"></i>Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Demo Platform Section -->
+<section class="section-elegant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Trading Chart -->
+            <div class="lg:col-span-2" data-aos="fade-right">
+                <div class="card-elegant p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex space-x-4">
+                            <select id="pairSelect" class="input-elegant focus-elegant">
+                                <option value="EUR/USD">EUR/USD</option>
+                                <option value="GBP/USD">GBP/USD</option>
+                                <option value="USD/JPY">USD/JPY</option>
+                                <option value="AUD/USD">AUD/USD</option>
+                                <option value="USD/CAD">USD/CAD</option>
+                            </select>
+                            <select id="timeframeSelect" class="input-elegant focus-elegant">
+                                <option value="1m">1 Minute</option>
+                                <option value="5m">5 Minutes</option>
+                                <option value="15m">15 Minutes</option>
+                                <option value="1h">1 Hour</option>
+                                <option value="4h">4 Hours</option>
+                                <option value="1d" selected>1 Day</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Demo</span>
+                            <span id="currentPrice" class="font-semibold">1.0856</span>
+                            <span id="priceChange" class="text-green-400 text-sm">+0.0012</span>
+                        </div>
+                    </div>
+                    <div class="h-96 bg-secondary rounded-lg relative overflow-hidden">
+                        <canvas id="demoChart" class="w-full h-full"></canvas>
+                        <div id="chartPlaceholder" class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <i class="fas fa-chart-line text-4xl text-accent mb-2"></i>
+                                <p class="text-textSecondary">Click "Start Demo" to begin trading</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trading Panel -->
+            <div data-aos="fade-left">
+                <div class="card-elegant p-6">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold mb-2">Demo Account</h3>
+                        <div class="flex justify-center items-baseline space-x-2">
+                            <span class="text-4xl font-bold">$</span>
+                            <span id="demoBalance" class="text-4xl font-bold">100,000.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between">
+                            <span class="text-textSecondary">Available Margin</span>
+                            <span id="availableMargin" class="font-semibold">$100,000.00</span>
+                        </div>
+                        <div class="w-full bg-secondary rounded-full h-2">
+                            <div id="marginBar" class="gradient-primary h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Order Type</label>
+                            <select id="orderType" class="input-elegant focus-elegant w-full">
+                                <option value="market">Market Order</option>
+                                <option value="limit">Limit Order</option>
+                                <option value="stop">Stop Order</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Trade Size (Lots)</label>
+                            <input id="tradeSize" type="range" min="0.1" max="10" step="0.1" value="1" class="w-full">
+                            <div class="flex justify-between mt-1">
+                                <span class="text-xs text-textSecondary">0.1</span>
+                                <span id="tradeSizeValue" class="text-sm font-semibold">1.0</span>
+                                <span class="text-xs text-textSecondary">10</span>
+                            </div>
+                        </div>
+                        
+                        <div id="limitStopContainer" class="hidden">
+                            <label class="block text-sm font-medium mb-2" id="limitStopLabel">Limit Price</label>
+                            <input id="limitStopPrice" type="number" step="0.0001" class="input-elegant focus-elegant w-full">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <button id="buyBtn" class="btn-elegant bg-green-600 hover:bg-green-700">
+                            <i class="fas fa-arrow-up mr-2"></i>Buy
+                        </button>
+                        <button id="sellBtn" class="btn-elegant bg-red-600 hover:bg-red-700">
+                            <i class="fas fa-arrow-down mr-2"></i>Sell
+                        </button>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-sm text-textSecondary">Prices are delayed by 15 minutes. No real money is at risk.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Open Positions Section -->
+<section id="positionsSection" class="section-elegant bg-secondary hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold mb-6" data-aos="fade-up">Open Positions</h2>
+        
+        <div class="card-elegant overflow-hidden" data-aos="fade-up">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-glass-border">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Pair</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Size</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Entry</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Current</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">P/L</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-textSecondary uppercase tracking-wider">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="positionsTable" class="divide-y divide-glass-border">
+                        <!-- Positions will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="section-elegant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-4">Why Practice With Our Demo?</h2>
+            <p class="text-xl text-textSecondary max-w-3xl mx-auto">Experience real market conditions with zero risk</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="100">
+                <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-chart-line text-2xl text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-center">Real Market Data</h3>
+                <p class="text-textSecondary text-center">Trade with live price feeds and real market conditions to get authentic trading experience.</p>
+            </div>
+            
+            <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="200">
+                <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-tools text-2xl text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-center">Full Platform Access</h3>
+                <p class="text-textSecondary text-center">All features of our real platform including charts, indicators, and risk management tools.</p>
+            </div>
+            
+            <div class="card-elegant hover-elegant" data-aos="fade-up" data-aos-delay="300">
+                <div class="gradient-primary w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-clock text-2xl text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-center">No Time Limit</h3>
+                <p class="text-textSecondary text-center">Practice as long as you need with no expiration. Refresh your virtual balance anytime.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section-elegant gradient-dark">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div data-aos="fade-up">
+            <h2 class="text-4xl font-bold mb-6">Ready to Trade for Real?</h2>
+            <p class="text-xl text-textSecondary max-w-3xl mx-auto mb-8">Open a live account and start trading with as little as $100.</p>
+            <a href="{% url 'main:register' %}" class="btn-elegant animate-glow inline-block">
+                <i class="fas fa-rocket mr-2"></i>Open Live Account
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Demo Trading JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Demo state
+    let demoActive = false;
+    let demoChart;
+    let positions = [];
+    let demoBalance = 100000;
+    let availableMargin = 100000;
+    let currentPair = 'EUR/USD';
+    let currentPrice = 1.0856;
+    let priceHistory = {};
+    
+    // Initialize price history for all pairs
+    const pairs = ['EUR/USD', 'GBP/USD', 'USD/JPY', 'AUD/USD', 'USD/CAD'];
+    pairs.forEach(pair => {
+        priceHistory[pair] = generateRandomPriceHistory(100, getBasePrice(pair));
+    });
+    
+    // DOM Elements
+    const startDemoBtn = document.getElementById('startDemoBtn');
+    const chartPlaceholder = document.getElementById('chartPlaceholder');
+    const demoChartCanvas = document.getElementById('demoChart');
+    const pairSelect = document.getElementById('pairSelect');
+    const timeframeSelect = document.getElementById('timeframeSelect');
+    const currentPriceEl = document.getElementById('currentPrice');
+    const priceChangeEl = document.getElementById('priceChange');
+    const demoBalanceEl = document.getElementById('demoBalance');
+    const availableMarginEl = document.getElementById('availableMargin');
+    const marginBar = document.getElementById('marginBar');
+    const orderTypeSelect = document.getElementById('orderType');
+    const tradeSizeInput = document.getElementById('tradeSize');
+    const tradeSizeValue = document.getElementById('tradeSizeValue');
+    const limitStopContainer = document.getElementById('limitStopContainer');
+    const limitStopLabel = document.getElementById('limitStopLabel');
+    const limitStopPrice = document.getElementById('limitStopPrice');
+    const buyBtn = document.getElementById('buyBtn');
+    const sellBtn = document.getElementById('sellBtn');
+    const positionsSection = document.getElementById('positionsSection');
+    const positionsTable = document.getElementById('positionsTable');
+    
+    // Event Listeners
+    startDemoBtn.addEventListener('click', startDemo);
+    pairSelect.addEventListener('change', updateChart);
+    timeframeSelect.addEventListener('change', updateChart);
+    orderTypeSelect.addEventListener('change', toggleLimitStop);
+    tradeSizeInput.addEventListener('input', updateTradeSize);
+    buyBtn.addEventListener('click', () => placeOrder('buy'));
+    sellBtn.addEventListener('click', () => placeOrder('sell'));
+    
+    // Functions
+    function startDemo() {
+        demoActive = true;
+        startDemoBtn.textContent = 'Demo Active';
+        startDemoBtn.classList.remove('btn-elegant');
+        startDemoBtn.classList.add('bg-green-600', 'cursor-default');
+        startDemoBtn.disabled = true;
+        chartPlaceholder.classList.add('hidden');
+        
+        // Initialize chart
+        initChart();
+        
+        // Start price updates
+        setInterval(updatePrices, 2000);
+    }
+    
+    function initChart() {
+        const ctx = demoChartCanvas.getContext('2d');
+        const data = getChartData();
+        
+        demoChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: currentPair,
+                    data: data.prices,
+                    borderColor: 'var(--accent)',
+                    backgroundColor: 'rgba(4, 120, 87, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'var(--textSecondary)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: 'var(--textSecondary)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+    }
+    
+    function getChartData() {
+        const history = priceHistory[currentPair];
+        const timeframe = timeframeSelect.value;
+        let step;
+        
+        switch(timeframe) {
+            case '1m': step = 1; break;
+            case '5m': step = 5; break;
+            case '15m': step = 15; break;
+            case '1h': step = 60; break;
+            case '4h': step = 240; break;
+            case '1d': step = 1440; break;
+            default: step = 1;
+        }
+        
+        const filteredData = history.filter((_, index) => index % step === 0);
+        const labels = filteredData.map((_, index) => index);
+        const prices = filteredData.map(item => item.price);
+        
+        return { labels, prices };
+    }
+    
+    function updateChart() {
+        currentPair = pairSelect.value;
+        currentPrice = priceHistory[currentPair][priceHistory[currentPair].length - 1].price;
+        currentPriceEl.textContent = currentPrice.toFixed(4);
+        
+        if (demoChart) {
+            const data = getChartData();
+            demoChart.data.labels = data.labels;
+            demoChart.data.datasets[0].data = data.prices;
+            demoChart.data.datasets[0].label = currentPair;
+            demoChart.update();
+        }
+    }
+    
+    function updatePrices() {
+        // Update current pair price
+        const lastPrice = priceHistory[currentPair][priceHistory[currentPair].length - 1].price;
+        const change = (Math.random() - 0.5) * 0.002;
+        const newPrice = lastPrice + change;
+        
+        // Add to history
+        priceHistory[currentPair].push({
+            price: newPrice,
+            time: new Date()
+        });
+        
+        // Keep history size manageable
+        if (priceHistory[currentPair].length > 200) {
+            priceHistory[currentPair].shift();
+        }
+        
+        // Update UI
+        currentPrice = newPrice;
+        currentPriceEl.textContent = newPrice.toFixed(4);
+        
+        const priceChange = newPrice - lastPrice;
+        const changePercent = (priceChange / lastPrice * 100).toFixed(2);
+        
+        if (priceChange >= 0) {
+            priceChangeEl.textContent = `+${priceChange.toFixed(4)} (${changePercent}%)`;
+            priceChangeEl.className = 'text-green-400 text-sm';
+        } else {
+            priceChangeEl.textContent = `${priceChange.toFixed(4)} (${changePercent}%)`;
+            priceChangeEl.className = 'text-red-400 text-sm';
+        }
+        
+        // Update chart
+        if (demoChart) {
+            const data = getChartData();
+            demoChart.data.labels = data.labels;
+            demoChart.data.datasets[0].data = data.prices;
+            demoChart.update();
+        }
+        
+        // Update open positions
+        updatePositions();
+    }
+    
+    function toggleLimitStop() {
+        const orderType = orderTypeSelect.value;
+        
+        if (orderType === 'limit') {
+            limitStopContainer.classList.remove('hidden');
+            limitStopLabel.textContent = 'Limit Price';
+            limitStopPrice.value = (currentPrice * 0.99).toFixed(4);
+        } else if (orderType === 'stop') {
+            limitStopContainer.classList.remove('hidden');
+            limitStopLabel.textContent = 'Stop Price';
+            limitStopPrice.value = (currentPrice * 1.01).toFixed(4);
+        } else {
+            limitStopContainer.classList.add('hidden');
+        }
+    }
+    
+    function updateTradeSize() {
+        tradeSizeValue.textContent = tradeSizeInput.value;
+    }
+    
+    function placeOrder(type) {
+        const orderType = orderTypeSelect.value;
+        const size = parseFloat(tradeSizeInput.value);
+        const price = orderType === 'market' ? currentPrice : parseFloat(limitStopPrice.value);
+        
+        // In a real app, we'd validate the order here
+        
+        const position = {
+            id: Date.now(),
+            pair: currentPair,
+            type: type,
+            orderType: orderType,
+            size: size,
+            entryPrice: price,
+            currentPrice: price,
+            time: new Date()
+        };
+        
+        positions.push(position);
+        updatePositionsUI();
+        
+        // Show positions section if hidden
+        if (positionsSection.classList.contains('hidden')) {
+            positionsSection.classList.remove('hidden');
+        }
+    }
+    
+    function updatePositions() {
+        positions.forEach(position => {
+            position.currentPrice = priceHistory[position.pair][priceHistory[position.pair].length - 1].price;
+        });
+        
+        updatePositionsUI();
+    }
+    
+    function updatePositionsUI() {
+        // Clear table
+        positionsTable.innerHTML = '';
+        
+        // Add positions
+        positions.forEach(position => {
+            const pips = position.type === 'buy' 
+                ? (position.currentPrice - position.entryPrice) * 10000
+                : (position.entryPrice - position.currentPrice) * 10000;
+            
+            const profit = pips * position.size * 10; // Assuming $10 per pip per lot
+            
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-glass-bg';
+            row.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap">${position.pair}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 rounded-full text-xs font-medium ${position.type === 'buy' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                        ${position.type.toUpperCase()}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">${position.size}</td>
+                <td class="px-6 py-4 whitespace-nowrap">${position.entryPrice.toFixed(4)}</td>
+                <td class="px-6 py-4 whitespace-nowrap">${position.currentPrice.toFixed(4)}</td>
+                <td class="px-6 py-4 whitespace-nowrap ${profit >= 0 ? 'text-green-400' : 'text-red-400'}">
+                    $${Math.abs(profit).toFixed(2)}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">
+                    <button class="text-red-400 hover:text-red-600 close-position" data-id="${position.id}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </td>
+            `;
+            
+            positionsTable.appendChild(row);
+        });
+        
+        // Add event listeners to close buttons
+        document.querySelectorAll('.close-position').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                closePosition(id);
+            });
+        });
+    }
+    
+    function closePosition(id) {
+        const index = positions.findIndex(p => p.id === id);
+        if (index !== -1) {
+            const position = positions[index];
+            const pips = position.type === 'buy' 
+                ? (position.currentPrice - position.entryPrice) * 10000
+                : (position.entryPrice - position.currentPrice) * 10000;
+            
+            const profit = pips * position.size * 10;
+            demoBalance += profit;
+            
+            positions.splice(index, 1);
+            updateDemoBalance();
+            updatePositionsUI();
+            
+            if (positions.length === 0) {
+                positionsSection.classList.add('hidden');
+            }
+        }
+    }
+    
+    function updateDemoBalance() {
+        demoBalanceEl.textContent = demoBalance.toFixed(2);
+        availableMargin = demoBalance;
+        availableMarginEl.textContent = `$${availableMargin.toFixed(2)}`;
+        marginBar.style.width = '100%';
+    }
+    
+    // Helper functions
+    function generateRandomPriceHistory(count, basePrice) {
+        const history = [];
+        let price = basePrice;
+        
+        for (let i = 0; i < count; i++) {
+            price += (Math.random() - 0.5) * 0.002;
+            history.push({
+                price: price,
+                time: new Date(Date.now() - (count - i) * 60000)
+            });
+        }
+        
+        return history;
+    }
+    
+    function getBasePrice(pair) {
+        const prices = {
+            'EUR/USD': 1.0856,
+            'GBP/USD': 1.2734,
+            'USD/JPY': 148.92,
+            'AUD/USD': 0.6789,
+            'USD/CAD': 1.3456
+        };
+        
+        return prices[pair] || 1.0;
+    }
+});
+</script>
+{% endblock %}u

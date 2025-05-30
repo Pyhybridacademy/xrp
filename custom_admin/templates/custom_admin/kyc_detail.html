@@ -1,0 +1,56 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}KYC: {{ kyc.user.username }}{% endblock %}
+{% block page_subtitle %}View KYC verification details{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">KYC Verification: {{ kyc.user.username }}</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <p class="text-sm text-gray-600">User</p>
+                <p class="text-gray-800">{{ kyc.user.username }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">ID Type</p>
+                <p class="text-gray-800">{{ kyc.id_type }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">ID Number</p>
+                <p class="text-gray-800">{{ kyc.id_number }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Status</p>
+                <p class="text-gray-800">{{ kyc.status|capfirst }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-600">Submitted</p>
+                <p class="text-gray-800">{{ kyc.submitted_at|date:"Y-m-d H:i" }}</p>
+            </div>
+            {% if kyc.reviewed_at %}
+            <div>
+                <p class="text-sm text-gray-600">Reviewed</p>
+                <p class="text-gray-800">{{ kyc.reviewed_at|date:"Y-m-d H:i" }}</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="mt-4">
+            <p class="text-sm text-gray-600">ID Front: <a href="{{ kyc.id_front.url }}" target="_blank" class="text-primary hover:underline" aria-label="View ID front">View</a></p>
+            <p class="text-sm text-gray-600">ID Back: <a href="{{ kyc.id_back.url }}" target="_blank" class="text-primary hover:underline" aria-label="View ID back">View</a></p>
+            <p class="text-sm text-gray-600">Selfie: <a href="{{ kyc.selfie.url }}" target="_blank" class="text-primary hover:underline" aria-label="View selfie">View</a></p>
+        </div>
+        {% if kyc.status == 'submitted' %}
+        <div class="mt-4 flex space-x-3">
+            <a href="{% url 'custom_admin:kyc_approve' kyc.id %}" class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent/90" aria-label="Approve KYC for {{ kyc.user.username }}">Approve</a>
+            <a href="{% url 'custom_admin:kyc_reject' kyc.id %}" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700" aria-label="Reject KYC for {{ kyc.user.username }}">Reject</a>
+            <a href="{% url 'custom_admin:kyc_list' %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Back to KYC list">Back to List</a>
+        </div>
+        {% else %}
+        <div class="mt-4">
+            <a href="{% url 'custom_admin:kyc_list' %}" class="block bg-gray-600 text-white px-4 py-2 rounded-lg" aria-label="Back to KYC list">Back to List</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

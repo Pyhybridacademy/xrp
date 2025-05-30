@@ -1,0 +1,44 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}User Management{% endblock %}
+{% block page_subtitle %}Manage platform users{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">User Management</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm" role="grid">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-3 font-semibold text-gray-700">Username</th>
+                        <th class="p-3 font-semibold text-gray-700">Email</th>
+                        <th class="p-3 font-semibold text-gray-700 hidden sm:table-cell">Full Name</th>
+                        <th class="p-3 font-semibold text-gray-700 hidden md:table-cell">Balance</th>
+                        <th class="p-3 font-semibold text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-3">{{ user.username }}</td>
+                        <td class="p-3">{{ user.email }}</td>
+                        <td class="p-3 hidden sm:table-cell">{{ user.profile.full_name|default:"N/A" }}</td>
+                        <td class="p-3 hidden md:table-cell">{{ user.profile.currency }} {{ user.profile.balance|floatformat:2 }}</td>
+                        <td class="p-3 flex space-x-2">
+                            <a href="{% url 'custom_admin:user_detail' user.id %}" class="text-primary hover:underline text-xs" aria-label="View user {{ user.username }}">View</a>
+                            <a href="{% url 'custom_admin:user_edit' user.id %}" class="text-accent hover:underline text-xs" aria-label="Edit user {{ user.username }}">Edit</a>
+                            <a href="{% url 'custom_admin:user_delete' user.id %}" class="text-red-600 hover:underline text-xs" aria-label="Delete user {{ user.username }}">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="p-3 text-center text-gray-500">No users found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

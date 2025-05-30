@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% if settings.site_name %}{{ settings.site_name }}{% else %}Admin Panel{% endif %}{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                        secondary: '#7c3aed',
+                        accent: '#10b981',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out',
+                        'scale-in': 'scaleIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-item {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(4px);
+        }
+        .nav-item.active {
+            background: rgba(29, 78, 216, 0.15);
+            border-left: 3px solid #1e3a8a;
+            border-radius: 0 8px 8px 0;
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+    {% with settings=site_settings %}
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-60 z-40 hidden lg:hidden"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-primary text-white transform -translate-x-full lg:translate-x-0 sidebar-transition z-50 shadow-lg">
+        <!-- Logo Section -->
+        <div class="p-4 border-b border-white/10">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    {% if settings.logo %}
+                        <img src="{{ settings.logo.url }}" alt="Site Logo" class="h-8 w-8 rounded-lg">
+                    {% else %}
+                        <div class="h-8 w-8 bg-accent rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-white text-sm"></i>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <h1 class="text-lg font-semibold">{{ settings.site_name|default:"Admin Panel" }}</h1>
+                        <p class="text-xs text-gray-300">Trading Platform</p>
+                    </div>
+                </div>
+                <button id="close-sidebar" class="lg:hidden text-gray-300 hover:text-white p-1 rounded-lg hover:bg-primary/80">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        {% if user.is_authenticated %}
+        <nav class="flex-1 px-3 py-4">
+            <div class="space-y-1">
+                <a href="{% url 'custom_admin:dashboard' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="Dashboard">
+                    <i class="fas fa-tachometer-alt w-5 text-center mr-2"></i>
+                    Dashboard
+                </a>
+                <a href="{% url 'custom_admin:user_list' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="Users">
+                    <i class="fas fa-users w-5 text-center mr-2"></i>
+                    Users
+                </a>
+                <a href="{% url 'custom_admin:kyc_list' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="KYC Verification">
+                    <i class="fas fa-id-card w-5 text-center mr-2"></i>
+                    KYC Verification
+                </a>
+                <a href="{% url 'custom_admin:transaction_list' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="Transactions">
+                    <i class="fas fa-exchange-alt w-5 text-center mr-2"></i>
+                    Transactions
+                </a>
+                <a href="{% url 'custom_admin:investment_list' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="Investments">
+                    <i class="fas fa-chart-pie w-5 text-center mr-2"></i>
+                    Investments
+                </a>
+                <a href="{% url 'custom_admin:plan_list' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="Plans">
+                    <i class="fas fa-layer-group w-5 text-center mr-2"></i>
+                    Plans
+                </a>
+                <a href="{% url 'custom_admin:crypto_list' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="Cryptocurrencies">
+                    <i class="fab fa-bitcoin w-5 text-center mr-2"></i>
+                    Cryptocurrencies
+                </a>
+                <a href="{% url 'custom_admin:withdrawal_code_list' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="Cryptocurrencies">
+                    <i class="fab fa-bitcoin w-5 text-center mr-2"></i>
+                    Withdrawal codes
+                </a>
+                <div class="my-3 border-t border-white/10"></div>
+                <a href="{% url 'custom_admin:site_settings' %}" class="nav-item flex items-center px-3 py-2 text-sm font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="Settings">
+                    <i class="fas fa-cog w-5 text-center mr-2"></i>
+                    Settings
+                </a>
+            </div>
+        </nav>
+        {% endif %}
+
+        <!-- User Profile -->
+        {% if user.is_authenticated %}
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center space-x-3">
+                <div class="h-8 w-8 bg-accent rounded-full flex items-center justify-center">
+                    <i class="fas fa-user text-white text-sm"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-white truncate">{{ user.get_full_name|default:user.username }}</p>
+                    <p class="text-xs text-gray-300">Administrator</p>
+                </div>
+            </div>
+            <div class="mt-3 space-y-1">
+                <a href="{% url 'custom_admin:profile' %}" class="flex items-center px-3 py-2 text-xs font-medium text-gray-200 rounded-lg hover:bg-white/10" aria-label="View Profile">
+                    <i class="fas fa-user-circle w-4 mr-2"></i>
+                    View Profile
+                </a>
+                <a href="{% url 'main:logout' %}" class="flex items-center px-3 py-2 text-xs font-medium text-red-300 rounded-lg hover:bg-red-500/20" aria-label="Sign Out">
+                    <i class="fas fa-sign-out-alt w-4 mr-2"></i>
+                    Sign Out
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </aside>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-30">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="menu-toggle" class="lg:hidden text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100" aria-label="Toggle Menu">
+                            <i class="fas fa-bars text-lg"></i>
+                        </button>
+                        <div class="ml-4">
+                            <h2 class="text-lg font-semibold text-gray-800">{% block page_title %}Dashboard{% endblock %}</h2>
+                            <p class="text-sm text-gray-500">{% block page_subtitle %}Welcome back, {{ user.get_full_name|default:user.username }}{% endblock %}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="relative p-2 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100" aria-label="Notifications">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute top-0 right-0 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                        </button>
+                        <button class="px-3 py-1 bg-primary text-white rounded-lg hover:bg-primary/90 text-sm font-medium hidden sm:block" aria-label="Quick Action">
+                            <i class="fas fa-plus mr-1"></i>
+                            Quick Action
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-4 sm:p-6 lg:p-8">
+            {% if messages %}
+            <div class="mb-6 space-y-3">
+                {% for message in messages %}
+                <div class="animate-slide-in p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-800{% elif message.tags == 'success' %}bg-green-50 text-green-800{% else %}bg-blue-50 text-blue-800{% endif %}" role="alert">
+                    <div class="flex items-center">
+                        <i class="{% if message.tags == 'error' %}fas fa-exclamation-circle text-red-500{% elif message.tags == 'success' %}fas fa-check-circle text-green-500{% else %}fas fa-info-circle text-blue-500{% endif %} mr-2"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="animate-fade-in">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobile-overlay');
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeSidebarFunc() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        menuToggle?.addEventListener('click', openSidebar);
+        closeSidebar?.addEventListener('click', closeSidebarFunc);
+        overlay?.addEventListener('click', closeSidebarFunc);
+
+        // Active navigation
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            if (item.getAttribute('href') === currentPath) {
+                item.classList.add('active');
+            }
+        });
+
+        // Auto-hide messages
+        setTimeout(() => {
+            document.querySelectorAll('[role="alert"]').forEach(message => {
+                message.style.transition = 'opacity 0.3s ease-out';
+                message.style.opacity = '0';
+                setTimeout(() => message.remove(), 300);
+            });
+        }, 4000);
+
+        // Keyboard navigation for accessibility
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    item.click();
+                }
+            });
+        });
+    </script>
+    {% if settings.live_chat_enabled and settings.live_chat_script_url %}
+        <script src="{{ settings.live_chat_script_url }}"></script>
+    {% endif %}
+    {% endwith %}
+</body>
+</html>

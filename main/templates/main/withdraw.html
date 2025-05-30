@@ -1,0 +1,124 @@
+{% extends 'dash.html' %}
+{% load custom_filters %}
+
+{% block title %}Withdraw - {{ site_name }}{% endblock %}
+{% block header %}Withdraw Funds{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-8">
+    <!-- KYC Warning -->
+    {% if not kyc_approved %}
+    <div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4 mb-6 rounded-lg">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-yellow-700 dark:text-yellow-400">
+                    You need to complete KYC verification before making withdrawals. 
+                    <a href="{% url 'main:kyc_verification' %}" class="font-medium underline hover:text-yellow-600 dark:hover:text-yellow-300">Complete KYC now</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Withdraw Form -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Withdraw Funds</h2>
+        
+        <div class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg mb-6">
+            <div class="flex items-center">
+                <div class="mr-4">
+                    <i class="fas fa-wallet text-blue-600 dark:text-blue-400 h-8 w-8"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Available Balance</p>
+                    <p class="text-2xl font-bold text-slate-900 dark:text-white">{{ profile.currency }} {{ balance|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <form method="post" {% if not kyc_approved %}class="opacity-50 pointer-events-none"{% endif %}>
+            {% csrf_token %}
+            <div class="mb-6">
+                <label for="amount" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Amount ({{ profile.currency }})</label>
+                <input type="number" id="amount" name="amount" min="50" max="{{ balance }}" step="0.01" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white">
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Minimum withdrawal: {{ profile.currency }} 50</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="wallet_id" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Select Wallet Address</label>
+                <select id="wallet_id" name="wallet_id" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white">
+                    <option value="">Select a wallet address</option>
+                    {% for wallet in wallet_addresses %}
+                        <option value="{{ wallet.id }}">{{ wallet.cryptocurrency.name }} ({{ wallet.address|truncatechars:20 }})</option>
+                    {% endfor %}
+                </select>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Select a wallet address for withdrawal. <a href="{% url 'main:settings' %}" class="underline">Add new wallet</a></p>
+            </div>
+            
+            <div class="mb-6">
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4 rounded-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700 dark:text-yellow-400">
+                                Withdrawals are typically processed within 24-48 hours. Please ensure your wallet address is correct as transactions cannot be reversed.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200" {% if not kyc_approved %}disabled{% endif %}>
+                    Submit Withdrawal Request
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Recent Withdrawals -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Recent Withdrawals</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Wallet</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    {% if withdrawals %}
+                        {% for withdrawal in withdrawals %}
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ withdrawal.created_at|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ profile.currency }} {{ withdrawal.amount|floatformat:2 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ withdrawal.wallet_address|truncatechars:20 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        {% if withdrawal.status == 'completed' %}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
+                                        {% elif withdrawal.status == 'pending' %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400
+                                        {% else %}bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400{% endif %}">
+                                        {{ withdrawal.status|title }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400" colspan="4">No withdrawal history</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

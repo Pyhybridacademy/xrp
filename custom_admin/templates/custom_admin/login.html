@@ -1,0 +1,28 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Admin Login{% endblock %}
+{% block page_subtitle %}Log in to the admin panel{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-50">
+    <div class="bg-white rounded-lg shadow-sm p-6 w-full max-w-md">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Admin Login</h3>
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" name="username" id="username" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" name="password" id="password" required
+                       class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                       aria-required="true">
+            </div>
+            <button type="submit" class="w-full bg-primary text-white p-3 rounded-lg hover:bg-primary/90" aria-label="Login to admin panel">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

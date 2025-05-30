@@ -1,0 +1,214 @@
+{% extends 'dash.html' %}
+{% load custom_filters %}
+
+{% block title %}Deposit - {{ site_name }}{% endblock %}
+{% block header %}Deposit Funds{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-8">
+    <!-- Required Action Notification -->
+    {% if action_id %}
+    <div class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 mb-6 rounded-lg">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-info-circle text-blue-500"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-blue-700 dark:text-blue-400">
+                    <span class="font-medium">Required Action:</span> {{ action_name }}
+                </p>
+                <p class="text-sm text-blue-700 dark:text-blue-400">
+                    <span class="font-medium">Amount:</span> {{ profile.currency }} {{ action_amount|floatformat:2 }}
+                </p>
+                <p class="text-sm text-blue-700 dark:text-blue-400 mt-1">
+                    Please complete this deposit to fulfill the required action.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const amountField = document.getElementById('amount');
+            if (amountField) {
+                amountField.value = '{{ action_amount }}';
+            }
+        });
+    </script>
+    {% endif %}
+
+    <!-- KYC Warning -->
+    {% if not kyc_approved %}
+    <div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4 mb-6 rounded-lg">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-yellow-700 dark:text-yellow-400">
+                    You need to complete KYC verification before making deposits. 
+                    <a href="{% url 'main:kyc_verification' %}" class="font-medium underline hover:text-yellow-600 dark:hover:text-yellow-300">Complete KYC now</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Deposit Form -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Deposit Funds</h2>
+        
+        <form method="post" enctype="multipart/form-data" {% if not kyc_approved %}class="opacity-50 pointer-events-none"{% endif %}>
+            {% csrf_token %}
+            <div class="mb-6">
+                <label for="amount" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Amount ({{ profile.currency }})</label>
+                <input type="number" id="amount" name="amount" min="100" step="0.01" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white">
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Minimum deposit: {{ profile.currency }} 100</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="payment_method" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Payment Method</label>
+                <select id="payment_method" name="payment_method" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white">
+                    <option value="">Select Payment Method</option>
+                    <option value="crypto">Cryptocurrency</option>
+                </select>
+            </div>
+            
+            <div id="crypto_selection" class="mb-6 hidden">
+                <label for="cryptocurrency" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Select Cryptocurrency</label>
+                <select id="cryptocurrency" name="cryptocurrency" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white">
+                    <option value="">Select Cryptocurrency</option>
+                    {% for crypto in cryptocurrencies %}
+                        <option value="{{ crypto.id }}">{{ crypto.name }} ({{ crypto.symbol }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div id="payment_proof_section" class="mb-6 hidden">
+                <label for="payment_proof" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Upload Payment Proof</label>
+                <input type="file" id="payment_proof" name="payment_proof" accept="image/*" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-700 dark:text-white">
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Upload a screenshot of the transaction (e.g., blockchain confirmation).</p>
+            </div>
+            
+            <div id="crypto_details" class="mb-6 hidden">
+                <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-2">Cryptocurrency Details</h3>
+                <div id="crypto_wallet_details" class="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
+                    <p class="text-center text-slate-500 dark:text-slate-400">Please select a cryptocurrency to see the wallet address</p>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Please include your username in the transaction memo if possible</p>
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200" {% if not kyc_approved %}disabled{% endif %}>
+                    Submit Deposit Request
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Recent Deposits -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white mb-4">Recent Deposits</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Payment Method</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Payment Proof</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    {% if deposits %}
+                        {% for deposit in deposits %}
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ deposit.created_at|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">{{ profile.currency }} {{ deposit.amount|floatformat:2 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">
+                                    {{ deposit.get_payment_method_display }}
+                                    {% if deposit.cryptocurrency %}
+                                        ({{ deposit.cryptocurrency.symbol }})
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        {% if deposit.status == 'completed' %}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
+                                        {% elif deposit.status == 'pending' %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400
+                                        {% else %}bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400{% endif %}">
+                                        {{ deposit.status|title }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-white">
+                                    {% if deposit.payment_proof %}
+                                        <a href="{{ deposit.payment_proof.url }}" target="_blank" class="text-blue-600 hover:underline">View Proof</a>
+                                    {% else %}
+                                        No Proof
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400" colspan="5">No deposit history</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethodSelect = document.getElementById('payment_method');
+        const cryptoDetails = document.getElementById('crypto_details');
+        const cryptoSelection = document.getElementById('crypto_selection');
+        const paymentProofSection = document.getElementById('payment_proof_section');
+        const cryptocurrencySelect = document.getElementById('cryptocurrency');
+        const cryptoWalletDetails = document.getElementById('crypto_wallet_details');
+        
+        const cryptocurrencies = [
+            {% for crypto in cryptocurrencies %}
+                {
+                    id: {{ crypto.id }},
+                    name: "{{ crypto.name|escapejs }}",
+                    symbol: "{{ crypto.symbol|escapejs }}",
+                    wallet_address: "{{ crypto.wallet_address|escapejs }}"
+                },
+            {% endfor %}
+        ];
+        
+        paymentMethodSelect.addEventListener('change', function() {
+            if (this.value === 'crypto') {
+                cryptoDetails.classList.remove('hidden');
+                cryptoSelection.classList.remove('hidden');
+                paymentProofSection.classList.remove('hidden');
+            } else {
+                cryptoDetails.classList.add('hidden');
+                cryptoSelection.classList.add('hidden');
+                paymentProofSection.classList.add('hidden');
+            }
+        });
+        
+        cryptocurrencySelect.addEventListener('change', function() {
+            const selectedCryptoId = parseInt(this.value);
+            if (selectedCryptoId) {
+                const selectedCrypto = cryptocurrencies.find(crypto => crypto.id === selectedCryptoId);
+                console.log('Selected Crypto:', selectedCrypto); // Debug
+                if (selectedCrypto) {
+                    cryptoWalletDetails.innerHTML = `
+                        <p class="mb-2 text-sm text-slate-700 dark:text-slate-300"><strong>${this.options[this.selectedIndex].text.trim()}</strong></p>
+                        <p class="mb-2 break-all font-mono bg-white dark:bg-slate-800 p-2 rounded border border-slate-200 dark:border-slate-600">${selectedCrypto.wallet_address || 'No wallet address available'}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400"><strong>Reference:</strong> ${selectedCrypto.symbol}_${document.querySelector('h2.text-xl').textContent}</p>
+                    `;
+                }
+            } else {
+                cryptoWalletDetails.innerHTML = '<p class="text-center text-slate-500 dark:text-slate-400">Please select a cryptocurrency to see the wallet address</p>';
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

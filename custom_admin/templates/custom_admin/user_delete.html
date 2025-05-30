@@ -1,0 +1,20 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Delete User: {{ user.username }}{% endblock %}
+{% block page_subtitle %}Confirm user deletion{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="bg-white rounded-lg shadow-sm p-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Delete User: {{ user.username }}</h3>
+        <p class="text-sm text-gray-600 mb-4">Are you sure you want to delete the user <strong>{{ user.username }}</strong>? This action cannot be undone.</p>
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div class="flex space-x-3">
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700" aria-label="Confirm delete user {{ user.username }}">Delete</button>
+                <a href="{% url 'custom_admin:user_detail' user.id %}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" aria-label="Cancel delete">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

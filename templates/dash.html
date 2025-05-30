@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Theme initialization script (must run before body renders) -->
+    <script>
+        // Initialize theme before page renders to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+    
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+
+        /* Theme toggle icon styles */
+        .theme-icon {
+            transition: opacity 0.2s ease-in-out;
+        }
+        
+        .dark .theme-icon.sun {
+            opacity: 1;
+        }
+        
+        .dark .theme-icon.moon {
+            opacity: 0;
+        }
+        
+        .theme-icon.sun {
+            opacity: 0;
+        }
+        
+        .theme-icon.moon {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="h-full bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+    <!-- Mobile Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
+    
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <aside class="sidebar fixed lg:static top-0 left-0 h-full w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 z-40">
+            <!-- Logo -->
+            <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+                <h1 class="text-xl font-bold text-slate-900 dark:text-white flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-3"></i>
+                    {{ site_name }}
+                </h1>
+            </div>
+            
+            <!-- User Info -->
+            <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+                <div class="flex items-center space-x-3">
+                    <div class="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium">
+                        {{ user.username|first|upper }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-slate-900 dark:text-white truncate">{{ user.username }}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ user.email }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="p-4 flex-1">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="{% url 'main:dashboard' %}" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 {% if request.resolver_match.url_name == 'dashboard' %}bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700{% endif %}">
+                            <i class="fas fa-tachometer-alt w-5 mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'main:investments' %}" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 {% if request.resolver_match.url_name == 'investments' %}bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700{% endif %}">
+                            <i class="fas fa-chart-line w-5 mr-3"></i>
+                            Investments
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'main:deposit' %}" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 {% if request.resolver_match.url_name == 'deposit' %}bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700{% endif %}">
+                            <i class="fas fa-arrow-down w-5 mr-3"></i>
+                            Deposit
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'main:withdraw' %}" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 {% if request.resolver_match.url_name == 'withdraw' %}bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700{% endif %}">
+                            <i class="fas fa-arrow-up w-5 mr-3"></i>
+                            Withdraw
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'main:settings' %}" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 {% if request.resolver_match.url_name == 'settings' %}bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700{% endif %}">
+                            <i class="fas fa-cog w-5 mr-3"></i>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Logout -->
+            <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+                <a href="{% url 'main:logout' %}" class="flex items-center px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200">
+                    <i class="fas fa-sign-out-alt w-5 mr-3"></i>
+                    Logout
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col min-w-0">
+            <!-- Header -->
+            <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <button id="toggle-sidebar" class="lg:hidden text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 mr-4">
+                            <i class="fas fa-bars text-lg"></i>
+                        </button>
+                        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">{% block header %}{% endblock %}</h2>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <!-- KYC Status -->
+                        <div class="hidden sm:flex items-center">
+                            {% if user.profile.kyc_verified %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    Verified
+                                </span>
+                            {% else %}
+                                <a href="{% url 'main:kyc_verification' %}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 transition-colors duration-200">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                                    Unverified
+                                </a>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Theme Toggle -->
+                        <button id="theme-toggle" class="relative text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors duration-200 p-2">
+                            <i class="fas fa-moon theme-icon moon absolute inset-0 flex items-center justify-center"></i>
+                            <i class="fas fa-sun theme-icon sun absolute inset-0 flex items-center justify-center"></i>
+                            <span class="invisible">Toggle theme</span>
+                        </button>
+                        
+                        <!-- Notifications -->
+                        <button class="relative text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors duration-200">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
+                        </button>
+                        
+                        <!-- User Avatar -->
+                        <div class="hidden md:flex items-center">
+                            <div class="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm">
+                                {{ user.username|first|upper }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <!-- Messages -->
+                {% if messages %}
+                    <div class="mb-6 space-y-3">
+                        {% for message in messages %}
+                            <div class="flex items-center justify-between p-4 rounded-lg border {% if message.tags == 'success' %}bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400{% elif message.tags == 'error' %}bg-red-50 border-red-200 text-red-700 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400{% else %}bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400{% endif %}">
+                                <div class="flex items-center">
+                                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-2"></i>
+                                    <span class="text-sm font-medium">{{ message }}</span>
+                                </div>
+                                <button class="text-current opacity-70 hover:opacity-100" onclick="this.parentElement.remove()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% block content %}
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Theme functionality
+        function initializeTheme() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+
+            function updateTheme(isDark) {
+                if (isDark) {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                }
+                
+                // Dispatch custom event for theme change
+                document.dispatchEvent(new CustomEvent('themeChanged', { 
+                    detail: { isDark } 
+                }));
+            }
+
+            // Theme toggle click handler
+                        themeToggle.addEventListener('click', () => {
+                const isDark = !html.classList.contains('dark');
+                updateTheme(isDark);
+            });
+
+            // Listen for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    updateTheme(e.matches);
+                }
+            });
+        }
+
+        // Sidebar toggle functionality
+        function initializeSidebar() {
+            const toggleSidebar = document.getElementById('toggle-sidebar');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            toggleSidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('hidden');
+            });
+
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                overlay.classList.add('hidden');
+            });
+
+            // Close sidebar when clicking nav items on mobile
+            document.querySelectorAll('.sidebar a').forEach(item => {
+                item.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.remove('open');
+                        overlay.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Handle responsive sidebar
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 1024) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.add('hidden');
+                }
+            });
+        }
+
+        // Initialize messages auto-hide
+        function initializeMessages() {
+            document.querySelectorAll('[class*="bg-green-50"], [class*="bg-red-50"], [class*="bg-blue-50"]').forEach(message => {
+                if (message.querySelector('.fas')) {
+                    setTimeout(() => {
+                        message.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+                        message.style.opacity = '0';
+                        message.style.transform = 'translateY(-10px)';
+                        setTimeout(() => message.remove(), 300);
+                    }, 5000);
+                }
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTheme();
+            initializeSidebar();
+            initializeMessages();
+        });
+
+        // Debug function to check theme state
+        function debugTheme() {
+            console.log('Current theme:', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            console.log('Saved theme:', localStorage.getItem('theme'));
+            console.log('System prefers dark:', window.matchMedia('(prefers-color-scheme: dark)').matches);
+        }
+
+        // Make debug function available globally
+        window.debugTheme = debugTheme;
+    </script>
+</body>
+</html>
