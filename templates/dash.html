@@ -236,6 +236,15 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+
+                {% if request.session.is_impersonating %}
+                <div class="bg-yellow-50 border-l-4 border-yellow-600 p-3 rounded-lg mb-4">
+                    <p class="text-sm text-yellow-700">
+                        You are currently logged in as {{ request.user.username }}. 
+                        <a href="{% url 'custom_admin:exit_login_as_user' %}" class="text-primary hover:underline" aria-label="Return to admin session">Return to Admin</a>
+                    </p>
+                </div>
+                {% endif %}
                 
                 {% block content %}
                 {% endblock %}

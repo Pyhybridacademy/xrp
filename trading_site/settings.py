@@ -146,3 +146,8 @@ LOGGING = {
 handler404 = 'main.views.custom_404'
 handler403 = 'main.views.custom_403'
 handler500 = 'main.views.custom_500'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'

@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}Login - ForexPro{% endblock %}
 
 {% block content %}
@@ -19,28 +18,75 @@
                 {% endfor %}
             {% endif %}
 
-            <form method="POST" class="space-y-6">
+            <form method="POST" class="space-y-6" id="loginForm">
                 {% csrf_token %}
+                {{ form.non_field_errors }}
+
                 <div>
-                    <label for="username" class="block text-sm font-medium text-textSecondary">Username</label>
+                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-textSecondary">Username</label>
                     <div class="relative">
-                        <input type="text" name="username" id="username" required
-                               class="input-elegant focus-elegant w-full mt-1">
+                        {{ form.username }}
+                        {{ form.username.errors }}
                         <i class="fas fa-user absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
                     </div>
                 </div>
+
                 <div>
-                    <label for="password" class="block text-sm font-medium text-textSecondary">Password</label>
+                    <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-textSecondary">Password</label>
                     <div class="relative">
-                        <input type="password" name="password" id="password" required
-                               class="input-elegant focus-elegant w-full mt-1">
+                        {{ form.password }}
+                                                {{ form.password.errors }}
                         <i class="fas fa-lock absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
                     </div>
                 </div>
+
+                <div style="display: none;">
+                    {{ form.honeypot }}
+                    {{ form.honeypot.errors }}
+                </div>
+
+                <!-- Advanced CAPTCHA Section -->
+                <div id="captcha-container">
+                    {% if captcha_data.type == 'image' %}
+                        <div class="captcha-section">
+                            <label class="block text-sm font-medium text-textSecondary mb-2">{{ captcha_data.question }}</label>
+                            <div class="captcha-image-container mb-3">
+                                <img src="{{ captcha_data.image_data }}" alt="CAPTCHA Image" class="captcha-image border rounded">
+                            </div>
+                            <div class="relative">
+                                <input type="text" name="captcha_answer" id="id_captcha_answer" class="form-input" placeholder="Enter the answer" required>
+                                <i class="fas fa-puzzle-piece absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                            </div>
+                        </div>
+                    {% elif captcha_data.type == 'question' %}
+                        <div class="captcha-section">
+                            <label for="id_captcha_answer" class="block text-sm font-medium text-textSecondary mb-2">{{ captcha_data.question }}</label>
+                            <div class="relative">
+                                <input type="text" name="captcha_answer" id="id_captcha_answer" class="form-input" placeholder="Enter your answer" required>
+                                <i class="fas fa-question-circle absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                            </div>
+                        </div>
+                    {% elif captcha_data.type == 'slider' %}
+                        <div class="captcha-section">
+                            <label class="block text-sm font-medium text-textSecondary mb-2">{{ captcha_data.question }}</label>
+                            <div class="slider-container mb-3">
+                                <input type="range" id="captcha-slider" class="slider" min="0" max="100" value="0">
+                                <div class="slider-value">Position: <span id="slider-value">0</span>%</div>
+                            </div>
+                            <input type="hidden" name="captcha_answer" id="id_captcha_answer" value="0">
+                        </div>
+                    {% endif %}
+                    
+                    <button type="button" id="refresh-captcha" class="btn-secondary mt-2">
+                        <i class="fas fa-refresh mr-1"></i>New CAPTCHA
+                    </button>
+                </div>
+
                 <button type="submit" class="btn-elegant w-full flex items-center justify-center">
                     <i class="fas fa-sign-in-alt mr-2"></i>Login
                 </button>
             </form>
+
             <p class="mt-4 text-center text-textSecondary">
                 <a href="{% url 'main:password_reset' %}" class="text-accent hover:underline">Forgot Password?</a>
             </p>
@@ -51,4 +97,233 @@
         </div>
     </div>
 </section>
+
+<style>
+    .form-elegant input, .form-elegant select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #333;
+        font-size: 14px;
+    }
+    
+    .form-elegant input:focus, .form-elegant select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    }
+    
+    .alert {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-left: 4px solid;
+    }
+    
+    .btn-elegant {
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-elegant:hover {
+        background: linear-gradient(135deg, #0056b3, #004085);
+        transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+        padding: 8px 16px;
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #545b62;
+    }
+    
+    .captcha-section {
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .captcha-image {
+        max-width: 100%;
+        height: auto;
+        background-color: white;
+        padding: 8px;
+    }
+    
+    .slider-container {
+        padding: 16px 0;
+    }
+    
+    .slider {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #ddd;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+    }
+    
+    .slider:hover {
+        opacity: 1;
+    }
+    
+    .slider::-webkit-slider-thumb {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #007bff;
+        cursor: pointer;
+    }
+    
+    .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #007bff;
+        cursor: pointer;
+        border: none;
+    }
+    
+    .slider-value {
+        text-align: center;
+        margin-top: 8px;
+        font-weight: 600;
+        color: #007bff;
+    }
+    
+    .form-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #333;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle slider CAPTCHA
+    const slider = document.getElementById('captcha-slider');
+    const sliderValue = document.getElementById('slider-value');
+    const hiddenInput = document.getElementById('id_captcha_answer');
+    
+    if (slider) {
+        slider.addEventListener('input', function() {
+            const value = this.value;
+            sliderValue.textContent = value;
+            hiddenInput.value = value;
+        });
+    }
+    
+    // Handle CAPTCHA refresh
+    document.getElementById('refresh-captcha').addEventListener('click', function() {
+        const button = this;
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>Loading...';
+        
+        fetch('{% url "main:refresh_captcha" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateCaptchaDisplay(data.captcha_data);
+            }
+        })
+        .catch(error => {
+            console.error('Error refreshing CAPTCHA:', error);
+        })
+        .finally(() => {
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-refresh mr-1"></i>New CAPTCHA';
+        });
+    });
+    
+    function updateCaptchaDisplay(captchaData) {
+        const container = document.getElementById('captcha-container');
+        let html = '';
+        
+        if (captchaData.type === 'image') {
+            html = `
+                <div class="captcha-section">
+                    <label class="block text-sm font-medium text-textSecondary mb-2">${captchaData.question}</label>
+                    <div class="captcha-image-container mb-3">
+                        <img src="${captchaData.image_data}" alt="CAPTCHA Image" class="captcha-image border rounded">
+                    </div>
+                    <div class="relative">
+                        <input type="text" name="captcha_answer" id="id_captcha_answer" class="form-input" placeholder="Enter the answer" required>
+                        <i class="fas fa-puzzle-piece absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+            `;
+        } else if (captchaData.type === 'question') {
+            html = `
+                <div class="captcha-section">
+                    <label for="id_captcha_answer" class="block text-sm font-medium text-textSecondary mb-2">${captchaData.question}</label>
+                    <div class="relative">
+                        <input type="text" name="captcha_answer" id="id_captcha_answer" class="form-input" placeholder="Enter your answer" required>
+                        <i class="fas fa-question-circle absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
+                    </div>
+                </div>
+            `;
+        } else if (captchaData.type === 'slider') {
+            html = `
+                <div class="captcha-section">
+                    <label class="block text-sm font-medium text-textSecondary mb-2">${captchaData.question}</label>
+                    <div class="slider-container mb-3">
+                        <input type="range" id="captcha-slider" class="slider" min="0" max="100" value="0">
+                        <div class="slider-value">Position: <span id="slider-value">0</span>%</div>
+                    </div>
+                    <input type="hidden" name="captcha_answer" id="id_captcha_answer" value="0">
+                </div>
+            `;
+        }
+        
+        html += `
+            <button type="button" id="refresh-captcha" class="btn-secondary mt-2">
+                <i class="fas fa-refresh mr-1"></i>New CAPTCHA
+            </button>
+        `;
+        
+        container.innerHTML = html;
+        
+        // Re-attach event listeners
+        const newSlider = document.getElementById('captcha-slider');
+        const newSliderValue = document.getElementById('slider-value');
+        const newHiddenInput = document.getElementById('id_captcha_answer');
+        
+        if (newSlider) {
+            newSlider.addEventListener('input', function() {
+                const value = this.value;
+                newSliderValue.textContent = value;
+                newHiddenInput.value = value;
+            });
+        }
+        
+        // Re-attach refresh button listener
+        document.getElementById('refresh-captcha').addEventListener('click', arguments.callee);
+    }
+});
+</script>
 {% endblock %}

@@ -14,6 +14,9 @@ urlpatterns = [
     path('users/<int:user_id>/edit/', views.user_edit, name='user_edit'),
     path('users/<int:user_id>/delete/', views.user_delete, name='user_delete'),
     path('users/<int:user_id>/add-bonus/', views.user_add_bonus, name='user_add_bonus'),
+    path('users/<int:user_id>/reset-password/', views.user_reset_password, name='user_reset_password'),
+    path('users/<int:user_id>/login-as/', views.login_as_user, name='login_as_user'),
+    path('exit-login-as/', views.exit_login_as_user, name='exit_login_as_user'),
     # KYC Management
     path('kyc/', views.kyc_list, name='kyc_list'),
     path('kyc/<int:kyc_id>/', views.kyc_detail, name='kyc_detail'),

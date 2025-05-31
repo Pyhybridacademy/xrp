@@ -60,6 +60,10 @@
             },
         };
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>AOS.init();</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -712,7 +716,6 @@
                     <a href="#home" class="nav-link-elegant smooth-scroll">Home</a>
                     <a href="{% url 'main:about' %}" class="nav-link-elegant smooth-scroll">About</a>
                     <a href="#services" class="nav-link-elegant smooth-scroll">Services</a>
-                    <a href="#education" class="nav-link-elegant smooth-scroll">Education</a>
                     <a href="{% url 'main:demo' %}" class="nav-link-elegant ">Demo</a>
                     <a href="#contact" class="nav-link-elegant smooth-scroll">Contact</a>
                     
@@ -756,7 +759,6 @@
                 <a href="/" class="block nav-link-elegant">Home</a>
                 <a href="{% url 'main:about' %}" class="block nav-link-elegant ">About</a>
                 <a href="{% url 'main:home' %}#services" class="block nav-link-elegant ">Services</a>
-                <a href="{% url 'main:home' %}#education" class="block nav-link-elegant ">Education</a>
                 <a href="{% url 'main:demo' %}" class="nav-link-elegant ">Demo</a>
 
                 <a href="{% url 'main:home' %}#contact" class="block nav-link-elegant ">Contact</a>

@@ -1,1 +1,271 @@
-INFO 2025-05-30 15:53:52,444 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 16:19:35,193 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 16:20:35,323 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 16:21:46,452 autoreload C:\Users\kpoje\Desktop\version1\broker\main\forms.py changed, reloading.
+INFO 2025-05-31 16:22:42,181 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 16:24:22,164 basehttp "GET / HTTP/1.1" 200 78912
+INFO 2025-05-31 16:25:10,237 basehttp "GET /logout/ HTTP/1.1" 302 0
+INFO 2025-05-31 16:25:11,486 basehttp "GET / HTTP/1.1" 200 78530
+INFO 2025-05-31 16:26:27,312 autoreload C:\Users\kpoje\Desktop\version1\broker\main\forms.py changed, reloading.
+INFO 2025-05-31 16:27:19,772 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 16:27:52,676 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 16:28:04,430 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 16:30:05,154 basehttp "GET / HTTP/1.1" 200 78530
+INFO 2025-05-31 16:30:57,326 basehttp "GET / HTTP/1.1" 200 78530
+INFO 2025-05-31 16:41:26,942 basehttp "GET / HTTP/1.1" 200 78352
+INFO 2025-05-31 16:41:45,424 basehttp "GET / HTTP/1.1" 200 78352
+WARNING 2025-05-31 16:42:22,413 log Not Found: /favicon.ico
+WARNING 2025-05-31 16:42:28,640 basehttp "GET /favicon.ico HTTP/1.1" 404 179
+INFO 2025-05-31 16:43:44,726 basehttp "GET /register/ HTTP/1.1" 200 34823
+INFO 2025-05-31 16:44:46,781 basehttp "GET /register/ HTTP/1.1" 200 34823
+INFO 2025-05-31 16:55:27,703 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 16:56:13,509 autoreload C:\Users\kpoje\Desktop\version1\broker\trading_site\settings.py changed, reloading.
+INFO 2025-05-31 16:56:23,278 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 16:58:24,975 autoreload C:\Users\kpoje\Desktop\version1\broker\trading_site\settings.py changed, reloading.
+INFO 2025-05-31 16:58:36,811 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 16:59:36,069 autoreload C:\Users\kpoje\Desktop\version1\broker\trading_site\settings.py changed, reloading.
+INFO 2025-05-31 16:59:43,483 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 17:02:01,558 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 17:02:18,780 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 17:07:14,135 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 17:07:26,194 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 17:07:43,087 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 17:08:39,367 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 17:08:54,440 basehttp "GET /register/ HTTP/1.1" 200 38287
+INFO 2025-05-31 17:08:54,742 basehttp - Broken pipe from ('127.0.0.1', 55672)
+WARNING 2025-05-31 17:11:02,830 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>username<ul class="errorlist" id="id_username_error"><li>Username can only contain letters, numbers, and underscores.</li></ul></li><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Invalid CAPTCHA timestamp.</li></ul></li></ul>
+ERROR 2025-05-31 17:11:05,439 log Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\main\views.py", line 86, in register
+    'captcha_question': captcha_question
+                        ^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'captcha_question' where it is not associated with a value
+ERROR 2025-05-31 17:11:18,225 basehttp "POST /register/ HTTP/1.1" 500 145
+INFO 2025-05-31 17:15:08,403 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 17:15:19,610 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 17:16:17,311 autoreload C:\Users\kpoje\Desktop\version1\broker\main\forms.py changed, reloading.
+INFO 2025-05-31 17:16:26,841 autoreload Watching for file changes with StatReloader
+WARNING 2025-05-31 17:18:53,412 forms Missing CAPTCHA timestamp in form submission
+WARNING 2025-05-31 17:18:53,445 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>username<ul class="errorlist" id="id_username_error"><li>Username can only contain letters, numbers, and underscores.</li></ul></li><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Missing CAPTCHA timestamp. Please try again.</li></ul></li></ul>
+WARNING 2025-05-31 17:18:54,001 forms Missing CAPTCHA timestamp in form submission
+INFO 2025-05-31 17:18:54,496 basehttp "POST /register/ HTTP/1.1" 200 42913
+WARNING 2025-05-31 17:20:48,543 forms Missing CAPTCHA timestamp in form submission
+WARNING 2025-05-31 17:20:50,786 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Missing CAPTCHA timestamp. Please try again.</li></ul></li></ul>
+WARNING 2025-05-31 17:20:55,091 forms Missing CAPTCHA timestamp in form submission
+INFO 2025-05-31 17:21:00,007 basehttp "POST /register/ HTTP/1.1" 200 39979
+WARNING 2025-05-31 17:21:57,842 forms Missing CAPTCHA timestamp in form submission
+WARNING 2025-05-31 17:22:13,351 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Missing CAPTCHA timestamp. Please try again.</li></ul></li></ul>
+WARNING 2025-05-31 17:22:17,859 forms Missing CAPTCHA timestamp in form submission
+INFO 2025-05-31 17:22:20,910 basehttp "POST /register/ HTTP/1.1" 200 39983
+INFO 2025-05-31 17:26:24,873 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 17:27:26,145 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 17:28:36,647 basehttp "GET / HTTP/1.1" 200 78670
+INFO 2025-05-31 17:30:00,856 basehttp "GET /register/ HTTP/1.1" 200 38735
+WARNING 2025-05-31 17:32:34,168 forms Missing CAPTCHA timestamp in form submission
+WARNING 2025-05-31 17:32:36,849 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Missing CAPTCHA timestamp. Please try again.</li></ul></li></ul>
+WARNING 2025-05-31 17:32:41,148 forms Missing CAPTCHA timestamp in form submission
+INFO 2025-05-31 17:33:10,182 basehttp "POST /register/ HTTP/1.1" 200 40103
+INFO 2025-05-31 17:35:46,454 autoreload C:\Users\kpoje\Desktop\version1\broker\main\forms.py changed, reloading.
+INFO 2025-05-31 17:36:22,050 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 17:37:03,990 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 17:38:33,713 autoreload Watching for file changes with StatReloader
+WARNING 2025-05-31 17:40:07,522 forms Missing CAPTCHA timestamp in form submission
+INFO 2025-05-31 17:40:09,944 basehttp - Broken pipe from ('127.0.0.1', 55899)
+WARNING 2025-05-31 17:40:10,002 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Form submission error: CAPTCHA timestamp is missing. Please refresh the page and try again.</li></ul></li></ul>
+WARNING 2025-05-31 17:40:10,510 forms Missing CAPTCHA timestamp in form submission
+INFO 2025-05-31 17:40:11,793 basehttp - Broken pipe from ('127.0.0.1', 55898)
+INFO 2025-05-31 17:40:15,312 basehttp "GET / HTTP/1.1" 200 78670
+INFO 2025-05-31 17:40:27,615 basehttp "GET /register/ HTTP/1.1" 200 38736
+WARNING 2025-05-31 17:41:46,855 forms Missing CAPTCHA timestamp in form submission
+WARNING 2025-05-31 17:41:48,072 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Form submission error: CAPTCHA timestamp is missing. Please refresh the page and try again.</li></ul></li></ul>
+WARNING 2025-05-31 17:41:56,187 forms Missing CAPTCHA timestamp in form submission
+INFO 2025-05-31 17:42:03,605 basehttp "POST /register/ HTTP/1.1" 200 40244
+INFO 2025-05-31 17:43:04,785 basehttp "GET / HTTP/1.1" 200 78670
+INFO 2025-05-31 17:43:16,869 basehttp "GET /register/ HTTP/1.1" 200 38705
+INFO 2025-05-31 17:43:27,994 basehttp "GET /custom-admin/ HTTP/1.1" 200 27839
+INFO 2025-05-31 17:44:25,035 basehttp "GET /register/ HTTP/1.1" 200 38735
+INFO 2025-05-31 17:44:47,878 basehttp "GET /register/ HTTP/1.1" 200 38735
+WARNING 2025-05-31 17:45:39,739 log Not Found: /favicon.ico
+WARNING 2025-05-31 17:45:45,678 basehttp "GET /favicon.ico HTTP/1.1" 404 179
+WARNING 2025-05-31 17:46:32,331 forms Missing CAPTCHA timestamp in form submission
+WARNING 2025-05-31 17:46:40,649 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Form submission error: CAPTCHA timestamp is missing. Please refresh the page and try again.</li></ul></li><li>__all__<ul class="errorlist nonfield"><li>Passwords do not match.</li></ul></li></ul>
+WARNING 2025-05-31 17:46:49,233 forms Missing CAPTCHA timestamp in form submission
+INFO 2025-05-31 17:46:51,413 basehttp "POST /register/ HTTP/1.1" 200 41137
+INFO 2025-05-31 17:50:27,603 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 17:51:22,226 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 17:53:29,113 basehttp "GET / HTTP/1.1" 200 78670
+INFO 2025-05-31 17:53:32,750 basehttp - Broken pipe from ('127.0.0.1', 56000)
+INFO 2025-05-31 17:55:09,904 basehttp "GET /register/ HTTP/1.1" 200 43319
+INFO 2025-05-31 18:01:52,800 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 18:02:46,200 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 18:04:03,063 basehttp "GET /register/ HTTP/1.1" 200 38668
+INFO 2025-05-31 18:04:24,266 basehttp "GET /register/ HTTP/1.1" 200 38667
+WARNING 2025-05-31 18:04:58,427 log Not Found: /favicon.ico
+WARNING 2025-05-31 18:05:00,869 basehttp "GET /favicon.ico HTTP/1.1" 404 179
+WARNING 2025-05-31 18:06:42,602 forms Invalid CAPTCHA answer: entered=1, correct=None
+WARNING 2025-05-31 18:06:47,704 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Incorrect CAPTCHA answer. Please try again.</li></ul></li></ul>
+WARNING 2025-05-31 18:06:55,873 forms Invalid CAPTCHA answer: entered=1, correct=None
+INFO 2025-05-31 18:07:11,733 basehttp - Broken pipe from ('127.0.0.1', 56108)
+INFO 2025-05-31 18:07:36,425 basehttp "GET /register/ HTTP/1.1" 200 38667
+WARNING 2025-05-31 18:08:29,538 forms Invalid CAPTCHA answer: entered=6, correct=None
+WARNING 2025-05-31 18:08:33,828 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>captcha_answer<ul class="errorlist" id="id_captcha_answer_error"><li>Incorrect CAPTCHA answer. Please try again.</li></ul></li></ul>
+WARNING 2025-05-31 18:08:38,273 forms Invalid CAPTCHA answer: entered=6, correct=None
+INFO 2025-05-31 18:08:44,589 basehttp "POST /register/ HTTP/1.1" 200 40033
+INFO 2025-05-31 18:12:30,244 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 18:12:48,290 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 18:13:14,266 autoreload C:\Users\kpoje\Desktop\version1\broker\main\forms.py changed, reloading.
+INFO 2025-05-31 18:13:42,691 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 18:15:17,294 basehttp "GET / HTTP/1.1" 200 78670
+INFO 2025-05-31 19:17:40,629 basehttp "GET /register/ HTTP/1.1" 200 38668
+INFO 2025-05-31 20:47:56,995 basehttp "GET /register/ HTTP/1.1" 200 38667
+INFO 2025-05-31 20:49:10,642 basehttp "GET /custom-admin/ HTTP/1.1" 200 27839
+WARNING 2025-05-31 20:50:15,806 views Failed registration attempt from IP 127.0.0.1: <ul class="errorlist"><li>__all__<ul class="errorlist nonfield"><li>Passwords do not match.</li></ul></li></ul>
+WARNING 2025-05-31 20:50:23,780 forms Invalid CAPTCHA answer: entered=10, correct=0
+INFO 2025-05-31 20:50:30,049 basehttp "POST /register/ HTTP/1.1" 200 40020
+INFO 2025-05-31 20:51:42,822 basehttp "GET /custom-admin/ HTTP/1.1" 200 27839
+INFO 2025-05-31 21:07:37,206 autoreload C:\Users\kpoje\Desktop\version1\broker\main\forms.py changed, reloading.
+INFO 2025-05-31 21:08:20,913 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 21:09:01,003 autoreload C:\Users\kpoje\Desktop\version1\broker\main\utils.py changed, reloading.
+INFO 2025-05-31 21:09:43,601 autoreload Watching for file changes with StatReloader
+ERROR 2025-05-31 21:12:20,932 log Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\main\views.py", line 141, in register
+    return render(request, 'main/register.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'refresh_captcha' not found. 'refresh_captcha' is not a valid view function or pattern name.
+ERROR 2025-05-31 21:12:38,144 basehttp "GET /register/ HTTP/1.1" 500 145
+WARNING 2025-05-31 21:13:06,261 log Not Found: /favicon.ico
+WARNING 2025-05-31 21:13:07,116 basehttp "GET /favicon.ico HTTP/1.1" 404 179
+INFO 2025-05-31 21:16:12,255 autoreload C:\Users\kpoje\Desktop\version1\broker\main\urls.py changed, reloading.
+INFO 2025-05-31 21:16:28,830 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 21:17:25,850 basehttp "GET /register/ HTTP/1.1" 200 50437
+INFO 2025-05-31 21:19:09,644 basehttp "POST /refresh-captcha/ HTTP/1.1" 200 210
+INFO 2025-05-31 21:22:33,359 basehttp "POST /register/ HTTP/1.1" 302 0
+INFO 2025-05-31 21:22:33,648 basehttp "GET /dashboard/ HTTP/1.1" 302 0
+INFO 2025-05-31 21:22:35,761 basehttp "GET /kyc-verification/ HTTP/1.1" 200 21240
+INFO 2025-05-31 21:22:53,942 basehttp "GET /dashboard/ HTTP/1.1" 302 0
+INFO 2025-05-31 21:22:54,096 basehttp "GET /kyc-verification/ HTTP/1.1" 200 20457
+INFO 2025-05-31 21:29:51,342 basehttp "GET /custom-admin/ HTTP/1.1" 200 27839
+INFO 2025-05-31 21:31:52,486 basehttp "POST /kyc-verification/ HTTP/1.1" 302 0
+INFO 2025-05-31 21:31:52,679 basehttp "GET /kyc-verification/ HTTP/1.1" 200 20436
+INFO 2025-05-31 21:32:33,375 basehttp "POST /kyc-verification/ HTTP/1.1" 302 0
+INFO 2025-05-31 21:32:33,471 basehttp "GET /kyc-verification/ HTTP/1.1" 200 20436
+INFO 2025-05-31 21:33:28,975 basehttp "GET /custom-admin/ HTTP/1.1" 200 27839
+INFO 2025-05-31 21:33:34,119 basehttp "GET /custom-admin/kyc/ HTTP/1.1" 200 14534
+INFO 2025-05-31 21:34:39,755 basehttp "POST /kyc-verification/ HTTP/1.1" 302 0
+INFO 2025-05-31 21:34:39,848 basehttp "GET /kyc-verification/ HTTP/1.1" 200 20436
+INFO 2025-05-31 21:47:42,020 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 21:48:01,072 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 21:49:21,412 views KYC exists: False, Status: None
+INFO 2025-05-31 21:49:22,029 basehttp "GET /kyc-verification/ HTTP/1.1" 200 19529
+INFO 2025-05-31 21:50:14,747 views KYC exists: False, Status: None
+INFO 2025-05-31 21:50:14,869 views request.FILES: <MultiValueDict: {'id_front': [<InMemoryUploadedFile: processed_photo_5888917818500565215_x.jpg (image/jpeg)>], 'id_back': [<InMemoryUploadedFile: kim nam joon.jpg (image/jpeg)>], 'selfie': [<InMemoryUploadedFile: logo.png (image/png)>]}>
+ERROR 2025-05-31 21:50:16,582 views Error sending KYC submission email: 'KYCVerification' object has no attribute 'reviewed_at'
+INFO 2025-05-31 21:50:18,105 basehttp "POST /kyc-verification/ HTTP/1.1" 302 0
+INFO 2025-05-31 21:50:21,809 basehttp "GET /dashboard/ HTTP/1.1" 200 25091
+INFO 2025-05-31 21:50:38,505 basehttp "GET /custom-admin/ HTTP/1.1" 200 27845
+INFO 2025-05-31 21:57:17,747 autoreload C:\Users\kpoje\Desktop\version1\broker\custom_admin\views.py changed, reloading.
+INFO 2025-05-31 21:58:06,132 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:02:51,693 basehttp "GET /custom-admin/ HTTP/1.1" 200 27845
+INFO 2025-05-31 22:03:23,689 basehttp "GET /custom-admin/users/ HTTP/1.1" 200 17246
+INFO 2025-05-31 22:03:41,913 basehttp "GET /custom-admin/users/5/ HTTP/1.1" 200 14120
+INFO 2025-05-31 22:03:59,459 basehttp "GET /logout/ HTTP/1.1" 302 0
+INFO 2025-05-31 22:04:01,357 basehttp "GET / HTTP/1.1" 200 78670
+INFO 2025-05-31 22:04:10,120 basehttp "GET /login/ HTTP/1.1" 200 42732
+INFO 2025-05-31 22:04:10,386 basehttp "GET /custom-admin/users/5/reset-password/ HTTP/1.1" 200 13282
+INFO 2025-05-31 22:04:51,817 views Admin reset password for user frank6 (ID: 5)
+INFO 2025-05-31 22:04:51,844 basehttp "POST /custom-admin/users/5/reset-password/ HTTP/1.1" 302 0
+INFO 2025-05-31 22:04:52,267 basehttp "GET /custom-admin/users/5/ HTTP/1.1" 200 14667
+INFO 2025-05-31 22:05:42,033 basehttp "GET /login/ HTTP/1.1" 200 46638
+INFO 2025-05-31 22:09:44,867 basehttp "POST /login/ HTTP/1.1" 302 0
+INFO 2025-05-31 22:09:45,044 basehttp "GET /dashboard/ HTTP/1.1" 200 25068
+INFO 2025-05-31 22:12:05,956 autoreload C:\Users\kpoje\Desktop\version1\broker\custom_admin\views.py changed, reloading.
+INFO 2025-05-31 22:12:33,875 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:13:26,156 autoreload C:\Users\kpoje\Desktop\version1\broker\custom_admin\urls.py changed, reloading.
+INFO 2025-05-31 22:14:02,700 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:16:19,815 basehttp "GET /custom-admin/users/5/ HTTP/1.1" 200 14295
+ERROR 2025-05-31 22:16:25,280 log Internal Server Error: /custom-admin/users/5/login-as/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\custom_admin\views.py", line 197, in login_as_user
+    logger.info(f"Admin {request.session['admin_user_id']} started impersonating user {target_user.username} (ID: {user_id})")
+                         ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\contrib\sessions\backends\base.py", line 55, in __getitem__
+    return self._session[key]
+           ~~~~~~~~~~~~~^^^^^
+KeyError: 'admin_user_id'
+ERROR 2025-05-31 22:16:25,788 basehttp "GET /custom-admin/users/5/login-as/ HTTP/1.1" 500 145
+INFO 2025-05-31 22:18:14,348 autoreload C:\Users\kpoje\Desktop\version1\broker\custom_admin\views.py changed, reloading.
+INFO 2025-05-31 22:18:50,531 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:19:20,457 autoreload C:\Users\kpoje\Desktop\version1\broker\trading_site\settings.py changed, reloading.
+INFO 2025-05-31 22:19:33,459 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:20:54,595 autoreload Watching for file changes with StatReloader

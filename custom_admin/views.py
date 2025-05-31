@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils import timezone
-from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth import authenticate, login, update_session_auth_hash, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from main.models import UserProfile, KYCVerification, Transaction, Cryptocurrency, Investment, InvestmentPlan, SiteSettings, WithdrawalCode
 from main.utils import send_kyc_status_email, send_bonus_email
@@ -155,6 +155,86 @@ def user_add_bonus(request, user_id):
             messages.error(request, str(e) or 'Invalid bonus amount.')
     return render(request, 'custom_admin/user_add_bonus.html', {'user': user})
 
+@superuser_required()
+def user_reset_password(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        if not new_password or len(new_password) < 8:
+            messages.error(request, 'Password must be at least 8 characters long.')
+            return render(request, 'custom_admin/user_reset_password.html', {'user': user})
+        
+        if new_password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'custom_admin/user_reset_password.html', {'user': user})
+        
+        user.set_password(new_password)
+        user.save()
+        logger.info(f"Admin reset password for user {user.username} (ID: {user_id})")
+        messages.success(request, f"Password for {user.username} reset successfully. The user can now log in with the new password and change it in their settings.")
+        return redirect('custom_admin:user_detail', user_id=user.id)
+    
+    return render(request, 'custom_admin/user_reset_password.html', {'user': user})
+
+@superuser_required()
+def login_as_user(request, user_id):
+    target_user = get_object_or_404(User, id=user_id)
+    if not request.user.is_superuser:
+        messages.error(request, 'Only superusers can perform this action.')
+        return redirect('custom_admin:user_detail', user_id=user_id)
+    
+    # Store admin user ID before logout
+    admin_user_id = request.user.id
+    logger.debug(f"Before impersonation: admin_user_id={admin_user_id}, session={request.session.items()}")
+    
+    # Set session variables for impersonation
+    request.session['admin_user_id'] = admin_user_id
+    request.session['is_impersonating'] = True
+    request.session.modified = True
+    logger.debug(f"After setting session: session={request.session.items()}")
+    
+    # Log out the admin and log in as the target user
+    logout(request)
+    login(request, target_user)
+    
+    # Verify session state after login
+    logger.debug(f"After login as {target_user.username}: session={request.session.items()}")
+    
+    # Log the action
+    logger.info(f"Admin {admin_user_id} started impersonating user {target_user.username} (ID: {user_id})")
+    messages.info(request, f"You are now logged in as {target_user.username}.")
+    return redirect('main:dashboard')
+
+@superuser_required()
+def exit_login_as_user(request):
+    admin_user_id = request.session.get('admin_user_id')
+    is_impersonating = request.session.get('is_impersonating')
+    
+    if not admin_user_id or not is_impersonating:
+        logger.warning("Attempted to exit impersonation without active session.")
+        messages.error(request, 'No active impersonation session.')
+        return redirect('custom_admin:dashboard')
+    
+    # Get the admin user
+    admin_user = get_object_or_404(User, id=admin_user_id)
+    
+    # Log out the impersonated user and log in as the admin
+    current_user = request.user
+    logout(request)
+    login(request, admin_user)
+    
+    # Clear impersonation session data
+    request.session.pop('admin_user_id', None)
+    request.session.pop('is_impersonating', None)
+    request.session.modified = True
+    
+    logger.info(f"Admin {admin_user.username} stopped impersonating user {current_user.username}")
+    messages.success(request, 'Returned to admin session.')
+    return redirect('custom_admin:dashboard')
+
+    
 @superuser_required()
 def kyc_list(request):
     kycs = KYCVerification.objects.all().select_related('user')
