@@ -269,3 +269,18 @@ INFO 2025-05-31 22:18:50,531 autoreload Watching for file changes with StatReloa
 INFO 2025-05-31 22:19:20,457 autoreload C:\Users\kpoje\Desktop\version1\broker\trading_site\settings.py changed, reloading.
 INFO 2025-05-31 22:19:33,459 autoreload Watching for file changes with StatReloader
 INFO 2025-05-31 22:20:54,595 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:21:16,950 basehttp "GET /custom-admin/users/5/ HTTP/1.1" 302 0
+INFO 2025-05-31 22:21:17,489 basehttp "GET /custom-admin/login/?next=/custom-admin/users/5/ HTTP/1.1" 200 8854
+INFO 2025-05-31 22:21:31,894 views Admin admin logged in
+INFO 2025-05-31 22:21:32,012 basehttp "POST /custom-admin/login/?next=/custom-admin/users/5/ HTTP/1.1" 302 0
+INFO 2025-05-31 22:21:32,198 basehttp "GET /custom-admin/ HTTP/1.1" 200 27845
+INFO 2025-05-31 22:21:42,010 basehttp "GET /custom-admin/users/ HTTP/1.1" 200 17246
+INFO 2025-05-31 22:22:00,637 basehttp "GET /custom-admin/users/2/ HTTP/1.1" 200 14309
+INFO 2025-05-31 22:22:08,217 views Admin 1 started impersonating user chris34 (ID: 2)
+INFO 2025-05-31 22:22:08,373 basehttp "GET /custom-admin/users/2/login-as/ HTTP/1.1" 302 0
+INFO 2025-05-31 22:22:10,368 basehttp "GET /dashboard/ HTTP/1.1" 200 32675
+INFO 2025-05-31 22:22:21,023 basehttp "GET /custom-admin/users/2/ HTTP/1.1" 302 0
+INFO 2025-05-31 22:22:21,356 basehttp "GET /custom-admin/login/?next=/custom-admin/users/2/ HTTP/1.1" 200 13004
+INFO 2025-05-31 22:22:33,005 views Admin admin logged in
+INFO 2025-05-31 22:22:33,140 basehttp "POST /custom-admin/login/?next=/custom-admin/users/2/ HTTP/1.1" 302 0
+INFO 2025-05-31 22:22:33,259 basehttp "GET /custom-admin/ HTTP/1.1" 200 27845
