@@ -35,7 +35,7 @@
                     <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-textSecondary">Password</label>
                     <div class="relative">
                         {{ form.password }}
-                                                {{ form.password.errors }}
+                        {{ form.password.errors }}
                         <i class="fas fa-lock absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
 </section>
 
 <style>
-    .form-elegant input, .form-elegant select {
+    .form-elegant input, .form-elegant select, .form-input {
         width: 100%;
         padding: 12px;
         border: 1px solid #ccc;
@@ -108,8 +108,19 @@
         color: #333;
         font-size: 14px;
     }
+
+    @media (prefers-color-scheme: dark) {
+        .form-elegant input, .form-elegant select, .form-input {
+            color: #ffffff; /* White text for dark mode */
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly lighter background for contrast */
+            border-color: rgba(255, 255, 255, 0.3); /* Lighter border for visibility */
+        }
+        .form-elegant input::placeholder, .form-elegant select::placeholder, .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Light placeholder text for dark mode */
+        }
+    }
     
-    .form-elegant input:focus, .form-elegant select:focus {
+    .form-elegant input:focus, .form-elegant select:focus, .form-input:focus {
         outline: none;
         border-color: #007bff;
         box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
@@ -205,15 +216,6 @@
         margin-top: 8px;
         font-weight: 600;
         color: #007bff;
-    }
-    
-    .form-input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #333;
     }
 </style>
 

@@ -1,1 +1,0 @@
-lets incoporate cron job to the investment so profits can be droping at the set time

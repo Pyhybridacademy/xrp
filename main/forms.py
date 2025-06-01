@@ -8,6 +8,7 @@ import io
 import base64
 import re
 import logging
+from .models import UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +18,7 @@ class RegistrationForm(forms.ModelForm):
     full_name = forms.CharField(max_length=100, required=True)
     phone = forms.CharField(max_length=20, required=False)
     country = forms.CharField(max_length=50, required=False)
-    currency = forms.ChoiceField(choices=(('USD', 'US Dollar ($)'), ('EUR', 'Euro (€)'), ('GBP', 'British Pound (£)')), required=False)
+    currency = forms.ChoiceField(choices=UserProfile.CURRENCY_CHOICES, required=False)
     honeypot = forms.CharField(required=False, widget=forms.HiddenInput, label="")
     captcha_answer = forms.CharField(max_length=10, required=True, label="Enter the result shown in the image")
 
@@ -41,7 +42,15 @@ class RegistrationForm(forms.ModelForm):
             raise ValidationError("Username can only contain letters, numbers, and underscores.")
         if re.search(self.BLACKLISTED_CHARS, username):
             raise ValidationError("Username contains invalid characters.")
+        if User.objects.filter(username__iexact=username).exists():
+            raise ValidationError("This username is already taken.")
         return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email__iexact=email).exists():
+            raise ValidationError("This email address is already registered.")
+        return email
 
     def clean_full_name(self):
         full_name = self.cleaned_data['full_name']
@@ -74,7 +83,6 @@ class RegistrationForm(forms.ModelForm):
             logger.warning(f"Missing CAPTCHA data: entered={captcha_answer}, correct={correct_answer}")
             raise ValidationError("CAPTCHA answer is required.")
         
-        # Clean and compare answers
         entered_clean = str(captcha_answer).strip().lower()
         correct_clean = str(correct_answer).strip().lower()
         
@@ -91,6 +99,19 @@ class RegistrationForm(forms.ModelForm):
         if password and confirm_password and password != confirm_password:
             raise ValidationError("Passwords do not match.")
         return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        user.is_active = True  # Ensure user is active
+        if commit:
+            try:
+                user.save()
+                logger.debug(f"User saved in RegistrationForm: username={user.username}, id={user.id}, is_active={user.is_active}")
+            except Exception as e:
+                logger.error(f"Failed to save user in RegistrationForm: {e}")
+                raise
+        return user
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=30, required=True)
@@ -131,7 +152,6 @@ class LoginForm(forms.Form):
             logger.warning(f"Missing CAPTCHA data: entered={captcha_answer}, correct={correct_answer}")
             raise ValidationError("CAPTCHA answer is required.")
         
-        # Clean and compare answers
         entered_clean = str(captcha_answer).strip().lower()
         correct_clean = str(correct_answer).strip().lower()
         
@@ -140,3 +160,51 @@ class LoginForm(forms.Form):
             raise ValidationError("Incorrect CAPTCHA answer. Please try again.")
         
         return captcha_answer
+
+class UserProfileForm(forms.ModelForm):
+    username = forms.CharField(max_length=150, required=True)
+    email = forms.EmailField(required=True)
+    
+    class Meta:
+        model = UserProfile
+        fields = ['full_name', 'phone', 'country', 'currency']
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if self.user:
+            self.fields['username'].initial = self.user.username
+            self.fields['email'].initial = self.user.email
+    
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if username != self.user.username and User.objects.filter(username__iexact=username).exists():
+            raise ValidationError("This username is already taken.")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if email != self.user.email and User.objects.filter(email__iexact=email).exists():
+            raise ValidationError("This email address is already registered.")
+        return email
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        if self.user:
+            self.user.username = self.cleaned_data['username']
+            self.user.email = self.cleaned_data['email']
+            if commit:
+                try:
+                    self.user.save()
+                    logger.debug(f"User updated in UserProfileForm: username={self.user.username}, email={self.user.email}")
+                except Exception as e:
+                    logger.error(f"Failed to save user in UserProfileForm: {e}")
+                    raise
+        if commit:
+            try:
+                profile.save()
+                logger.debug(f"UserProfile saved in UserProfileForm: user={self.user.username}")
+            except Exception as e:
+                logger.error(f"Failed to save UserProfile in UserProfileForm: {e}")
+                raise
+        return profile

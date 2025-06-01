@@ -284,3 +284,805 @@ INFO 2025-05-31 22:22:21,356 basehttp "GET /custom-admin/login/?next=/custom-adm
 INFO 2025-05-31 22:22:33,005 views Admin admin logged in
 INFO 2025-05-31 22:22:33,140 basehttp "POST /custom-admin/login/?next=/custom-admin/users/2/ HTTP/1.1" 302 0
 INFO 2025-05-31 22:22:33,259 basehttp "GET /custom-admin/ HTTP/1.1" 200 27845
+INFO 2025-05-31 22:29:59,747 autoreload C:\Users\kpoje\Desktop\version1\broker\main\models.py changed, reloading.
+INFO 2025-05-31 22:31:55,289 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:32:36,222 autoreload C:\Users\kpoje\Desktop\version1\broker\main\models.py changed, reloading.
+INFO 2025-05-31 22:33:09,960 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:39:13,975 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:48:16,717 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:50:49,652 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-05-31 22:51:02,892 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:57:20,826 autoreload C:\Users\kpoje\Desktop\version1\broker\main\models.py changed, reloading.
+INFO 2025-05-31 22:58:33,894 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 22:59:55,228 autoreload Watching for file changes with StatReloader
+INFO 2025-05-31 23:01:04,299 basehttp - Broken pipe from ('127.0.0.1', 57882)
+INFO 2025-05-31 23:01:16,426 basehttp "GET /logout/ HTTP/1.1" 302 0
+INFO 2025-05-31 23:01:37,253 basehttp "GET / HTTP/1.1" 200 78670
+INFO 2025-05-31 23:02:07,321 basehttp "GET /register/ HTTP/1.1" 200 46587
+INFO 2025-06-01 10:17:03,414 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 10:17:47,924 basehttp "GET /register/ HTTP/1.1" 200 51077
+INFO 2025-06-01 10:19:33,087 basehttp "POST /refresh-captcha/ HTTP/1.1" 200 151
+INFO 2025-06-01 10:20:00,151 basehttp "GET /register/ HTTP/1.1" 200 46587
+ERROR 2025-06-01 10:21:16,863 log Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: UNIQUE constraint failed: main_userprofile.user_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\main\views.py", line 92, in register
+    UserProfile.objects.create(
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: UNIQUE constraint failed: main_userprofile.user_id
+ERROR 2025-06-01 10:21:17,311 basehttp "POST /register/ HTTP/1.1" 500 168671
+INFO 2025-06-01 10:33:15,073 autoreload C:\Users\kpoje\Desktop\version1\broker\main\models.py changed, reloading.
+INFO 2025-06-01 10:35:33,454 autoreload Watching for file changes with StatReloader
+ERROR 2025-06-01 10:36:10,254 log Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.IntegrityError: UNIQUE constraint failed: main_userprofile.user_id
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\main\views.py", line 91, in register
+    UserProfile.objects.create(
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 663, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\base.py", line 902, in save
+    self.save_base(
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\base.py", line 1008, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\base.py", line 1169, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\base.py", line 1210, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\query.py", line 1854, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\models\sql\compiler.py", line 1881, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py", line 360, in execute
+    return super().execute(query, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: UNIQUE constraint failed: main_userprofile.user_id
+ERROR 2025-06-01 10:36:10,720 basehttp "POST /register/ HTTP/1.1" 500 168651
+INFO 2025-06-01 10:36:21,848 basehttp "GET /register/ HTTP/1.1" 200 50344
+INFO 2025-06-01 10:36:44,623 basehttp - Broken pipe from ('127.0.0.1', 60137)
+INFO 2025-06-01 10:36:45,706 basehttp "GET /register/ HTTP/1.1" 200 46570
+WARNING 2025-06-01 10:37:03,699 log Not Found: /favicon.ico
+WARNING 2025-06-01 10:37:03,699 basehttp "GET /favicon.ico HTTP/1.1" 404 7843
+INFO 2025-06-01 10:39:27,719 autoreload C:\Users\kpoje\Desktop\version1\broker\main\models.py changed, reloading.
+INFO 2025-06-01 10:42:01,190 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 10:53:07,932 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 10:53:16,366 basehttp "GET /custom-admin/users/4/ HTTP/1.1" 302 0
+INFO 2025-06-01 10:53:21,695 basehttp "GET /custom-admin/login/?next=/custom-admin/users/4/ HTTP/1.1" 200 8856
+INFO 2025-06-01 10:53:41,686 views Admin admin logged in
+INFO 2025-06-01 10:53:41,750 basehttp "POST /custom-admin/login/?next=/custom-admin/users/4/ HTTP/1.1" 302 0
+INFO 2025-06-01 10:53:42,663 basehttp "GET /custom-admin/ HTTP/1.1" 200 27841
+INFO 2025-06-01 10:53:50,363 basehttp "GET /custom-admin/users/ HTTP/1.1" 200 13471
+INFO 2025-06-01 10:54:07,307 basehttp - Broken pipe from ('127.0.0.1', 60689)
+INFO 2025-06-01 10:54:08,839 basehttp "GET /register/ HTTP/1.1" 200 46332
+INFO 2025-06-01 10:56:02,204 views New user registered: Pysmart09, currency: USD
+ERROR 2025-06-01 10:59:58,973 log Internal Server Error: /register/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\main\views.py", line 115, in register
+    logger.warning(f"Authentication failed after registration for {user.username}")
+                                                                   ^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'username'
+ERROR 2025-06-01 10:59:59,858 basehttp "POST /register/ HTTP/1.1" 500 70356
+INFO 2025-06-01 11:05:32,651 autoreload C:\Users\kpoje\Desktop\version1\broker\main\views.py changed, reloading.
+INFO 2025-06-01 11:06:34,323 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 11:09:23,243 autoreload C:\Users\kpoje\Desktop\version1\broker\main\forms.py changed, reloading.
+INFO 2025-06-01 11:10:59,803 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 11:12:50,259 views New user registered and logged in: Pysmart09, currency: USD
+INFO 2025-06-01 11:12:54,498 basehttp "POST /register/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:12:54,807 basehttp "GET /dashboard/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:12:55,062 views KYC exists: False, Status: None
+INFO 2025-06-01 11:12:57,750 basehttp "GET /kyc-verification/ HTTP/1.1" 200 21269
+INFO 2025-06-01 11:15:41,024 views KYC exists: False, Status: None
+INFO 2025-06-01 11:15:41,035 views request.FILES: <MultiValueDict: {'id_front': [<InMemoryUploadedFile: 2127e5a0-6562-4d0c-aa16-461a2426d5a8.jpeg (image/jpeg)>], 'id_back': [<InMemoryUploadedFile: 2127e5a0-6562-4d0c-aa16-461a2426d5a8.jpeg (image/jpeg)>], 'selfie': [<InMemoryUploadedFile: 2127e5a0-6562-4d0c-aa16-461a2426d5a8.jpeg (image/jpeg)>]}>
+ERROR 2025-06-01 11:15:41,666 views Error sending KYC submission email: 'KYCVerification' object has no attribute 'reviewed_at'
+INFO 2025-06-01 11:15:41,682 basehttp "POST /kyc-verification/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:15:44,084 basehttp "GET /dashboard/ HTTP/1.1" 200 25125
+INFO 2025-06-01 11:15:59,664 basehttp "GET /custom-admin/users/ HTTP/1.1" 200 14411
+INFO 2025-06-01 11:16:06,228 basehttp "GET /custom-admin/ HTTP/1.1" 200 27847
+INFO 2025-06-01 11:16:12,908 basehttp "GET /custom-admin/kyc/ HTTP/1.1" 200 13566
+INFO 2025-06-01 11:16:16,931 basehttp "GET /custom-admin/kyc/1/approve/ HTTP/1.1" 200 12496
+INFO 2025-06-01 11:16:20,033 views Admin approved KYC for user Pysmart09 (KYC ID: 1)
+INFO 2025-06-01 11:16:20,033 basehttp "POST /custom-admin/kyc/1/approve/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:16:20,197 basehttp "GET /custom-admin/kyc/ HTTP/1.1" 200 13669
+INFO 2025-06-01 11:16:33,796 basehttp "GET /dashboard/ HTTP/1.1" 200 24208
+INFO 2025-06-01 11:16:48,049 basehttp "GET /settings/ HTTP/1.1" 200 21548
+INFO 2025-06-01 11:17:00,869 basehttp "GET /dashboard/ HTTP/1.1" 200 24208
+INFO 2025-06-01 11:17:19,270 basehttp "GET /deposit/ HTTP/1.1" 200 22278
+INFO 2025-06-01 11:17:36,927 basehttp "GET /custom-admin/cryptocurrencies/ HTTP/1.1" 200 13039
+INFO 2025-06-01 11:17:40,039 basehttp "GET /custom-admin/cryptocurrencies/create/ HTTP/1.1" 200 13837
+INFO 2025-06-01 11:17:54,062 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 13129
+INFO 2025-06-01 11:18:00,580 basehttp "GET /custom-admin/investments/ HTTP/1.1" 200 12850
+INFO 2025-06-01 11:18:34,862 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 13129
+INFO 2025-06-01 11:18:37,969 basehttp "GET /custom-admin/plans/create/ HTTP/1.1" 200 14791
+INFO 2025-06-01 11:19:08,187 views Admin created investment plan basic plan (ID: 1)
+INFO 2025-06-01 11:19:08,242 basehttp "POST /custom-admin/plans/create/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:19:08,398 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 14236
+INFO 2025-06-01 11:19:12,157 basehttp "GET /custom-admin/plans/create/ HTTP/1.1" 200 14791
+INFO 2025-06-01 11:19:48,365 views Admin created investment plan silver (ID: 2)
+INFO 2025-06-01 11:19:48,680 basehttp "POST /custom-admin/plans/create/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:19:49,489 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 15051
+INFO 2025-06-01 11:19:56,300 basehttp "GET /custom-admin/plans/create/ HTTP/1.1" 200 14791
+INFO 2025-06-01 11:20:29,192 views Admin created investment plan GOLD (ID: 3)
+INFO 2025-06-01 11:20:29,192 basehttp "POST /custom-admin/plans/create/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:20:29,329 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 15864
+INFO 2025-06-01 11:20:34,154 basehttp "GET /custom-admin/plans/create/ HTTP/1.1" 200 14791
+INFO 2025-06-01 11:21:21,224 views Admin created investment plan platinum (ID: 4)
+INFO 2025-06-01 11:21:21,232 basehttp "POST /custom-admin/plans/create/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:21:21,440 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 16687
+INFO 2025-06-01 11:21:37,515 basehttp "GET /custom-admin/cryptocurrencies/ HTTP/1.1" 200 13039
+INFO 2025-06-01 11:21:40,562 basehttp "GET /custom-admin/cryptocurrencies/create/ HTTP/1.1" 200 13837
+INFO 2025-06-01 11:23:31,126 views Admin created cryptocurrency Bitcoin (ID: 1)
+INFO 2025-06-01 11:23:31,161 basehttp "POST /custom-admin/cryptocurrencies/create/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:23:31,311 basehttp "GET /custom-admin/cryptocurrencies/ HTTP/1.1" 200 14143
+INFO 2025-06-01 11:23:43,024 basehttp "GET /deposit/ HTTP/1.1" 200 22577
+WARNING 2025-06-01 11:23:54,304 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:23:54,304 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:23:55,056 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:23:55,072 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:23:55,335 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:23:55,351 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:23:55,688 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:23:55,704 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:04,233 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:05,271 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:05,692 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:05,692 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:05,935 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:05,935 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:06,348 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:07,608 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:24:11,248 basehttp "POST /deposit/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:24:12,030 basehttp "GET /dashboard/ HTTP/1.1" 200 26316
+WARNING 2025-06-01 11:24:14,914 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:15,745 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:16,979 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:18,224 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:20,138 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:20,290 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:20,527 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:22,197 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:24:23,631 basehttp - Broken pipe from ('127.0.0.1', 61304)
+INFO 2025-06-01 11:24:23,809 basehttp "GET /custom-admin/ HTTP/1.1" 200 27841
+WARNING 2025-06-01 11:24:27,339 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:28,561 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:28,917 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:29,029 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:24:29,158 basehttp - Broken pipe from ('127.0.0.1', 61322)
+INFO 2025-06-01 11:24:29,374 basehttp "GET /custom-admin/transactions/ HTTP/1.1" 200 13767
+WARNING 2025-06-01 11:24:29,831 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:30,750 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:30,975 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:31,507 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:24:31,428 basehttp - Broken pipe from ('127.0.0.1', 61325)
+WARNING 2025-06-01 11:24:31,837 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:31,855 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:32,015 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:32,023 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:32,934 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:33,075 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:24:34,298 basehttp "GET /custom-admin/transactions/1/approve/ HTTP/1.1" 200 12548
+WARNING 2025-06-01 11:24:36,952 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:36,952 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:24:37,443 models Transaction 1 (Type: deposit, Amount: 700.00, User: Pysmart09) is newly completed. Updating balance.
+INFO 2025-06-01 11:24:37,466 models Before update - User: Pysmart09, Balance: 0.00, Profit: 0.00, Bonus: 0.00, Investment: 0.00
+INFO 2025-06-01 11:24:37,577 models After update - User: Pysmart09, Balance: 700.00, Profit: 0.00, Bonus: 0.00, Investment: 0.00
+INFO 2025-06-01 11:24:37,675 views Admin approved transaction 1 for user Pysmart09
+INFO 2025-06-01 11:24:37,688 basehttp "POST /custom-admin/transactions/1/approve/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:24:38,071 basehttp "GET /custom-admin/transactions/ HTTP/1.1" 200 13871
+WARNING 2025-06-01 11:24:44,199 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:45,045 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:47,259 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:47,742 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:24:49,852 basehttp - Broken pipe from ('127.0.0.1', 61326)
+INFO 2025-06-01 11:24:51,713 basehttp "GET /dashboard/ HTTP/1.1" 200 25400
+WARNING 2025-06-01 11:24:52,909 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:53,311 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:54,288 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:55,474 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:57,441 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:58,819 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:24:59,814 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:24:59,932 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:00,077 basehttp - Broken pipe from ('127.0.0.1', 61349)
+WARNING 2025-06-01 11:25:00,877 log Not Found: /__reload__/events/
+INFO 2025-06-01 11:25:00,980 basehttp "GET /investments/ HTTP/1.1" 200 27467
+WARNING 2025-06-01 11:25:01,140 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:01,880 basehttp - Broken pipe from ('127.0.0.1', 61350)
+WARNING 2025-06-01 11:25:02,007 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:02,141 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:03,088 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:04,345 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:05,087 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:05,095 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:05,505 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:05,513 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:05,899 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:05,973 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:06,316 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:06,331 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:06,661 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:06,677 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:07,033 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:07,420 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:08,092 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:08,101 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:08,456 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:08,461 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:10,428 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:10,444 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:10,817 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:10,833 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:11,172 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:11,187 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:12,290 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:12,295 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:13,359 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:13,375 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:14,688 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:14,693 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:15,828 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:15,834 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:16,904 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:16,904 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:18,001 views Creating investment for user Pysmart09, amount: 200.00 USD, plan: basic plan
+INFO 2025-06-01 11:25:18,122 models Transaction 2 (Type: investment, Amount: 200.00, User: Pysmart09) is newly completed. Updating balance.
+INFO 2025-06-01 11:25:18,353 models Before update - User: Pysmart09, Balance: 700.00, Profit: 0.00, Bonus: 0.00, Investment: 0.00
+INFO 2025-06-01 11:25:18,810 models After update - User: Pysmart09, Balance: 500.00, Profit: 0.00, Bonus: 0.00, Investment: 200.00
+INFO 2025-06-01 11:25:18,909 views Investment transaction created: ID 2, amount: 200.00 USD
+INFO 2025-06-01 11:25:19,255 basehttp "POST /investments/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:25:21,052 basehttp "GET /dashboard/ HTTP/1.1" 200 29236
+WARNING 2025-06-01 11:25:27,511 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:28,851 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:30,360 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:30,650 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:31,165 basehttp - Broken pipe from ('127.0.0.1', 61370)
+WARNING 2025-06-01 11:25:33,575 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:34,250 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:34,606 basehttp - Broken pipe from ('127.0.0.1', 61371)
+WARNING 2025-06-01 11:25:40,598 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:40,797 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:41,716 basehttp "GET /custom-admin/ HTTP/1.1" 200 27841
+WARNING 2025-06-01 11:25:41,916 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:42,330 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:43,636 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:46,307 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:46,999 basehttp "GET /custom-admin/investments/ HTTP/1.1" 200 13362
+WARNING 2025-06-01 11:25:47,848 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:48,082 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:49,345 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:49,348 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:50,393 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:50,409 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:51,514 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:51,613 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:52,427 basehttp "GET /custom-admin/investments/1/ HTTP/1.1" 200 13216
+WARNING 2025-06-01 11:25:52,822 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:53,169 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:25:55,442 basehttp "GET /custom-admin/investments/1/complete/ HTTP/1.1" 200 13386
+WARNING 2025-06-01 11:25:55,904 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:56,204 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:58,505 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:58,521 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:25:59,729 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:25:59,754 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:26:00,353 views Admin completed investment 1 for user Pysmart09 with profit 600.0000
+INFO 2025-06-01 11:26:00,451 basehttp "POST /custom-admin/investments/1/complete/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:26:00,771 basehttp "GET /custom-admin/investments/1/ HTTP/1.1" 200 13532
+WARNING 2025-06-01 11:26:01,757 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:03,103 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:26:09,505 basehttp "GET /dashboard/ HTTP/1.1" 200 26992
+WARNING 2025-06-01 11:26:17,714 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:18,459 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:26:25,610 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:25,890 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:26:25,957 basehttp "GET /withdraw/ HTTP/1.1" 200 19258
+WARNING 2025-06-01 11:26:28,977 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:28,993 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:26:32,060 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:32,065 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:26:35,306 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:35,339 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:26:38,378 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:38,425 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:26:40,958 basehttp "GET /settings/ HTTP/1.1" 200 21721
+WARNING 2025-06-01 11:26:42,914 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:43,137 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:26:46,207 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:46,211 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:26:49,274 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:49,361 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:26:49,421 basehttp - Broken pipe from ('127.0.0.1', 61459)
+WARNING 2025-06-01 11:26:52,398 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:52,414 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:26:52,460 basehttp - Broken pipe from ('127.0.0.1', 61461)
+WARNING 2025-06-01 11:26:55,512 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:55,532 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:26:55,561 basehttp - Broken pipe from ('127.0.0.1', 61462)
+WARNING 2025-06-01 11:26:59,164 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:26:59,512 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:27:02,256 basehttp "POST /settings/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:27:02,521 basehttp "GET /settings/ HTTP/1.1" 200 24615
+INFO 2025-06-01 11:27:08,833 basehttp "GET /withdraw/ HTTP/1.1" 200 19363
+WARNING 2025-06-01 11:27:09,717 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:10,729 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:13,803 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:13,805 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:16,911 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:16,911 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:27:17,875 basehttp "POST /withdraw/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:27:18,257 basehttp "GET /withdraw/auth/ HTTP/1.1" 200 15926
+WARNING 2025-06-01 11:27:19,985 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:20,308 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:23,410 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:24,263 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:27,435 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:27,440 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:31,163 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:31,257 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:34,363 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:34,377 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:37,707 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:37,816 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:27:40,166 basehttp "GET /custom-admin/withdrawal-codes/ HTTP/1.1" 200 12921
+WARNING 2025-06-01 11:27:41,591 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:42,502 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:27:42,869 basehttp - Broken pipe from ('127.0.0.1', 61488)
+WARNING 2025-06-01 11:27:45,324 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:45,339 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:27:45,380 basehttp - Broken pipe from ('127.0.0.1', 61491)
+WARNING 2025-06-01 11:27:48,412 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:48,427 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:51,469 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:51,469 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:54,546 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:54,546 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:27:57,597 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:27:57,597 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:00,685 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:00,700 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:03,834 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:03,834 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:28:06,844 basehttp "GET /custom-admin/withdrawal-codes/create/ HTTP/1.1" 200 13374
+WARNING 2025-06-01 11:28:08,903 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:08,919 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:12,110 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:12,249 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:15,444 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:15,444 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:18,507 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:18,507 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:21,648 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:21,648 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:28:25,002 views Admin created withdrawal code for user Pysmart09
+INFO 2025-06-01 11:28:25,026 basehttp "POST /custom-admin/withdrawal-codes/create/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:28:25,166 basehttp "GET /custom-admin/withdrawal-codes/ HTTP/1.1" 200 13994
+WARNING 2025-06-01 11:28:29,461 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:29,732 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:33,040 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:33,040 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:36,104 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:36,104 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:39,390 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:39,640 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:42,824 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:42,912 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:28:43,786 basehttp "POST /withdraw/auth/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:28:43,969 basehttp "GET /withdraw/auth/ HTTP/1.1" 200 16821
+WARNING 2025-06-01 11:28:45,955 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:45,955 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:28:47,325 basehttp "GET /withdraw/ HTTP/1.1" 200 19363
+WARNING 2025-06-01 11:28:49,240 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:49,705 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:28:50,099 basehttp "GET /withdraw/ HTTP/1.1" 200 19363
+WARNING 2025-06-01 11:28:52,958 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:52,958 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:28:56,001 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:56,017 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:28:56,052 basehttp - Broken pipe from ('127.0.0.1', 61527)
+WARNING 2025-06-01 11:28:59,144 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:28:59,160 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:29:02,255 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:02,255 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:29:04,478 basehttp "POST /withdraw/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:29:04,632 basehttp "GET /withdraw/auth/ HTTP/1.1" 200 15926
+WARNING 2025-06-01 11:29:05,358 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:06,772 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:29:10,884 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:10,884 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:29:14,025 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:14,275 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:29:14,625 basehttp "POST /withdraw/auth/ HTTP/1.1" 302 0
+INFO 2025-06-01 11:29:14,877 basehttp "GET /dashboard/ HTTP/1.1" 200 29499
+WARNING 2025-06-01 11:29:25,250 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:25,323 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:29:28,512 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:28,528 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:29:30,563 basehttp "GET /custom-admin/ HTTP/1.1" 200 27841
+WARNING 2025-06-01 11:29:34,708 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:34,708 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:29:39,967 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:39,967 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:29:40,372 basehttp "GET /custom-admin/transactions/ HTTP/1.1" 200 15243
+WARNING 2025-06-01 11:29:43,218 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:43,228 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:29:45,128 basehttp "GET /custom-admin/transactions/3/ HTTP/1.1" 200 13867
+WARNING 2025-06-01 11:29:47,938 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:47,938 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:29:49,169 basehttp "GET /custom-admin/transactions/3/reject/ HTTP/1.1" 200 12544
+WARNING 2025-06-01 11:29:51,118 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:51,133 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:29:53,112 basehttp "GET /custom-admin/transactions/3/ HTTP/1.1" 200 13867
+WARNING 2025-06-01 11:29:55,852 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:29:55,852 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:09,152 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:11,300 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:15,557 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:16,588 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:19,687 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:20,216 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:25,355 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:25,692 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:30,035 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:30,830 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:34,567 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:36,056 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:41,001 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:41,373 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:44,427 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:44,442 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:47,609 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:47,633 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:50,932 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:51,346 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:54,392 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:54,466 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:30:57,848 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:30:57,851 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:00,957 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:00,957 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:04,140 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:04,155 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:31:04,192 basehttp - Broken pipe from ('127.0.0.1', 61622)
+WARNING 2025-06-01 11:31:07,217 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:07,217 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:16,060 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:16,406 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:31:16,695 basehttp - Broken pipe from ('127.0.0.1', 61626)
+WARNING 2025-06-01 11:31:19,717 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:19,826 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:24,786 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:25,043 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:29,488 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:30,207 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:33,668 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:34,217 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:31:34,719 basehttp - Broken pipe from ('127.0.0.1', 61634)
+WARNING 2025-06-01 11:31:37,276 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:37,317 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:31:37,478 basehttp - Broken pipe from ('127.0.0.1', 61637)
+WARNING 2025-06-01 11:31:40,875 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:40,937 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:31:40,971 basehttp - Broken pipe from ('127.0.0.1', 61639)
+WARNING 2025-06-01 11:31:43,993 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:43,998 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:47,144 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:47,144 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:50,190 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:50,206 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:53,352 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:53,526 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:56,748 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:31:56,764 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:31:59,900 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:00,041 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:03,175 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:03,191 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 11:32:03,206 basehttp - Broken pipe from ('127.0.0.1', 61643)
+WARNING 2025-06-01 11:32:06,257 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:06,257 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:09,325 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:09,325 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:12,411 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:12,411 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:15,460 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:15,460 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:18,603 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:18,603 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:21,660 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:21,660 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:24,724 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:24,724 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:28,572 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:28,604 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:31,681 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:31,681 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:34,745 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:34,745 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:37,936 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:37,936 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:41,005 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:41,005 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:47,414 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:47,414 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:50,512 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:50,621 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 11:32:53,725 log Not Found: /__reload__/events/
+WARNING 2025-06-01 11:32:53,725 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 12:50:42,225 basehttp - Broken pipe from ('127.0.0.1', 62789)
+INFO 2025-06-01 12:50:42,220 basehttp "GET / HTTP/1.1" 200 69302
+INFO 2025-06-01 12:51:05,840 basehttp "GET / HTTP/1.1" 200 69302
+INFO 2025-06-01 12:54:26,093 basehttp "GET / HTTP/1.1" 200 75280
+INFO 2025-06-01 13:12:11,097 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 13:36:15,588 basehttp - Broken pipe from ('127.0.0.1', 50184)
+INFO 2025-06-01 13:36:17,966 basehttp "GET /custom-admin/transactions/3/ HTTP/1.1" 302 0
+INFO 2025-06-01 13:36:22,788 basehttp "GET /custom-admin/transactions/3/ HTTP/1.1" 302 0
+ERROR 2025-06-01 13:36:26,777 log Internal Server Error: /custom-admin/login/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\custom_admin\views.py", line 33, in admin_login
+    return render(request, 'custom_admin/login.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\defaulttags.py", line 1540, in do_with
+    nodelist = parser.parse(("endwith",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 523, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 590, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 65: 'with'. Looking for one of: endwith.
+ERROR 2025-06-01 13:36:26,916 log Internal Server Error: /custom-admin/login/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\custom_admin\views.py", line 33, in admin_login
+    return render(request, 'custom_admin/login.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\defaulttags.py", line 1540, in do_with
+    nodelist = parser.parse(("endwith",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 523, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 590, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 65: 'with'. Looking for one of: endwith.
+INFO 2025-06-01 13:36:27,156 basehttp - Broken pipe from ('127.0.0.1', 50187)
+ERROR 2025-06-01 13:36:27,980 basehttp "GET /custom-admin/login/?next=/custom-admin/transactions/3/ HTTP/1.1" 500 183857
+WARNING 2025-06-01 13:36:42,620 log Not Found: /favicon.ico
+WARNING 2025-06-01 13:36:42,628 basehttp "GET /favicon.ico HTTP/1.1" 404 7843
+INFO 2025-06-01 13:38:23,729 basehttp "GET /custom-admin/login/?next=/custom-admin/transactions/3/ HTTP/1.1" 200 8851
+INFO 2025-06-01 13:38:39,809 views Admin admin logged in
+INFO 2025-06-01 13:38:39,920 basehttp "POST /custom-admin/login/?next=/custom-admin/transactions/3/ HTTP/1.1" 302 0
+INFO 2025-06-01 13:38:40,488 basehttp "GET /custom-admin/ HTTP/1.1" 200 27836
+INFO 2025-06-01 13:38:51,265 basehttp "GET /custom-admin/ HTTP/1.1" 200 27836
+WARNING 2025-06-01 13:38:56,449 log Not Found: /favicon.ico
+WARNING 2025-06-01 13:38:56,449 basehttp "GET /favicon.ico HTTP/1.1" 404 7843
+INFO 2025-06-01 13:40:24,189 basehttp "GET / HTTP/1.1" 200 78623
+INFO 2025-06-01 13:41:09,045 basehttp "GET / HTTP/1.1" 200 78623
+WARNING 2025-06-01 13:41:15,306 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-01 13:41:18,564 log Not Found: /favicon.ico
+WARNING 2025-06-01 13:41:18,953 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7954
+WARNING 2025-06-01 13:41:20,095 basehttp "GET /favicon.ico HTTP/1.1" 404 7843
+INFO 2025-06-01 13:41:28,519 basehttp "GET / HTTP/1.1" 200 78623
+WARNING 2025-06-01 13:41:34,914 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-01 13:41:35,119 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7954
+INFO 2025-06-01 13:42:52,293 basehttp "GET / HTTP/1.1" 200 81703
+WARNING 2025-06-01 13:43:06,054 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-06-01 13:43:13,614 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 7954
+INFO 2025-06-01 13:51:13,707 basehttp "GET / HTTP/1.1" 200 81949
+INFO 2025-06-01 13:51:28,357 basehttp "GET / HTTP/1.1" 200 81949
+INFO 2025-06-01 13:55:43,078 basehttp "GET / HTTP/1.1" 200 82154
+WARNING 2025-06-01 13:57:15,494 log Not Found: /favicon.ico
+WARNING 2025-06-01 13:57:15,532 basehttp "GET /favicon.ico HTTP/1.1" 404 7843

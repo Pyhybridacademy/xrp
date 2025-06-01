@@ -69,7 +69,6 @@
                 </div>
 
                 <div>
-                                   <div>
                     <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-textSecondary">Phone (Optional)</label>
                     <div class="relative">
                         {{ form.phone }}
@@ -152,7 +151,7 @@
 </section>
 
 <style>
-    .form-elegant input, .form-elegant select {
+    .form-elegant input, .form-elegant select, .form-input {
         width: 100%;
         padding: 12px;
         border: 1px solid #ccc;
@@ -161,8 +160,16 @@
         color: #333;
         font-size: 14px;
     }
+
+    @media (prefers-color-scheme: dark) {
+        .form-elegant input, .form-elegant select, .form-input {
+            color: #ffffff; /* White text for dark mode */
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly lighter background for contrast */
+            border-color: rgba(255, 255, 255, 0.3); /* Lighter border for visibility */
+        }
+    }
     
-    .form-elegant input:focus, .form-elegant select:focus {
+    .form-elegant input:focus, .form-elegant select:focus, .form-input:focus {
         outline: none;
         border-color: #007bff;
         box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
@@ -258,15 +265,6 @@
         margin-top: 8px;
         font-weight: 600;
         color: #007bff;
-    }
-    
-    .form-input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #333;
     }
 </style>
 

@@ -12,19 +12,6 @@ import logging
 # Set up logging
 logger = logging.getLogger(__name__)
 
-CURRENCY_CHOICES = (
-    ('USD', 'US Dollar ($)'),
-    ('EUR', 'Euro (€)'),
-    ('GBP', 'British Pound (£)'),
-    ('NGN', 'Nigerian Naira (₦)'),
-    ('GHS', 'Ghanaian Cedi (₵)'),
-    ('KES', 'Kenyan Shilling (KSh)'),
-    ('ZAR', 'South African Rand (R)'),
-    ('INR', 'Indian Rupee (₹)'),
-    ('AUD', 'Australian Dollar (A$)'),
-    ('CAD', 'Canadian Dollar (C$)'),
-)
-
 class InvestmentPlan(models.Model):
     PLAN_TYPES = (
         ('standard', 'Standard'),
@@ -58,7 +45,6 @@ class Cryptocurrency(models.Model):
     class Meta:
         verbose_name_plural = "Cryptocurrencies"
 
-# main/models.py
 class WalletAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wallet_addresses')
     cryptocurrency = models.ForeignKey('Cryptocurrency', on_delete=models.CASCADE)
@@ -70,6 +56,28 @@ class WalletAddress(models.Model):
         return f"{self.user.username}'s {self.cryptocurrency.name} Wallet"
 
 class UserProfile(models.Model):
+    CURRENCY_CHOICES = (
+        ('USD', 'US Dollar ($)'),
+        ('EUR', 'Euro (€)'),
+        ('GBP', 'British Pound (£)'),
+        ('NGN', 'Nigerian Naira (₦)'),
+        ('GHS', 'Ghanaian Cedi (₵)'),
+        ('KES', 'Kenyan Shilling (KSh)'),
+        ('ZAR', 'South African Rand (R)'),
+        ('AUD', 'Australian Dollar (A$)'),
+        ('CAD', 'Canadian Dollar (C$)'),
+        ('JPY', 'Japanese Yen (¥)'),
+        ('CNY', 'Chinese Yuan (¥)'),
+        ('INR', 'Indian Rupee (₹)'),
+        ('KRW', 'South Korean Won (₩)'),
+        ('SGD', 'Singapore Dollar (S$)'),
+        ('HKD', 'Hong Kong Dollar (HK$)'),
+        ('MYR', 'Malaysian Ringgit (RM)'),
+        ('THB', 'Thai Baht (฿)'),
+        ('PHP', 'Philippine Peso (₱)'),
+        ('IDR', 'Indonesian Rupiah (Rp)'),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     full_name = models.CharField(max_length=100, blank=True)
     phone = models.CharField(max_length=20, blank=True)
@@ -93,7 +101,10 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    try:
+        instance.profile.save()
+    except UserProfile.DoesNotExist:
+        UserProfile.objects.create(user=instance)
 
 class KYCVerification(models.Model):
     ID_TYPES = (
@@ -182,6 +193,11 @@ class Transaction(models.Model):
         profile = self.user.profile
         logger.info(f"Before update - User: {self.user.username}, Balance: {profile.balance}, Profit: {profile.profit}, Bonus: {profile.bonus}, Investment: {profile.investment}")
         
+        # Validate balance to prevent negative values
+        if self.transaction_type in ['withdrawal', 'investment'] and self.status == 'completed' and profile.balance < self.amount:
+            logger.error(f"Insufficient balance for {self.transaction_type}: {self.amount} > {profile.balance}")
+            raise ValueError(f"Insufficient balance for {self.transaction_type}: {self.amount} > {profile.balance}")
+        
         if self.transaction_type == 'deposit' and self.status == 'completed':
             profile.balance += self.amount
         elif self.transaction_type == 'withdrawal' and self.status == 'completed':
@@ -218,15 +234,19 @@ class Investment(models.Model):
         return f"{self.user.username}'s {self.plan.get_name_display()} Investment - {self.amount}"
     
     def save(self, *args, **kwargs):
-        if self.pk is None:  # Only on creation
+        if not self.pk:  # Only on creation
             roi_percentage = self.plan.roi_percentage / Decimal('100')
             self.expected_return = self.amount + (self.amount * roi_percentage)
             self.end_date = timezone.now() + timezone.timedelta(days=self.plan.duration_days)
+        elif self.plan_id != Investment.objects.get(pk=self.pk).plan_id:
+            # Update expected_return and end_date if plan changes
+            roi_percentage = self.plan.roi_percentage / Decimal('100')
+            self.expected_return = self.amount + (self.amount * roi_percentage)
+            self.end_date = self.start_date + timezone.timedelta(days=self.plan.duration_days)
         
         super().save(*args, **kwargs)
 
-
-class SiteSettings(models.Model):  # New model for site settings
+class SiteSettings(models.Model):
     site_name = models.CharField(max_length=100, default='Trading Platform')
     logo = models.ImageField(upload_to='site/logo/', null=True, blank=True)
     contact_email = models.EmailField(max_length=254, blank=True)
@@ -246,7 +266,6 @@ class WithdrawalCode(models.Model):
     def __str__(self):
         return f"{self.user.username}'s Withdrawal Code"
 
-
 ## views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -260,7 +279,8 @@ from django.http import JsonResponse
 from decimal import Decimal
 from .models import (
     UserProfile, KYCVerification, Transaction,
-    Cryptocurrency, Investment, InvestmentPlan, WalletAddress, WithdrawalCode)
+    Cryptocurrency, Investment, InvestmentPlan, WalletAddress, WithdrawalCode
+)
 from .utils import (
     send_registration_email,
     send_deposit_confirmation_email,
@@ -270,7 +290,7 @@ from .utils import (
     generate_question_captcha,
     generate_slider_captcha
 )
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, UserProfileForm
 import logging
 import random
 import json
@@ -321,11 +341,9 @@ def register(request):
         user_answer = request.POST.get('captcha_answer', '').strip()
         
         if captcha_data.get('type') == 'question':
-            # For question type, check against all valid answers
             valid_answers = captcha_data.get('valid_answers', [])
             captcha_valid = user_answer.lower() in [ans.lower() for ans in valid_answers]
         elif captcha_data.get('type') == 'slider':
-            # For slider type, check position
             try:
                 user_position = float(user_answer)
                 slider_data = captcha_data.get('slider_data', {})
@@ -335,38 +353,39 @@ def register(request):
             except (ValueError, TypeError):
                 captcha_valid = False
         else:
-            # For image type, exact match
             captcha_valid = user_answer.lower() == str(captcha_answer).lower()
         
         if captcha_valid and form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            
-            profile = user.profile
-            profile.full_name = form.cleaned_data['full_name']
-            profile.phone = form.cleaned_data['phone']
-            profile.country = form.cleaned_data['country']
-            profile.currency = form.cleaned_data.get('currency', 'USD')
-            profile.save()
-            
-            try:
-                send_registration_email(user)
-            except Exception as e:
-                logger.error(f"Error sending registration email: {e}")
-            
-            user = authenticate(username=user.username, password=form.cleaned_data['password'])
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'Registration successful!')
-                # Clean up session
-                if '_captcha_data' in request.session:
-                    del request.session['_captcha_data']
-                return redirect('main:dashboard')
-            else:
-                logger.warning(f"Authentication failed after registration for {user.username}")
-                messages.error(request, 'Registration successful, but login failed. Please try logging in.')
-                return redirect('main:login')
+            with transaction.atomic():
+                user = form.save()
+                # Create UserProfile using model defaults
+                UserProfile.objects.create(
+                    user=user,
+                    full_name=form.cleaned_data['full_name'],
+                    phone=form.cleaned_data.get('phone', ''),
+                    country=form.cleaned_data.get('country', ''),
+                    currency=form.cleaned_data.get('currency', 'USD')
+                )
+                
+                logger.info(f"New user registered: {user.username}, currency: {form.cleaned_data.get('currency', 'USD')}")
+                
+                try:
+                    send_registration_email(user)
+                except Exception as e:
+                    logger.error(f"Error sending registration email: {e}")
+                
+                user = authenticate(request, username=user.username, password=form.cleaned_data['password'])
+                if user is not None:
+                    login(request, user)
+                    messages.success(request, 'Registration successful!')
+                    # Clean up session
+                    if '_captcha_data' in request.session:
+                        del request.session['_captcha_data']
+                    return redirect('main:dashboard')
+                else:
+                    logger.warning(f"Authentication failed after registration for {user.username}")
+                    messages.error(request, 'Registration successful, but login failed. Please try logging in.')
+                    return redirect('main:login')
         else:
             if not captcha_valid:
                 logger.warning(f"Invalid CAPTCHA from IP {request.META.get('REMOTE_ADDR')}")
@@ -398,7 +417,7 @@ def login_view(request):
     if request.method == 'POST':
         # Get CAPTCHA data from session
         captcha_data = request.session.get('_captcha_data', {})
-        captcha_answer = captcha_data.get('answer')
+        captcha_answer = captcha_data.get('answer', '')
         
         form = LoginForm(request.POST, captcha_answer=captcha_answer)
         logger.debug(f"Login POST data: {request.POST}")
@@ -409,7 +428,7 @@ def login_view(request):
         
         if captcha_data.get('type') == 'question':
             valid_answers = captcha_data.get('valid_answers', [])
-            captcha_valid = user_answer.lower() in [ans.lower() for ans in valid_answers]
+            captcha_valid = user_answer.lower() in [str(ans).lower() for ans in valid_answers]
         elif captcha_data.get('type') == 'slider':
             try:
                 user_position = float(user_answer)
@@ -425,16 +444,17 @@ def login_view(request):
         if captcha_valid and form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 if '_captcha_data' in request.session:
                     del request.session['_captcha_data']
-                messages.success(request, 'Login successful!')
+                logger.info(f"User logged in: {username}")
+                messages.success(request, 'Login successful.')
                 return redirect('main:dashboard')
             else:
                 logger.warning(f"Failed login attempt for {username} from IP {request.META.get('REMOTE_ADDR')}")
-                messages.error(request, 'Invalid username or password')
+                messages.error(request, 'Invalid username or password.')
         else:
             if not captcha_valid:
                 logger.warning(f"Invalid CAPTCHA from IP {request.META.get('REMOTE_ADDR')}")
@@ -473,11 +493,6 @@ def refresh_captcha(request):
     
     return JsonResponse({'success': False})
 
-
-def home(request):
-    return render(request, 'main/home.html')
-
-
 @login_required
 def logout_view(request):
     logout(request)
@@ -492,27 +507,34 @@ def kyc_verification(request):
         kyc = None
         kyc_exists = False
     
+    logger.info(f"KYC exists: {kyc_exists}, Status: {kyc.status if kyc else 'None'}")
+    
     if request.method == 'POST' and not (kyc_exists and kyc.status in ['approved', 'submitted']):
+        logger.info(f"request.FILES: {request.FILES}")
+        # Validate id_type and id_number
+        if not request.POST.get('id_type') or not request.POST.get('id_number'):
+            logger.error(f"Missing id_type or id_number: id_type={request.POST.get('id_type')}, id_number={request.POST.get('id_number')}")
+            messages.error(request, 'Please provide both ID type and ID number.')
+            return redirect('main:kyc_verification')
+        
+        # Validate all files
+        if 'id_front' not in request.FILES or 'id_back' not in request.FILES or 'selfie' not in request.FILES:
+            logger.error(f"Missing files: id_front={bool('id_front' in request.FILES)}, id_back={bool('id_back' in request.FILES)}, selfie={bool('selfie' in request.FILES)}")
+            messages.error(request, 'Please upload all required documents.')
+            return redirect('main:kyc_verification')
+        
         if kyc_exists:
             kyc.id_type = request.POST.get('id_type')
             kyc.id_number = request.POST.get('id_number')
             kyc.status = 'submitted'
             kyc.submitted_at = timezone.now()
-            
-            if 'id_front' in request.FILES:
-                kyc.id_front = request.FILES['id_front']
-            if 'id_back' in request.FILES:
-                kyc.id_back = request.FILES['id_back']
-            if 'selfie' in request.FILES:
-                kyc.selfie = request.FILES['selfie']
-                
+            kyc.id_front = request.FILES['id_front']
+            kyc.id_back = request.FILES['id_back']
+            kyc.selfie = request.FILES['selfie']
+            kyc.rejection_reason = None
             kyc.save()
         else:
-            if 'id_front' not in request.FILES or 'id_back' not in request.FILES or 'selfie' in request.FILES:
-                messages.error(request, 'Please upload all required documents')
-                return redirect('main:kyc_verification')
-                
-            kyc = KYCVerification(
+            kyc = KYCVerification.objects.create(
                 user=request.user,
                 id_type=request.POST.get('id_type'),
                 id_number=request.POST.get('id_number'),
@@ -522,7 +544,6 @@ def kyc_verification(request):
                 status='submitted',
                 submitted_at=timezone.now()
             )
-            kyc.save()
         
         try:
             send_kyc_status_email(request.user, kyc, 'submitted')
@@ -544,15 +565,21 @@ def deposit(request):
         kyc_approved = False
     
     cryptocurrencies = Cryptocurrency.objects.filter(is_active=True)
-    profile = request.user.profile  # Get the user profile
+    profile = request.user.profile
     
     if request.method == 'POST' and kyc_approved:
-        amount = Decimal(request.POST.get('amount'))
+        try:
+            amount = Decimal(request.POST.get('amount'))
+        except (ValueError, TypeError):
+            logger.error(f"Invalid amount provided: {request.POST.get('amount')}")
+            messages.error(request, 'Invalid deposit amount.')
+            return redirect('main:deposit')
+            
         payment_method = request.POST.get('payment_method')
         
         # Validate amount
-        if amount < 100:  # Assuming minimum deposit is 100, adjust as needed
-            messages.error(request, 'Minimum deposit amount is 100.')
+        if amount < Decimal('10'):
+            messages.error(request, f'Minimum deposit amount is 10 {profile.currency}.')
             return redirect('main:deposit')
         
         new_transaction = Transaction(
@@ -568,14 +595,14 @@ def deposit(request):
             if crypto_id:
                 try:
                     cryptocurrency = Cryptocurrency.objects.get(id=crypto_id)
-                    new_transaction.cryptocurrency = cryptocurrency
+                    new_transaction.cryptocurrency_id = cryptocurrency.id
                 except Cryptocurrency.DoesNotExist:
                     messages.error(request, 'Invalid cryptocurrency selected.')
                     return redirect('main:deposit')
             
-            # Require payment proof for crypto deposits (optional)
+            # Require payment proof for crypto deposits
             if 'payment_proof' not in request.FILES:
-                messages.error(request, 'Please upload a payment proof for cryptocurrency deposits.')
+                messages.error(request, 'Please upload payment proof for cryptocurrency deposits.')
                 return redirect('main:deposit')
             new_transaction.payment_proof = request.FILES['payment_proof']
         
@@ -598,7 +625,8 @@ def deposit(request):
         'kyc_approved': kyc_approved,
         'deposits': deposits,
         'cryptocurrencies': cryptocurrencies,
-        'profile': profile
+        'profile': profile,
+        'currency': profile.currency
     }
     return render(request, 'main/deposit.html', context)
 
@@ -615,25 +643,32 @@ def withdraw(request):
     wallet_addresses = request.user.wallet_addresses.filter(is_active=True)
     
     if request.method == 'POST' and kyc_approved:
-        amount = Decimal(request.POST.get('amount'))
+        try:
+            amount = Decimal(request.POST.get('amount'))
+        except (ValueError, TypeError):
+            logger.error(f"Invalid withdrawal amount: {request.POST.get('amount')}")
+            messages.error(request, 'Invalid withdrawal amount.')
+            return redirect('main:withdraw')
+            
         wallet_id = request.POST.get('wallet_id')
         
         if amount > profile.balance:
-            messages.error(request, 'Insufficient balance for withdrawal')
+            messages.error(request, f'Insufficient balance for withdrawal: {amount} {profile.currency} > {profile.balance} {profile.currency}')
             return redirect('main:withdraw')
         
         try:
             wallet = request.user.wallet_addresses.get(id=wallet_id)
         except WalletAddress.DoesNotExist:
-            messages.error(request, 'Invalid wallet address selected')
+            messages.error(request, 'Invalid wallet address selected.')
             return redirect('main:withdraw')
         
-        # Store withdrawal details in session for authentication
+        # Store details in session for authentication
         request.session['pending_withdrawal'] = {
             'amount': str(amount),
             'wallet_id': wallet_id,
             'cryptocurrency_id': wallet.cryptocurrency.id
         }
+        request.session.modified = True
         return redirect('main:withdrawal_auth')
     
     withdrawals = Transaction.objects.filter(
@@ -645,6 +680,7 @@ def withdraw(request):
         'kyc_approved': kyc_approved,
         'withdrawals': withdrawals,
         'balance': profile.balance,
+        'currency': profile.currency,
         'cryptocurrencies': cryptocurrencies,
         'wallet_addresses': wallet_addresses,
         'profile': profile
@@ -659,7 +695,7 @@ def investments(request):
     except KYCVerification.DoesNotExist:
         kyc_approved = False
     
-    profile = request.user.profile  # Get the user profile
+    profile = request.user.profile
     
     if not kyc_approved:
         messages.warning(request, 'You need to complete KYC verification to access investment features.')
@@ -685,17 +721,17 @@ def investments(request):
             plan = InvestmentPlan.objects.get(id=plan_id, is_active=True)
             
             if amount < plan.min_deposit or amount > plan.max_deposit:
-                logger.warning(f"Investment amount {amount} out of range for plan {plan.name} (min: {plan.min_deposit}, max: {plan.max_deposit})")
-                messages.error(request, f'Investment amount must be between {plan.min_deposit} and {plan.max_deposit}.')
+                logger.warning(f"Investment amount {amount} {profile.currency} out of range for plan {plan.name} (min: {plan.min_deposit}, max: {plan.max_deposit})")
+                messages.error(request, f'Investment amount must be between {plan.min_deposit} {profile.currency} and {plan.max_deposit} {profile.currency}.')
                 return redirect('main:investments')
             
-            if amount > profile.balance:  # Use profile.balance directly
-                logger.warning(f"Insufficient balance for user {request.user.username}: {amount} > {profile.balance}")
-                messages.error(request, 'Insufficient balance for investment.')
+            if amount > profile.balance:
+                logger.warning(f"Insufficient balance for user {request.user.username}: {amount} {profile.currency} > {profile.balance} {profile.currency}")
+                messages.error(request, f'Insufficient balance for investment: {amount} {profile.currency} > {profile.balance} {profile.currency}')
                 return redirect('main:investments')
             
             with transaction.atomic():
-                logger.info(f"Creating investment for user {request.user.username}, amount: {amount}, plan: {plan.name}")
+                logger.info(f"Creating investment for user {request.user.username}, amount: {amount} {profile.currency}, plan: {plan.name}")
                 
                 # Create investment
                 investment = Investment(
@@ -717,11 +753,11 @@ def investments(request):
                 )
                 new_transaction.save()
                 
-                logger.info(f"Investment transaction created: ID {new_transaction.id}, amount: {amount}")
+                logger.info(f"Investment transaction created: ID {new_transaction.id}, amount: {amount} {profile.currency}")
                 
                 messages.success(
                     request, 
-                    f'Investment of {amount} in {plan.get_name_display()} plan successful.'
+                    f'Investment of {amount} {profile.currency} in {plan.name} plan successful.'
                 )
                 return redirect('main:dashboard')
             
@@ -744,9 +780,10 @@ def investments(request):
         'plans': plans,
         'active_investments': active_investments,
         'completed_investments': completed_investments,
-        'balance': profile.balance,  # Already using profile.balance
+        'balance': profile.balance,
+        'currency': profile.currency,
         'investment': profile.investment,
-        'profile': profile  # Add profile to context
+        'profile': profile
     }
     return render(request, 'main/investments.html', context)
 
@@ -790,36 +827,31 @@ def dashboard(request):
         'active_investments': active_investments,
         'kyc_status': kyc_status,
         'balance': profile.balance,
+        'currency': profile.currency,
         'profit': profile.profit,
         'bonus': profile.bonus,
-        'investment': profile.investment,
+        'investment': profile.investment
     }
     return render(request, 'main/dashboard.html', context)
 
 @login_required
 def settings(request):
+    profile = request.user.profile
     cryptocurrencies = Cryptocurrency.objects.filter(is_active=True)
     wallet_addresses = request.user.wallet_addresses.filter(is_active=True)
     
     if request.method == 'POST':
         if 'update_profile' in request.POST:
-            profile = request.user.profile
-            profile.full_name = request.POST.get('full_name')
-            profile.phone = request.POST.get('phone')
-            profile.country = request.POST.get('country')
-            profile.currency = request.POST.get('currency', 'USD')
-            
-            crypto_id = request.POST.get('preferred_cryptocurrency')
-            if crypto_id:
-                try:
-                    cryptocurrency = Cryptocurrency.objects.get(id=crypto_id)
-                    profile.preferred_cryptocurrency = cryptocurrency
-                except Cryptocurrency.DoesNotExist:
-                    pass
-            
-            profile.save()
-            messages.success(request, 'Profile updated successfully')
-            return redirect('main:settings')
+            form = UserProfileForm(request.POST, instance=profile, user=request.user)
+            if form.is_valid():
+                form.save()
+                logger.info(f"Profile updated for user {request.user.username}: currency={form.cleaned_data['currency']}")
+                messages.success(request, 'Profile updated successfully.')
+                return redirect('main:settings')
+            else:
+                logger.error(f"Profile update failed for user {request.user.username}: {form.errors}")
+                for error in form.errors.values():
+                    messages.error(request, error)
         
         elif 'add_wallet' in request.POST:
             crypto_id = request.POST.get('cryptocurrency')
@@ -832,11 +864,12 @@ def settings(request):
                         cryptocurrency=cryptocurrency,
                         address=wallet_address
                     )
-                    messages.success(request, 'Wallet address added successfully')
+                    messages.success(request, 'Wallet address added successfully.')
                 except Cryptocurrency.DoesNotExist:
-                    messages.error(request, 'Invalid cryptocurrency selected')
+                    messages.error(request, 'Invalid cryptocurrency selected.')
+                return redirect('main:settings')
             else:
-                messages.error(request, 'Please provide both cryptocurrency and wallet address')
+                messages.error(request, 'Please provide both cryptocurrency and wallet address.')
             return redirect('main:settings')
         
         elif 'delete_wallet' in request.POST:
@@ -844,51 +877,45 @@ def settings(request):
             try:
                 wallet = WalletAddress.objects.get(id=wallet_id, user=request.user)
                 wallet.delete()
-                messages.success(request, 'Wallet address deleted successfully')
+                messages.success(request, 'Wallet address deleted successfully.')
             except WalletAddress.DoesNotExist:
-                messages.error(request, 'Invalid wallet address')
+                messages.error(request, 'Invalid wallet address.')
             return redirect('main:settings')
         
-        elif 'current_password' in request.POST:
+        elif 'password_change' in request.POST:
             current_password = request.POST.get('current_password')
             new_password = request.POST.get('new_password')
             confirm_password = request.POST.get('confirm_password')
             
             if not request.user.check_password(current_password):
-                messages.error(request, 'Current password is incorrect')
+                messages.error(request, 'Current password is incorrect.')
                 return redirect('main:settings')
             
             if new_password != confirm_password:
-                messages.error(request, 'New passwords do not match')
+                messages.error(request, 'New passwords do not match.')
                 return redirect('main:settings')
             
             request.user.set_password(new_password)
             request.user.save()
             
-            user = authenticate(username=request.user.username, password=new_password)
+            user = authenticate(request, username=request.user.username, password=new_password)
             login(request, user)
             
-            messages.success(request, 'Password changed successfully')
+            logger.info(f"Password changed for user {request.user.username}")
+            messages.success(request, 'Password changed successfully.')
             return redirect('main:settings')
     
+    else:
+        form = UserProfileForm(instance=profile, user=request.user)
+    
     context = {
+        'form': form,
         'cryptocurrencies': cryptocurrencies,
         'wallet_addresses': wallet_addresses,
-        'profile': request.user.profile
+        'profile': profile,
+        'currency': profile.currency
     }
     return render(request, 'main/settings.html', context)
-
-def about(request):
-    return render(request, 'main/about.html')
-
-def terms(request):
-    return render(request, 'main/terms.html')
-
-def privacy(request):
-    return render(request, 'main/privacy.html')
-
-def demo(request):
-    return render(request, 'main/demo.html')
 
 @login_required
 def withdrawal_auth(request):
@@ -912,7 +939,7 @@ def withdrawal_auth(request):
             
             profile = request.user.profile
             if amount > profile.balance:
-                messages.error(request, 'Insufficient balance for withdrawal')
+                messages.error(request, f'Insufficient balance for withdrawal: {amount} {profile.currency} > {profile.balance} {profile.currency}')
                 return redirect('main:withdraw')
             
             wallet = WalletAddress.objects.get(id=wallet_id, user=request.user)
@@ -948,6 +975,21 @@ def withdrawal_auth(request):
     
     return render(request, 'main/withdrawal_auth.html')
 
+# Static Pages
+def home(request):
+    return render(request, 'main/home.html')
+
+def about(request):
+    return render(request, 'main/about.html')
+
+def terms(request):
+    return render(request, 'main/terms.html')
+
+def privacy(request):
+    return render(request, 'main/privacy.html')
+
+def demo(request):
+    return render(request, 'main/demo.html')
 
 # Custom Error Views
 def custom_404(request, exception):
@@ -965,6 +1007,7 @@ def custom_500(request):
 
 
 utils.py
+
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -1524,6 +1567,7 @@ import io
 import base64
 import re
 import logging
+from .models import UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -1533,7 +1577,7 @@ class RegistrationForm(forms.ModelForm):
     full_name = forms.CharField(max_length=100, required=True)
     phone = forms.CharField(max_length=20, required=False)
     country = forms.CharField(max_length=50, required=False)
-    currency = forms.ChoiceField(choices=(('USD', 'US Dollar ($)'), ('EUR', 'Euro (€)'), ('GBP', 'British Pound (£)')), required=False)
+    currency = forms.ChoiceField(choices=UserProfile.CURRENCY_CHOICES, required=False)
     honeypot = forms.CharField(required=False, widget=forms.HiddenInput, label="")
     captcha_answer = forms.CharField(max_length=10, required=True, label="Enter the result shown in the image")
 
@@ -1590,7 +1634,6 @@ class RegistrationForm(forms.ModelForm):
             logger.warning(f"Missing CAPTCHA data: entered={captcha_answer}, correct={correct_answer}")
             raise ValidationError("CAPTCHA answer is required.")
         
-        # Clean and compare answers
         entered_clean = str(captcha_answer).strip().lower()
         correct_clean = str(correct_answer).strip().lower()
         
@@ -1647,7 +1690,6 @@ class LoginForm(forms.Form):
             logger.warning(f"Missing CAPTCHA data: entered={captcha_answer}, correct={correct_answer}")
             raise ValidationError("CAPTCHA answer is required.")
         
-        # Clean and compare answers
         entered_clean = str(captcha_answer).strip().lower()
         correct_clean = str(correct_answer).strip().lower()
         
@@ -1657,15 +1699,33 @@ class LoginForm(forms.Form):
         
         return captcha_answer
 
+class UserProfileForm(forms.ModelForm):
+    username = forms.CharField(max_length=150, required=True)
+    email = forms.EmailField(required=True)
+    
+    class Meta:
+        model = UserProfile
+        fields = ['full_name', 'phone', 'country', 'currency']
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if self.user:
+            self.fields['username'].initial = self.user.username
+            self.fields['email'].initial = self.user.email
+    
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        if self.user:
+            self.user.username = self.cleaned_data['username']
+            self.user.email = self.cleaned_data['email']
+            if commit:
+                self.user.save()
+        if commit:
+            profile.save()
+        return profile
 
 urls.py
-
-from django.urls import path
-from . import views
-from django.contrib.auth import views as auth_views
-from django.urls import reverse_lazy
-
-app_name = 'main'
 
 from django.urls import path
 from . import views
@@ -1718,7 +1778,6 @@ urlpatterns = [
          name='password_reset_complete'),
 ]
 
-
 custom_admin app
 
 views.py
@@ -1728,7 +1787,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.utils import timezone
-from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth import authenticate, login, update_session_auth_hash, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from main.models import UserProfile, KYCVerification, Transaction, Cryptocurrency, Investment, InvestmentPlan, SiteSettings, WithdrawalCode
 from main.utils import send_kyc_status_email, send_bonus_email
@@ -1880,6 +1939,86 @@ def user_add_bonus(request, user_id):
             messages.error(request, str(e) or 'Invalid bonus amount.')
     return render(request, 'custom_admin/user_add_bonus.html', {'user': user})
 
+@superuser_required()
+def user_reset_password(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        if not new_password or len(new_password) < 8:
+            messages.error(request, 'Password must be at least 8 characters long.')
+            return render(request, 'custom_admin/user_reset_password.html', {'user': user})
+        
+        if new_password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'custom_admin/user_reset_password.html', {'user': user})
+        
+        user.set_password(new_password)
+        user.save()
+        logger.info(f"Admin reset password for user {user.username} (ID: {user_id})")
+        messages.success(request, f"Password for {user.username} reset successfully. The user can now log in with the new password and change it in their settings.")
+        return redirect('custom_admin:user_detail', user_id=user.id)
+    
+    return render(request, 'custom_admin/user_reset_password.html', {'user': user})
+
+@superuser_required()
+def login_as_user(request, user_id):
+    target_user = get_object_or_404(User, id=user_id)
+    if not request.user.is_superuser:
+        messages.error(request, 'Only superusers can perform this action.')
+        return redirect('custom_admin:user_detail', user_id=user_id)
+    
+    # Store admin user ID before logout
+    admin_user_id = request.user.id
+    logger.debug(f"Before impersonation: admin_user_id={admin_user_id}, session={request.session.items()}")
+    
+    # Set session variables for impersonation
+    request.session['admin_user_id'] = admin_user_id
+    request.session['is_impersonating'] = True
+    request.session.modified = True
+    logger.debug(f"After setting session: session={request.session.items()}")
+    
+    # Log out the admin and log in as the target user
+    logout(request)
+    login(request, target_user)
+    
+    # Verify session state after login
+    logger.debug(f"After login as {target_user.username}: session={request.session.items()}")
+    
+    # Log the action
+    logger.info(f"Admin {admin_user_id} started impersonating user {target_user.username} (ID: {user_id})")
+    messages.info(request, f"You are now logged in as {target_user.username}.")
+    return redirect('main:dashboard')
+
+@superuser_required()
+def exit_login_as_user(request):
+    admin_user_id = request.session.get('admin_user_id')
+    is_impersonating = request.session.get('is_impersonating')
+    
+    if not admin_user_id or not is_impersonating:
+        logger.warning("Attempted to exit impersonation without active session.")
+        messages.error(request, 'No active impersonation session.')
+        return redirect('custom_admin:dashboard')
+    
+    # Get the admin user
+    admin_user = get_object_or_404(User, id=admin_user_id)
+    
+    # Log out the impersonated user and log in as the admin
+    current_user = request.user
+    logout(request)
+    login(request, admin_user)
+    
+    # Clear impersonation session data
+    request.session.pop('admin_user_id', None)
+    request.session.pop('is_impersonating', None)
+    request.session.modified = True
+    
+    logger.info(f"Admin {admin_user.username} stopped impersonating user {current_user.username}")
+    messages.success(request, 'Returned to admin session.')
+    return redirect('custom_admin:dashboard')
+
+    
 @superuser_required()
 def kyc_list(request):
     kycs = KYCVerification.objects.all().select_related('user')
@@ -2196,6 +2335,8 @@ def withdrawal_code_delete(request, code_id):
     context = {'code': code}
     return render(request, 'custom_admin/withdrawal_code_delete.html', context)
 
+
+
 urls.py
 
 from django.urls import path
@@ -2214,6 +2355,9 @@ urlpatterns = [
     path('users/<int:user_id>/edit/', views.user_edit, name='user_edit'),
     path('users/<int:user_id>/delete/', views.user_delete, name='user_delete'),
     path('users/<int:user_id>/add-bonus/', views.user_add_bonus, name='user_add_bonus'),
+    path('users/<int:user_id>/reset-password/', views.user_reset_password, name='user_reset_password'),
+    path('users/<int:user_id>/login-as/', views.login_as_user, name='login_as_user'),
+    path('exit-login-as/', views.exit_login_as_user, name='exit_login_as_user'),
     # KYC Management
     path('kyc/', views.kyc_list, name='kyc_list'),
     path('kyc/<int:kyc_id>/', views.kyc_detail, name='kyc_detail'),
@@ -2247,10 +2391,8 @@ urlpatterns = [
 ]
 
 
-
 project root
 
-settings
 """
 Django settings for trading_site project.
 
@@ -2266,7 +2408,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-vqgy73@u5s_r-0^!tbt&w)@m$^v3x)t%a208hh(e^%7b_mjlgx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
@@ -2400,7 +2542,10 @@ handler404 = 'main.views.custom_404'
 handler403 = 'main.views.custom_403'
 handler500 = 'main.views.custom_500'
 
-
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 
 urls.py
 
@@ -2416,5 +2561,25 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
+i am getting this error when registering an account
 
-my kyc verification is not working even when i submit it asking me toupload the required documents.
+IntegrityError at /register/
+UNIQUE constraint failed: main_userprofile.user_id
+Request Method:	POST
+Request URL:	http://127.0.0.1:8000/register/
+Django Version:	5.2
+Exception Type:	IntegrityError
+Exception Value:	
+UNIQUE constraint failed: main_userprofile.user_id
+Exception Location:	C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\db\backends\sqlite3\base.py, line 360, in execute
+Raised during:	main.views.register
+Python Executable:	C:\Users\kpoje\AppData\Local\Programs\Python\Python312\python.exe
+Python Version:	3.12.4
+Python Path:	
+['C:\\Users\\kpoje\\Desktop\\version1\\broker',
+ 'C:\\Users\\kpoje\\AppData\\Local\\Programs\\Python\\Python312\\python312.zip',
+ 'C:\\Users\\kpoje\\AppData\\Local\\Programs\\Python\\Python312\\DLLs',
+ 'C:\\Users\\kpoje\\AppData\\Local\\Programs\\Python\\Python312\\Lib',
+ 'C:\\Users\\kpoje\\AppData\\Local\\Programs\\Python\\Python312',
+ 'C:\\Users\\kpoje\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages']
+Server time:	Sun, 01 Jun 2025 09:21:16 +0000

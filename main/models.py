@@ -9,19 +9,6 @@ import logging
 # Set up logging
 logger = logging.getLogger(__name__)
 
-CURRENCY_CHOICES = (
-    ('USD', 'US Dollar ($)'),
-    ('EUR', 'Euro (€)'),
-    ('GBP', 'British Pound (£)'),
-    ('NGN', 'Nigerian Naira (₦)'),
-    ('GHS', 'Ghanaian Cedi (₵)'),
-    ('KES', 'Kenyan Shilling (KSh)'),
-    ('ZAR', 'South African Rand (R)'),
-    ('INR', 'Indian Rupee (₹)'),
-    ('AUD', 'Australian Dollar (A$)'),
-    ('CAD', 'Canadian Dollar (C$)'),
-)
-
 class InvestmentPlan(models.Model):
     PLAN_TYPES = (
         ('standard', 'Standard'),
@@ -55,7 +42,6 @@ class Cryptocurrency(models.Model):
     class Meta:
         verbose_name_plural = "Cryptocurrencies"
 
-# main/models.py
 class WalletAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wallet_addresses')
     cryptocurrency = models.ForeignKey('Cryptocurrency', on_delete=models.CASCADE)
@@ -67,6 +53,28 @@ class WalletAddress(models.Model):
         return f"{self.user.username}'s {self.cryptocurrency.name} Wallet"
 
 class UserProfile(models.Model):
+    CURRENCY_CHOICES = (
+        ('USD', 'US Dollar ($)'),
+        ('EUR', 'Euro (€)'),
+        ('GBP', 'British Pound (£)'),
+        ('NGN', 'Nigerian Naira (₦)'),
+        ('GHS', 'Ghanaian Cedi (₵)'),
+        ('KES', 'Kenyan Shilling (KSh)'),
+        ('ZAR', 'South African Rand (R)'),
+        ('AUD', 'Australian Dollar (A$)'),
+        ('CAD', 'Canadian Dollar (C$)'),
+        ('JPY', 'Japanese Yen (¥)'),
+        ('CNY', 'Chinese Yuan (¥)'),
+        ('INR', 'Indian Rupee (₹)'),
+        ('KRW', 'South Korean Won (₩)'),
+        ('SGD', 'Singapore Dollar (S$)'),
+        ('HKD', 'Hong Kong Dollar (HK$)'),
+        ('MYR', 'Malaysian Ringgit (RM)'),
+        ('THB', 'Thai Baht (฿)'),
+        ('PHP', 'Philippine Peso (₱)'),
+        ('IDR', 'Indonesian Rupiah (Rp)'),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     full_name = models.CharField(max_length=100, blank=True)
     phone = models.CharField(max_length=20, blank=True)
@@ -84,13 +92,14 @@ class UserProfile(models.Model):
         return f"{self.user.username}'s Profile"
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
+def manage_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    else:
+        try:
+            instance.profile.save()
+        except UserProfile.DoesNotExist:
+            UserProfile.objects.create(user=instance)
 
 class KYCVerification(models.Model):
     ID_TYPES = (
@@ -179,6 +188,11 @@ class Transaction(models.Model):
         profile = self.user.profile
         logger.info(f"Before update - User: {self.user.username}, Balance: {profile.balance}, Profit: {profile.profit}, Bonus: {profile.bonus}, Investment: {profile.investment}")
         
+        # Validate balance to prevent negative values
+        if self.transaction_type in ['withdrawal', 'investment'] and self.status == 'completed' and profile.balance < self.amount:
+            logger.error(f"Insufficient balance for {self.transaction_type}: {self.amount} > {profile.balance}")
+            raise ValueError(f"Insufficient balance for {self.transaction_type}: {self.amount} > {profile.balance}")
+        
         if self.transaction_type == 'deposit' and self.status == 'completed':
             profile.balance += self.amount
         elif self.transaction_type == 'withdrawal' and self.status == 'completed':
@@ -215,15 +229,19 @@ class Investment(models.Model):
         return f"{self.user.username}'s {self.plan.get_name_display()} Investment - {self.amount}"
     
     def save(self, *args, **kwargs):
-        if self.pk is None:  # Only on creation
+        if not self.pk:  # Only on creation
             roi_percentage = self.plan.roi_percentage / Decimal('100')
             self.expected_return = self.amount + (self.amount * roi_percentage)
             self.end_date = timezone.now() + timezone.timedelta(days=self.plan.duration_days)
+        elif self.plan_id != Investment.objects.get(pk=self.pk).plan_id:
+            # Update expected_return and end_date if plan changes
+            roi_percentage = self.plan.roi_percentage / Decimal('100')
+            self.expected_return = self.amount + (self.amount * roi_percentage)
+            self.end_date = self.start_date + timezone.timedelta(days=self.plan.duration_days)
         
         super().save(*args, **kwargs)
 
-
-class SiteSettings(models.Model):  # New model for site settings
+class SiteSettings(models.Model):
     site_name = models.CharField(max_length=100, default='Trading Platform')
     logo = models.ImageField(upload_to='site/logo/', null=True, blank=True)
     contact_email = models.EmailField(max_length=254, blank=True)
