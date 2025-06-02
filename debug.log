@@ -1532,3 +1532,174 @@ WARNING 2025-06-01 20:39:19,239 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 40
 WARNING 2025-06-01 20:39:19,606 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
 INFO 2025-06-01 20:40:00,364 autoreload C:\Users\kpoje\Desktop\version1\broker\trading_site\settings.py changed, reloading.
 INFO 2025-06-01 20:46:05,764 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 20:47:07,076 basehttp "GET / HTTP/1.1" 200 92726
+INFO 2025-06-01 20:47:15,312 basehttp "GET / HTTP/1.1" 200 92722
+INFO 2025-06-01 20:47:25,518 basehttp "GET /register/ HTTP/1.1" 200 56136
+INFO 2025-06-01 20:47:28,600 basehttp "GET /static/img/cert1.jpg HTTP/1.1" 200 24282
+INFO 2025-06-01 20:47:28,627 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 200 25746
+INFO 2025-06-01 20:47:30,443 basehttp "GET /static/img/cert1.jpg HTTP/1.1" 200 24282
+WARNING 2025-06-01 20:47:30,974 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+INFO 2025-06-01 20:47:33,267 basehttp "GET / HTTP/1.1" 200 92342
+INFO 2025-06-01 20:47:46,878 basehttp "GET / HTTP/1.1" 200 92342
+WARNING 2025-06-01 20:48:16,853 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+INFO 2025-06-01 20:48:39,335 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 200 25746
+INFO 2025-06-01 20:49:06,705 basehttp "GET /static/img/cert1.jpg HTTP/1.1" 200 24282
+INFO 2025-06-01 20:49:08,168 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 200 25746
+WARNING 2025-06-01 20:49:10,691 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+WARNING 2025-06-01 20:49:13,049 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+ERROR 2025-06-01 21:09:31,474 log Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\main\views.py", line 730, in home
+    return render(request, 'main/home.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 577, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 1717: 'static'. Did you forget to register or load this tag?
+ERROR 2025-06-01 21:09:59,881 basehttp "GET / HTTP/1.1" 500 187599
+ERROR 2025-06-01 21:10:00,406 log Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 510, in parse
+    compile_func = self.tags[command]
+                   ~~~~~~~~~^^^^^^^^^
+KeyError: 'static'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\main\views.py", line 730, in home
+    return render(request, 'main/home.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 134, in render
+    compiled_parent = self.get_parent(context)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 131, in get_parent
+    return self.find_template(parent, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 109, in find_template
+    template, origin = context.template.engine.find_template(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 512, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 577, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 1717: 'static'. Did you forget to register or load this tag?
+ERROR 2025-06-01 21:10:00,942 basehttp "GET / HTTP/1.1" 500 187617
+INFO 2025-06-01 21:10:30,370 basehttp "GET / HTTP/1.1" 200 92487
+INFO 2025-06-01 21:10:30,728 basehttp "GET / HTTP/1.1" 200 92871
+INFO 2025-06-01 21:10:47,310 basehttp "GET /static/img/cert1.jpg HTTP/1.1" 304 0
+WARNING 2025-06-01 21:10:57,083 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+INFO 2025-06-01 21:10:59,584 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 304 0
+INFO 2025-06-01 21:11:39,735 basehttp "GET /static/img/cert1.jpg HTTP/1.1" 304 0
+INFO 2025-06-01 21:11:39,784 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 304 0
+WARNING 2025-06-01 21:11:41,097 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+INFO 2025-06-02 02:05:29,479 basehttp "GET / HTTP/1.1" 200 84410
+INFO 2025-06-02 02:12:05,888 basehttp "GET / HTTP/1.1" 200 84409
+INFO 2025-06-02 02:17:42,454 basehttp "GET / HTTP/1.1" 200 89919
+WARNING 2025-06-02 02:19:35,272 log Not Found: /favicon.ico
+WARNING 2025-06-02 02:19:35,298 basehttp "GET /favicon.ico HTTP/1.1" 404 7843
+INFO 2025-06-02 06:44:20,550 basehttp "GET /register/ HTTP/1.1" 200 52956
+WARNING 2025-06-02 06:44:41,148 log Not Found: /favicon.ico
+WARNING 2025-06-02 06:44:41,225 basehttp "GET /favicon.ico HTTP/1.1" 404 7843
