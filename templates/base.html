@@ -697,7 +697,130 @@
             color: var(--text-primary);
         }
         
-        
+       /* Google Translate Custom Styles - Compact Version */
+.goog-te-gadget {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+}
+
+.goog-te-gadget-simple {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.goog-te-menu-value {
+    display: none !important; /* Hides the "Select Language" text */
+}
+
+.goog-te-menu-value span {
+    display: none !important;
+}
+
+.goog-te-menu-value img {
+    display: none !important;
+}
+
+.goog-te-gadget-icon {
+    display: none !important;
+}
+
+/* Combo box styling */
+.goog-te-gadget .goog-te-combo {
+    background-color: var(--glass-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 4px 6px !important;
+    font-size: 12px !important;
+    height: 28px !important;
+    min-width: 100px !important;
+    cursor: pointer;
+}
+
+/* Hide Google branding */
+.goog-logo-link,
+.goog-te-banner-frame {
+    display: none !important;
+}
+
+/* Hide the "Powered by" text */
+body .goog-tooltip {
+    display: none !important;
+}
+
+body .goog-tooltip:hover {
+    display: none !important;
+}
+
+body .goog-text-highlight {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Mobile version */
+#mobile_google_translate_element .goog-te-gadget {
+    width: 100%;
+    margin-bottom: 8px !important;
+}
+
+#mobile_google_translate_element .goog-te-gadget-simple {
+    width: 100%;
+    display: block !important;
+}
+
+#mobile_google_translate_element .goog-te-combo {
+    width: 100% !important;
+    max-width: 150px !important;
+}
+
+/* Certifications & Payment Methods Styles */
+.glass-card img {
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover img {
+    filter: brightness(1.1);
+}
+
+/* Payment method icons container */
+.payment-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.payment-icon {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(30%);
+    transition: all 0.3s ease;
+}
+
+.payment-icon:hover {
+    filter: grayscale(0%) brightness(1.1);
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    #certifications .glass-card {
+        padding: 1rem;
+    }
+    
+    #payment-methods .glass-card {
+        padding: 0.75rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -1590,16 +1713,7 @@ function googleTranslateElementInit() {
                 </div>
             </div>
         </div>
-        <div class="border-t border-glass-border mt-8 pt-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <p class="text-textSecondary text-sm">© 2025 {{ site_name }}. All rights reserved.</p>
-                <div class="flex space-x-4 mt-4 md:mt-0">
-                   <img src="https://drive.google.com/uc?id=1OKjy1Ie7S0kMnjr4c5G4aUyqGEoCMbxZ" alt="Your Image" class="opacity-70">
-                    <img src="https://drive.google.com/uc?id=1OKjy1Ie7S0kMnjr4c5G4aUyqGEoCMbxZ" alt="Your Image" class="opacity-70">
-                    <img src="https://drive.google.com/uc?id=1OKjy1Ie7S0kMnjr4c5G4aUyqGEoCMbxZ" alt="Your Image" class="opacity-70">
-                </div>
-            </div>
-        </div>
+        
     </div>
 </footer>
 
@@ -1699,6 +1813,79 @@ function googleTranslateElementInit() {
             setTimeout(() => alert.remove(), 500);
         });
     }, 5000);
+</script>
+
+<script>
+// Arrays of random data
+const firstNames = ["Chris", "Joe", "Sarah", "Michael", "David", "Emma", "James", "Olivia", "Robert", "Sophia", "William", "Ava", "John", "Isabella", "Daniel"];
+const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Wilson", "Anderson", "Taylor", "Thomas"];
+const actions = ["invested", "deposited", "withdrew", "traded", "exchanged", "transferred", "converted"];
+const currencies = ["$", "€", "£", "¥", "₿"];
+const amounts = [500, 1000, 2500, 5000, 7500, 10000, 15000, 20000, 30000, 50000];
+
+// Function to generate random notification
+function generateNotification() {
+    // Get random elements
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const action = actions[Math.floor(Math.random() * actions.length)];
+    const currency = currencies[Math.floor(Math.random() * currencies.length)];
+    const amount = amounts[Math.floor(Math.random() * amounts.length)];
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'notification-popup';
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-icon">💰</span>
+            <span class="notification-text">${firstName} ${lastName} just ${action} ${currency}${amount.toLocaleString()}</span>
+        </div>
+    `;
+    
+    // Style the notification
+    notification.style.position = 'fixed';
+    notification.style.bottom = '20px';
+    notification.style.right = '20px';
+    notification.style.backgroundColor = 'rgba(4, 120, 87, 0.9)';
+    notification.style.color = 'white';
+    notification.style.padding = '15px 20px';
+    notification.style.borderRadius = '8px';
+    notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+    notification.style.zIndex = '1000';
+    notification.style.display = 'flex';
+    notification.style.alignItems = 'center';
+    notification.style.gap = '10px';
+    notification.style.animation = 'slideIn 0.5s forwards';
+    
+    // Add to body
+    document.body.appendChild(notification);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.5s forwards';
+        setTimeout(() => notification.remove(), 500);
+    }, 5000);
+}
+
+// Add CSS animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Start generating notifications every 30 seconds
+setInterval(generateNotification, 30000);
+
+// Generate first notification after 2 seconds
+setTimeout(generateNotification, 2000);
 </script>
     
 </body>

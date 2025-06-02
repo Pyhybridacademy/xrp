@@ -195,9 +195,11 @@ def login_as_user(request, user_id):
     request.session.modified = True
     logger.debug(f"After setting session: session={request.session.items()}")
     
-    # Log out the admin and log in as the target user
+    # Log out the admin
     logout(request)
-    login(request, target_user)
+    
+    # Log in as the target user, specifying the backend
+    login(request, target_user, backend='main.authentication.EmailOrUsernameModelBackend')
     
     # Verify session state after login
     logger.debug(f"After login as {target_user.username}: session={request.session.items()}")
@@ -244,6 +246,11 @@ def kyc_list(request):
 @superuser_required()
 def kyc_detail(request, kyc_id):
     kyc = get_object_or_404(KYCVerification, id=kyc_id)
+    if not kyc.id_front or not kyc.id_back or not kyc.selfie:
+        logger.warning(f"KYC ID {kyc_id} for user {kyc.user.username} is missing files: "
+                      f"id_front={'present' if kyc.id_front else 'missing'}, "
+                      f"id_back={'present' if kyc.id_back else 'missing'}, "
+                      f"selfie={'present' if kyc.selfie else 'missing'}")
     context = {'kyc': kyc}
     return render(request, 'custom_admin/kyc_detail.html', context)
 
