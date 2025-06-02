@@ -113,8 +113,10 @@ class RegistrationForm(forms.ModelForm):
                 raise
         return user
 
+
+
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=30, required=True)
+    username_or_email = forms.CharField(max_length=254, required=True, label="Username or Email")
     password = forms.CharField(widget=forms.PasswordInput, required=True)
     honeypot = forms.CharField(required=False, widget=forms.HiddenInput, label="")
     captcha_answer = forms.CharField(max_length=10, required=True, label="Enter the result shown in the image")
@@ -127,15 +129,13 @@ class LoginForm(forms.Form):
         if self.data:
             logger.debug(f"Login form POST data: {self.data}")
 
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if len(username) > 30:
-            raise ValidationError("Username cannot exceed 30 characters.")
-        if not re.match(r'^[a-zA-Z0-9_]+$', username):
-            raise ValidationError("Username can only contain letters, numbers, and underscores.")
-        if re.search(self.BLACKLISTED_CHARS, username):
-            raise ValidationError("Username contains invalid characters.")
-        return username
+    def clean_username_or_email(self):
+        username_or_email = self.cleaned_data['username_or_email']
+        if len(username_or_email) > 254:
+            raise ValidationError("Input cannot exceed 254 characters.")
+        if re.search(self.BLACKLISTED_CHARS, username_or_email):
+            raise ValidationError("Input contains invalid characters.")
+        return username_or_email
 
     def clean_honeypot(self):
         honeypot = self.cleaned_data['honeypot']

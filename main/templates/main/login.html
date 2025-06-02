@@ -23,10 +23,10 @@
                 {{ form.non_field_errors }}
 
                 <div>
-                    <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-textSecondary">Username</label>
+                    <label for="{{ form.username_or_email.id_for_label }}" class="block text-sm font-medium text-textSecondary">Username or Email</label>
                     <div class="relative">
-                        {{ form.username }}
-                        {{ form.username.errors }}
+                        {{ form.username_or_email }}
+                        {{ form.username_or_email.errors }}
                         <i class="fas fa-user absolute right-3 top-1/2 transform -translate-y-1/2 text-textMuted"></i>
                     </div>
                 </div>
@@ -111,12 +111,12 @@
 
     @media (prefers-color-scheme: dark) {
         .form-elegant input, .form-elegant select, .form-input {
-            color: #ffffff; /* White text for dark mode */
-            background-color: rgba(255, 255, 255, 0.15); /* Slightly lighter background for contrast */
-            border-color: rgba(255, 255, 255, 0.3); /* Lighter border for visibility */
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
         }
         .form-elegant input::placeholder, .form-elegant select::placeholder, .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.7); /* Light placeholder text for dark mode */
+            color: rgba(255, 255, 255, 0.7);
         }
     }
     

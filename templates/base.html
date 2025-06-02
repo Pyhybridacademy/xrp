@@ -696,81 +696,109 @@
             background: rgba(4, 120, 87, 0.3);
             color: var(--text-primary);
         }
+        
+        
     </style>
 </head>
 <body>
     <!-- Sticky Navigation -->
-    <nav class="nav-elegant" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{% url 'main:home' %}" class="flex-shrink-0 flex items-center group">
-                        <div class="gradient-primary p-2 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fas fa-chart-line text-xl text-white"></i>
-                        </div>
-                        <span class="text-2xl font-bold gradient-text">{{ site_name }}</span>
-                    </a>
-                </div>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link-elegant smooth-scroll">Home</a>
-                    <a href="{% url 'main:about' %}" class="nav-link-elegant smooth-scroll">About</a>
-                    <a href="#services" class="nav-link-elegant smooth-scroll">Services</a>
-                    <a href="{% url 'main:demo' %}" class="nav-link-elegant ">Demo</a>
-                    <a href="#contact" class="nav-link-elegant smooth-scroll">Contact</a>
-                    
-                    {% if user.is_authenticated %}
-                        <div class="relative group">
-                            <button class="flex items-center nav-link-elegant">
-                                <i class="fas fa-user-circle mr-2"></i>{{ user.username }}
-                                <i class="fas fa-chevron-down ml-1 text-xs"></i>
-                            </button>
-                            <div class="absolute right-0 mt-2 w-48 glass-card rounded-lg shadow-xl py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <a href="{% url 'main:dashboard' %}" class="block px-4 py-2 text-sm text-textSecondary hover:bg-glass-bg">
-                                    <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                                </a>
-                                <a href="{% url 'main:logout' %}" class="block px-4 py-2 text-sm text-textSecondary hover:bg-glass-bg">
-                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                                </a>
-                            </div>
-                        </div>
-                    {% else %}
-                        <a href="{% url 'main:login' %}" class="nav-link-elegant">Login</a>
-                        <a href="{% url 'main:register' %}" class="btn-elegant animate-glow">
-                            Open Your Account
-                        </a>
-                    {% endif %}
-                    <!-- Theme Toggle -->
-                    <div class="theme-toggle" id="themeToggle"></div>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-textSecondary focus:outline-none">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
+   <nav class="nav-elegant" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Language Selector Above Logo -->
+        <div class="flex justify-end mb-1">
+            <div id="google_translate_element"></div>
         </div>
         
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-glass-border">
-            <div class="px-4 py-2 space-y-2">
-                <a href="/" class="block nav-link-elegant">Home</a>
-                <a href="{% url 'main:about' %}" class="block nav-link-elegant ">About</a>
-                <a href="{% url 'main:home' %}#services" class="block nav-link-elegant ">Services</a>
-                <a href="{% url 'main:demo' %}" class="nav-link-elegant ">Demo</a>
-
-                <a href="{% url 'main:home' %}#contact" class="block nav-link-elegant ">Contact</a>
-                {% if not user.is_authenticated %}
-                    <a href="{% url 'main:login' %}" class="block nav-link-elegant">Login</a>
-                    <a href="{% url 'main:register' %}" class="block btn-elegant mt-2">Open Your Account</a>
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <a href="{% url 'main:home' %}" class="flex-shrink-0 flex items-center group">
+                    <div class="gradient-primary p-2 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-chart-line text-xl text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">{{ site_name }}</span>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="nav-link-elegant smooth-scroll">Home</a>
+                <a href="{% url 'main:about' %}" class="nav-link-elegant smooth-scroll">About</a>
+                <a href="#services" class="nav-link-elegant smooth-scroll">Services</a>
+                <a href="{% url 'main:demo' %}" class="nav-link-elegant">Demo</a>
+                <a href="#contact" class="nav-link-elegant smooth-scroll">Contact</a>
+                
+                {% if user.is_authenticated %}
+                    <div class="relative group">
+                        <button class="flex items-center nav-link-elegant">
+                            <i class="fas fa-user-circle mr-2"></i>{{ user.username }}
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 glass-card rounded-lg shadow-xl py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                            <a href="{% url 'main:dashboard' %}" class="block px-4 py-2 text-sm text-textSecondary hover:bg-glass-bg">
+                                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                            </a>
+                            <a href="{% url 'main:logout' %}" class="block px-4 py-2 text-sm text-textSecondary hover:bg-glass-bg">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'main:login' %}" class="nav-link-elegant">Login</a>
+                    <a href="{% url 'main:register' %}" class="btn-elegant animate-glow">
+                        Open Your Account
+                    </a>
                 {% endif %}
-                <!-- Theme Toggle in Mobile Menu -->
-                <div class="theme-toggle mt-4" id="mobileThemeToggle"></div>
+         
+                <!-- Theme Toggle -->
+                <div class="theme-toggle" id="themeToggle"></div>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-textSecondary focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
             </div>
         </div>
-    </nav>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-glass-border">
+        <div class="px-4 py-2 space-y-2">
+            <!-- Mobile Language Selector -->
+            <div id="mobile_google_translate_element"></div>
+            
+            <a href="/" class="block nav-link-elegant">Home</a>
+            <a href="{% url 'main:about' %}" class="block nav-link-elegant">About</a>
+            <a href="{% url 'main:home' %}#services" class="block nav-link-elegant">Services</a>
+            <a href="{% url 'main:demo' %}" class="nav-link-elegant">Demo</a>
+            <a href="{% url 'main:home' %}#contact" class="block nav-link-elegant">Contact</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'main:login' %}" class="block nav-link-elegant">Login</a>
+                <a href="{% url 'main:register' %}" class="block btn-elegant mt-2">Open Your Account</a>
+            {% endif %}
+            <!-- Theme Toggle in Mobile Menu -->
+            <div class="theme-toggle mt-4" id="mobileThemeToggle"></div>
+        </div>
+    </div>
+</nav>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  // Desktop version (compact)
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+  }, 'google_translate_element');
+  
+  // Mobile version (vertical)
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'mobile_google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Messages -->
     {% if messages %}
@@ -1494,162 +1522,185 @@
         {% endblock %}
     </main>
 
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/{{ settings.contact_phone|urlencode }}?text=Hello%2C%20I%20need%20help%20with%20my%20trading%20account" 
+   target="_blank" 
+   class="fixed bottom-6 left-6 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 z-50 animate-bounce-slow"
+   aria-label="Contact us on WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.256-.463-2.39-1.485-.883-.793-1.48-1.776-1.653-2.085-.173-.309-.018-.475.13-.629.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+    </svg>
+</a>
     <!-- Footer -->
-    <footer class="footer-elegant">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center mb-4">
-                        <div class="gradient-primary p-2 rounded-lg mr-3">
-                            <i class="fas fa-chart-line text-xl text-white"></i>
-                        </div>
-                        <span class="text-2xl font-bold gradient-text">{{ site_name }}</span>
+<footer class="footer-elegant">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center mb-4">
+                    <div class="gradient-primary p-2 rounded-lg mr-3">
+                        <i class="fas fa-chart-line text-xl text-white"></i>
                     </div>
-                    <p class="text-textSecondary mb-4 max-w-md">Your trusted partner in forex trading. Join thousands of successful traders who trust our platform for their trading journey.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
-                            <i class="fab fa-facebook text-xl"></i>
-                        </a>
-                        <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-                        <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
-                            <i class="fab fa-linkedin text-xl"></i>
-                        </a>
-                        <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
-                            <i class="fab fa-instagram text-xl"></i>
-                        </a>
-                    </div>
+                    <span class="text-2xl font-bold gradient-text">{{ site_name }}</span>
                 </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4 text-accent">Quick Links</h3>
-                    <ul class="space-y-2 text-textSecondary">
-                        <li><a href="{% url 'main:home' %}#home" class="hover:text-accent transition-colors duration-200 smooth-scroll">Home</a></li>
-                        <li><a href="{% url 'main:about' %}" class="hover:text-accent transition-colors duration-200">About Us</a></li>
-                        <li><a href="{% url 'main:home' %}#services" class="hover:text-accent transition-colors duration-200 smooth-scroll">Services</a></li>
-                        <li><a href="{% url 'main:terms' %}" class="hover:text-accent transition-colors duration-200">Terms of Service</a></li>
-                        <li><a href="{% url 'main:privacy' %}" class="hover:text-accent transition-colors duration-200">Privacy Policy</a></li>
-                    </ul>
+                <p class="text-textSecondary mb-4 max-w-md">Your trusted partner in forex trading. Join thousands of successful traders who trust our platform for their trading journey.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
+                        <i class="fab fa-facebook text-xl"></i>
+                    </a>
+                    <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-textSecondary hover:text-accent transition-colors duration-200 transform hover:scale-110">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
                 </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4 text-accent">Contact Info</h3>
-                    <div class="space-y-2 text-textSecondary">
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4 text-accent">Quick Links</h3>
+                <ul class="space-y-2 text-textSecondary">
+                    <li><a href="{% url 'main:home' %}#home" class="hover:text-accent transition-colors duration-200 smooth-scroll">Home</a></li>
+                    <li><a href="{% url 'main:about' %}" class="hover:text-accent transition-colors duration-200">About Us</a></li>
+                    <li><a href="{% url 'main:home' %}#services" class="hover:text-accent transition-colors duration-200 smooth-scroll">Services</a></li>
+                    <li><a href="{% url 'main:terms' %}" class="hover:text-accent transition-colors duration-200">Terms of Service</a></li>
+                    <li><a href="{% url 'main:privacy' %}" class="hover:text-accent transition-colors duration-200">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4 text-accent">Contact Info</h3>
+                <div class="space-y-2 text-textSecondary">
                     {% if contact_email %}
                         <p><i class="fas fa-envelope mr-2 text-accent"></i>{{ contact_email }}</p>
                     {% endif %}
                     {% if contact_phone %}
                         <p><i class="fas fa-phone mr-2 text-accent"></i>{{ contact_phone }}</p>
                     {% endif %}
-                        <p><i class="fas fa-map-marker-alt mr-2 text-accent"></i>New York, NY 10001</p>
-                    </div>
-                    <div class="mt-4">
-                        <h4 class="text-sm font-semibold mb-2 text-accent">Newsletter</h4>
-                        <div class="flex">
-                            <input type="email" placeholder="Your email" class="flex-1 px-3 py-2 input-elegant focus-elegant">
-                            <button class="btn-elegant">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <p><i class="fas fa-map-marker-alt mr-2 text-accent"></i>New York, NY 10001</p>
                 </div>
-            </div>
-            
-            <div class="border-t border-glass-border mt-8 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-textSecondary text-sm">© 2025 {{ site_name }}. All rights reserved.</p>
-                    <div class="flex space-x-4 mt-4 md:mt-0">
-                        <img src="https://via.placeholder.com/60x30/4B5563/FFFFFF?text=SSL" alt="SSL Certified" class="opacity-70">
-                        <img src="https://via.placeholder.com/60x30/4B5563/FFFFFF?text=CFTC" alt="CFTC Regulated" class="opacity-70">
-                        <img src="https://via.placeholder.com/60x30/4B5563/FFFFFF?text=NFA" alt="NFA Member" class="opacity-70">
+                <div class="mt-4">
+                    <h4 class="text-sm font-semibold mb-2 text-accent">Newsletter</h4>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="flex-1 px-3 py-2 input-elegant focus-elegant">
+                        <button class="btn-elegant">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
-    {% if live_chat_enabled and live_chat_script_url %}
+        <div class="border-t border-glass-border mt-8 pt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-textSecondary text-sm">© 2025 {{ site_name }}. All rights reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                   <img src="https://drive.google.com/uc?id=1OKjy1Ie7S0kMnjr4c5G4aUyqGEoCMbxZ" alt="Your Image" class="opacity-70">
+                    <img src="https://drive.google.com/uc?id=1OKjy1Ie7S0kMnjr4c5G4aUyqGEoCMbxZ" alt="Your Image" class="opacity-70">
+                    <img src="https://drive.google.com/uc?id=1OKjy1Ie7S0kMnjr4c5G4aUyqGEoCMbxZ" alt="Your Image" class="opacity-70">
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% block extra_body %}
+ {% if live_chat_enabled and live_chat_script_url %}
         <script src="{{ live_chat_script_url }}"></script>
     {% endif %}
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100,
-        });
+    
 
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
-        const html = document.documentElement;
+    {% if settings.contact_phone %}
+        <a href="https://wa.me/{{ settings.contact_phone|urlencode }}?text=Hello%2C%20I%20need%20help%20with%20my%20trading%20account" 
+           target="_blank" 
+           class="fixed bottom-4 left-4 gradient-primary text-white rounded-full p-3 shadow-lg hover:scale-110 transition-transform duration-300 z-50" 
+           aria-label="Contact us on WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.134.559 4.135 1.536 5.874l-1.93 7.05 7.224-1.895c1.643.896 3.48 1.41 5.47 1.41 6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.854 0-3.573-.484-5.073-1.31l-.354-.192-4.29 1.125 1.147-4.186-.2-.344C2.484 15.573 2 13.854 2 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10zm5.073-6.573c-.287-.143-1.717-.857-1.983-.952-.267-.095-.462-.143-.657.143-.195.286-.757.952-.93 1.143-.172.191-.343.214-.63.071-.287-.143-1.215-.447-2.316-1.424-.857-.762-1.438-1.705-1.61-1.991-.172-.286-.018-.44.128-.583.13-.127.287-.333.43-.5.143-.167.191-.286.287-.476.095-.191.048-.357-.024-.5-.071-.143-.657-1.586-.9-2.167-.238-.571-.478-.492-.657-.5-.172-.008-.367-.008-.562-.008-.195 0-.514.071-.781.357-.267.286-1.024 1-.024 2.024 1 1.024 2.048 1.905 2.405 2.048.357.143 6.21 2.524 6.524 2.667.314.143.524.238.605.405.081.167.095.762.024 1.048-.071.286-.429.667-.762.905z"/>
+            </svg>
+        </a>
+    {% endif %}
+{% endblock %}
 
-        function setTheme(theme) {
-            html.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Initialize AOS
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100,
+    });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+    const html = document.documentElement;
+
+    function setTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+
+    // Toggle theme on click
+    [themeToggle, mobileThemeToggle].forEach(toggle => {
+        if (toggle) {
+            toggle.innerHTML = '<i class="fas fa-sun"></i><i class="fas fa-moon"></i>';
+            toggle.addEventListener('click', () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
         }
+    });
 
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        setTheme(savedTheme);
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
 
-        // Toggle theme on click
-        [themeToggle, mobileThemeToggle].forEach(toggle => {
-            if (toggle) {
-                toggle.innerHTML = '<i class="fas fa-sun"></i><i class="fas fa-moon"></i>';
-                toggle.addEventListener('click', () => {
-                    const currentTheme = html.getAttribute('data-theme');
-                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                    setTheme(newTheme);
+    // Smooth scrolling
+    document.querySelectorAll('.smooth-scroll').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             }
+            mobileMenu.classList.add('hidden');
         });
+    });
 
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileMenuButton && mobileMenu) {
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
         }
+    });
 
-        // Smooth scrolling
-        document.querySelectorAll('.smooth-scroll').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-                mobileMenu.classList.add('hidden');
-            });
+    // Auto-hide messages
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
         });
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Auto-hide messages
-        setTimeout(() => {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                alert.style.transition = 'opacity 0.5s';
-                alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 500);
-            });
-        }, 5000);
-    </script>
+    }, 5000);
+</script>
+    
 </body>
 </html>
 

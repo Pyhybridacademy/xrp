@@ -35,7 +35,7 @@
             </div>
             <div>
                 <label for="roi_percentage" class="block text-sm font-medium text-gray-700">ROI Percentage</label>
-                <input type="number" name="roi_percentage" id="roi_percentage" value="{{ plan.roi_percentage|floatformat:2" }}" required step="0.01"
+                <input type="number" name="roi_percentage" id="roi_percentage" value="{{ plan.roi_percentage|floatformat:'2' }}" required step="0.01"
                        class="mt-1 block w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                        aria-required="true">
             </div>

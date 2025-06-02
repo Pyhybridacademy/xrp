@@ -162,6 +162,7 @@ def register(request):
 
 
 
+# main/views.py
 def login_view(request):
     if request.method == 'POST':
         # Get CAPTCHA data from session
@@ -191,19 +192,19 @@ def login_view(request):
             captcha_valid = user_answer.lower() == str(captcha_answer).lower()
         
         if captcha_valid and form.is_valid():
-            username = form.cleaned_data['username']
+            username_or_email = form.cleaned_data['username_or_email']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=username_or_email, password=password)
             if user is not None:
                 login(request, user)
                 if '_captcha_data' in request.session:
                     del request.session['_captcha_data']
-                logger.info(f"User logged in: {username}")
+                logger.info(f"User logged in: {username_or_email}")
                 messages.success(request, 'Login successful.')
                 return redirect('main:dashboard')
             else:
-                logger.warning(f"Failed login attempt for {username} from IP {request.META.get('REMOTE_ADDR')}")
-                messages.error(request, 'Invalid username or password.')
+                logger.warning(f"Failed login attempt for {username_or_email} from IP {request.META.get('REMOTE_ADDR')}")
+                messages.error(request, 'Invalid username/email or password.')
         else:
             if not captcha_valid:
                 logger.warning(f"Invalid CAPTCHA from IP {request.META.get('REMOTE_ADDR')}")

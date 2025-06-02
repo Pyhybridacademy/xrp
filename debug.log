@@ -1091,3 +1091,444 @@ WARNING 2025-06-01 15:45:58,497 log Not Found: /yusuf
 WARNING 2025-06-01 15:45:58,767 basehttp "GET /yusuf HTTP/1.1" 404 7825
 WARNING 2025-06-01 15:46:00,920 log Not Found: /favicon.ico
 WARNING 2025-06-01 15:46:01,149 basehttp "GET /favicon.ico HTTP/1.1" 404 7843
+INFO 2025-06-01 16:49:34,632 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 16:49:42,503 basehttp "GET /custom-admin/ HTTP/1.1" 200 27836
+INFO 2025-06-01 16:49:55,754 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 16216
+ERROR 2025-06-01 16:50:01,419 log Internal Server Error: /custom-admin/plans/3/edit/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\custom_admin\views.py", line 415, in plan_edit
+    return render(request, 'custom_admin/plan_edit.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\backends\django.py", line 79, in get_template
+    return Template(self.engine.get_template(template_name), self)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\engine.py", line 177, in get_template
+    template, origin = self.find_template(template_name)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\engine.py", line 159, in find_template
+    template = loader.get_template(name, skip=skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+           ^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 196, in compile_nodelist
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 299, in do_extends
+    nodelist = parser.parse()
+               ^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 518, in parse
+    raise self.error(token, e)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader_tags.py", line 234, in do_block
+    nodelist = parser.parse(("endblock",))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 489, in parse
+    raise self.error(token, e)
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 487, in parse
+    filter_expression = self.compile_filter(token.contents)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 609, in compile_filter
+    return FilterExpression(token, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\base.py", line 710, in __init__
+    raise TemplateSyntaxError(
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '"' from 'plan.roi_percentage|floatformat:2"'
+ERROR 2025-06-01 16:50:02,511 basehttp "GET /custom-admin/plans/3/edit/ HTTP/1.1" 500 200084
+WARNING 2025-06-01 16:52:19,060 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:52:22,195 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:52:30,615 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:52:32,826 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:52:40,860 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:52:42,958 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:52:44,078 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:52:44,657 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:52:51,686 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:52:52,833 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:52:54,076 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:52:55,636 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:52:57,915 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:00,119 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:01,531 basehttp - Broken pipe from ('127.0.0.1', 51942)
+WARNING 2025-06-01 16:53:01,845 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:03,125 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:05,372 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:06,555 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:07,533 basehttp - Broken pipe from ('127.0.0.1', 51947)
+WARNING 2025-06-01 16:53:08,033 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:08,468 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:09,213 basehttp - Broken pipe from ('127.0.0.1', 51952)
+WARNING 2025-06-01 16:53:09,957 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:10,364 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:10,821 basehttp - Broken pipe from ('127.0.0.1', 51955)
+WARNING 2025-06-01 16:53:11,140 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:11,680 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:12,064 basehttp - Broken pipe from ('127.0.0.1', 51956)
+WARNING 2025-06-01 16:53:12,677 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:13,014 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:13,727 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:14,154 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:14,705 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:15,011 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:15,193 basehttp - Broken pipe from ('127.0.0.1', 51957)
+WARNING 2025-06-01 16:53:15,497 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:16,250 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:16,838 basehttp - Broken pipe from ('127.0.0.1', 51960)
+WARNING 2025-06-01 16:53:17,035 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:18,696 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:19,802 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:20,098 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:20,515 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:20,718 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:20,993 basehttp - Broken pipe from ('127.0.0.1', 51962)
+WARNING 2025-06-01 16:53:21,307 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:21,579 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:26,931 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:27,043 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:27,398 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:27,450 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:27,946 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:28,241 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:28,791 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:28,973 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:29,329 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:29,584 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:30,062 basehttp - Broken pipe from ('127.0.0.1', 51964)
+WARNING 2025-06-01 16:53:30,734 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:31,192 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:31,426 basehttp - Broken pipe from ('127.0.0.1', 51966)
+WARNING 2025-06-01 16:53:31,994 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:32,159 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:53:32,341 basehttp - Broken pipe from ('127.0.0.1', 51967)
+WARNING 2025-06-01 16:53:32,880 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:33,235 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:34,139 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:34,282 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:34,680 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:34,881 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:35,250 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:35,982 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:36,603 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:36,738 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:37,121 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:53:37,232 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:53:58,213 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:03,356 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:12,901 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:14,472 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:16,681 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:17,351 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:54:18,136 basehttp - Broken pipe from ('127.0.0.1', 51975)
+WARNING 2025-06-01 16:54:19,853 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:21,207 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:22,369 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:23,808 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:24,259 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:25,553 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:27,950 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:28,243 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:29,334 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:29,842 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:31,634 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:31,983 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:33,145 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:33,377 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:34,665 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:34,758 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:38,316 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:38,607 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:40,322 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:40,537 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:41,842 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:42,988 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:44,254 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:46,993 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:54:49,929 basehttp "GET /custom-admin/plans/3/edit/ HTTP/1.1" 200 14821
+WARNING 2025-06-01 16:54:54,661 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:55,452 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:56,811 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:54:58,177 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:54:59,717 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:00,862 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:01,933 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:03,538 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:05,489 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:06,322 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:55:06,596 basehttp - Broken pipe from ('127.0.0.1', 52001)
+WARNING 2025-06-01 16:55:08,346 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:08,526 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:10,246 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:10,772 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:12,923 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:13,957 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:15,282 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:17,173 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:18,501 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:18,708 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:19,942 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:20,801 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:24,239 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:24,462 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:29,364 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:30,112 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:40,695 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:40,933 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:55:57,401 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:55:59,264 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:56:06,324 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:06,581 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:56:06,650 basehttp - Broken pipe from ('127.0.0.1', 52045)
+WARNING 2025-06-01 16:56:09,501 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:09,782 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:56:12,948 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:13,052 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:56:16,210 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:16,481 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:56:21,185 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:21,493 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:56:26,394 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:27,747 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:56:31,235 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:32,832 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:56:39,029 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:41,584 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:56:45,255 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:45,321 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:56:45,779 basehttp - Broken pipe from ('127.0.0.1', 52063)
+WARNING 2025-06-01 16:56:54,814 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:54,964 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 16:56:55,449 basehttp - Broken pipe from ('127.0.0.1', 52067)
+WARNING 2025-06-01 16:56:58,100 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:56:58,107 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:01,203 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:01,233 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:04,318 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:04,328 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:08,061 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:08,069 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:11,261 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:11,316 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:15,233 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:15,240 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:18,293 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:18,300 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:21,349 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:21,359 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:24,529 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:24,537 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:28,026 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:28,050 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:32,461 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:32,530 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:35,620 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:35,651 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:38,994 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:39,010 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:42,197 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:42,197 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:45,382 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:45,397 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:48,445 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:48,445 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:51,673 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:51,673 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:54,735 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:54,735 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:57:57,819 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:57:57,834 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:00,894 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:00,894 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:03,982 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:03,991 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:07,186 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:07,194 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:10,253 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:10,253 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:13,349 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:13,349 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:18,425 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:18,474 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:23,157 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:23,169 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:31,993 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:32,197 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:36,028 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:36,190 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:44,613 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:45,115 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:48,652 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:48,652 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:51,723 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:51,729 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:54,887 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:54,917 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:58:58,658 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:58:58,660 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:01,723 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:01,738 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:05,030 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:05,030 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:08,101 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:08,106 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:11,298 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:11,298 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:14,343 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:14,374 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:17,547 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:17,547 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:20,616 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:20,632 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:23,733 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:23,762 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:27,377 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:27,386 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:32,276 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:32,283 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:35,476 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:35,484 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:38,520 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:38,535 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:42,897 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:42,904 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:46,094 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:46,099 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:49,197 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:49,219 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:52,472 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:52,481 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:55,537 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:55,546 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 16:59:59,734 log Not Found: /__reload__/events/
+WARNING 2025-06-01 16:59:59,736 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:02,808 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:02,810 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:05,924 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:05,940 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:08,988 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:09,003 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:12,275 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:12,287 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:15,541 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:15,541 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:19,009 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:19,025 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:22,106 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:22,110 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:28,186 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:28,191 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:37,351 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:37,353 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:40,405 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:40,405 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+WARNING 2025-06-01 17:00:43,471 log Not Found: /__reload__/events/
+WARNING 2025-06-01 17:00:43,471 basehttp "GET /__reload__/events/ HTTP/1.1" 404 7864
+INFO 2025-06-01 17:10:59,943 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 16216
+ERROR 2025-06-01 17:11:07,525 log Internal Server Error: /custom-admin/plans/4/delete/
+Traceback (most recent call last):
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\Desktop\version1\broker\custom_admin\views.py", line 427, in plan_delete
+    return render(request, 'custom_admin/plan_delete.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kpoje\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: custom_admin/plan_delete.html
+ERROR 2025-06-01 17:11:07,741 basehttp "GET /custom-admin/plans/4/delete/ HTTP/1.1" 500 89072
+INFO 2025-06-01 17:13:19,771 basehttp "GET /custom-admin/plans/4/delete/ HTTP/1.1" 200 12508
+INFO 2025-06-01 17:13:26,181 views Admin deleted investment plan platinum (ID: 4)
+INFO 2025-06-01 17:13:26,300 basehttp "POST /custom-admin/plans/4/delete/ HTTP/1.1" 302 0
+INFO 2025-06-01 17:13:26,670 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 15859
+INFO 2025-06-01 17:44:09,149 basehttp "GET / HTTP/1.1" 200 83954
+INFO 2025-06-01 17:51:03,263 basehttp "GET / HTTP/1.1" 200 83899
+INFO 2025-06-01 18:49:47,333 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 15393
+INFO 2025-06-01 18:49:57,770 basehttp "GET / HTTP/1.1" 200 83985
+INFO 2025-06-01 18:49:57,810 basehttp - Broken pipe from ('127.0.0.1', 55699)
+INFO 2025-06-01 18:52:47,617 basehttp - Broken pipe from ('127.0.0.1', 55767)
+INFO 2025-06-01 18:52:48,535 basehttp "GET / HTTP/1.1" 200 83985
+WARNING 2025-06-01 18:53:20,789 log Not Found: /favicon.ico
+WARNING 2025-06-01 18:53:20,798 basehttp "GET /favicon.ico HTTP/1.1" 404 7843
+INFO 2025-06-01 18:55:22,565 basehttp "GET / HTTP/1.1" 200 83922
+INFO 2025-06-01 19:18:27,446 basehttp "GET / HTTP/1.1" 200 83914
+INFO 2025-06-01 19:25:39,751 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 16216
+INFO 2025-06-01 19:25:49,473 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 16216
+INFO 2025-06-01 19:25:57,400 basehttp "GET /custom-admin/users/ HTTP/1.1" 200 40027
+INFO 2025-06-01 19:27:47,127 basehttp "GET /custom-admin/users/ HTTP/1.1" 200 40129
+INFO 2025-06-01 19:27:57,288 basehttp "GET /custom-admin/plans/ HTTP/1.1" 200 15439
+INFO 2025-06-01 19:28:15,853 basehttp "GET / HTTP/1.1" 200 84404
+INFO 2025-06-01 19:30:13,718 basehttp "GET / HTTP/1.1" 200 85283
+INFO 2025-06-01 19:36:42,203 basehttp "GET / HTTP/1.1" 200 87757
+INFO 2025-06-01 19:50:14,920 basehttp "GET / HTTP/1.1" 200 92567
+INFO 2025-06-01 20:11:55,243 autoreload C:\Users\kpoje\Desktop\version1\broker\trading_site\settings.py changed, reloading.
+INFO 2025-06-01 20:12:09,385 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 20:12:38,693 autoreload C:\Users\kpoje\Desktop\version1\broker\main\forms.py changed, reloading.
+INFO 2025-06-01 20:14:03,609 autoreload Watching for file changes with StatReloader
+INFO 2025-06-01 20:15:05,863 basehttp "GET / HTTP/1.1" 200 92571
+INFO 2025-06-01 20:16:05,292 basehttp "GET /logout/ HTTP/1.1" 302 0
+INFO 2025-06-01 20:16:11,671 basehttp "GET / HTTP/1.1" 200 92187
+INFO 2025-06-01 20:16:29,746 basehttp "GET /custom-admin/users/ HTTP/1.1" 200 40129
+INFO 2025-06-01 20:17:25,916 basehttp - Broken pipe from ('127.0.0.1', 57192)
+INFO 2025-06-01 20:18:05,159 basehttp "GET /login/ HTTP/1.1" 200 58560
+INFO 2025-06-01 20:18:37,362 basehttp "GET /login/ HTTP/1.1" 200 52243
+INFO 2025-06-01 20:18:45,464 basehttp "GET /register/ HTTP/1.1" 200 55981
+INFO 2025-06-01 20:20:39,911 views User logged in: pysmart90@gmail.com
+INFO 2025-06-01 20:20:39,975 basehttp "POST /login/ HTTP/1.1" 302 0
+INFO 2025-06-01 20:20:42,420 basehttp "GET /dashboard/ HTTP/1.1" 200 29486
+INFO 2025-06-01 20:33:34,913 basehttp "GET /dashboard/ HTTP/1.1" 200 28592
+INFO 2025-06-01 20:33:43,422 basehttp "GET / HTTP/1.1" 200 92545
+WARNING 2025-06-01 20:33:45,284 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 404 1853
+WARNING 2025-06-01 20:33:45,292 basehttp "GET /static/img/cert1.jpg HTTP/1.1" 404 1853
+WARNING 2025-06-01 20:33:47,686 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+INFO 2025-06-01 20:35:27,549 basehttp "GET / HTTP/1.1" 200 92545
+WARNING 2025-06-01 20:35:45,447 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+WARNING 2025-06-01 20:35:48,068 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 404 1853
+WARNING 2025-06-01 20:35:54,244 basehttp "GET /static/img/cert1.jpg HTTP/1.1" 404 1853
+INFO 2025-06-01 20:37:58,009 basehttp "GET / HTTP/1.1" 200 92545
+WARNING 2025-06-01 20:39:15,870 basehttp "GET /static/img/cert1.jpg HTTP/1.1" 404 1853
+WARNING 2025-06-01 20:39:19,239 basehttp "GET /static/img/cert2.jpg HTTP/1.1" 404 1853
+WARNING 2025-06-01 20:39:19,606 basehttp "GET /static/img/cert3.jpg HTTP/1.1" 404 1853
+INFO 2025-06-01 20:40:00,364 autoreload C:\Users\kpoje\Desktop\version1\broker\trading_site\settings.py changed, reloading.
+INFO 2025-06-01 20:46:05,764 autoreload Watching for file changes with StatReloader
